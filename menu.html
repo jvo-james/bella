@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Explore the full luxury pastry menu from Maison Crème. Discover premium donuts, croissants, cake slices, brownies, tarts, danishes, cookies, and fresh juices in Ghana."
+    content="Explore the full Maison Crème menu. Premium pastries, cake slices, brownies, croissants, rolls, and fresh juices in Accra."
   />
   <title>Maison Crème | Menu</title>
 
@@ -22,10 +22,6 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <link rel="stylesheet" href="styles.css" />
   <script src="script.js" defer></script>
@@ -40,7 +36,7 @@
             <span class="brand__eyebrow">Accra, Ghana</span>
             <span class="brand__name">Maison Crème</span>
           </a>
-          <button class="icon-btn js-close-mobile-menu" aria-label="Close menu">
+          <button class="icon-btn js-close-mobile-menu" aria-label="Close menu" type="button">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
@@ -52,7 +48,7 @@
         </nav>
 
         <div class="mobile-menu__actions">
-          <a href="#menuGrid" class="btn btn--primary">Browse Products</a>
+          <a href="#signature-picks" class="btn btn--primary">Browse Menu</a>
           <button class="btn btn--secondary js-open-cart" type="button">
             <i class="fa-solid fa-bag-shopping"></i>
             <span>Open Cart</span>
@@ -76,17 +72,15 @@
         </div>
 
         <div class="cart-drawer__body">
-          <div class="cart-items" id="cartItems">
-            <!-- Populated by script.js -->
-          </div>
+          <div class="cart-items" id="cartItems"></div>
 
           <div class="cart-empty" id="cartEmptyState">
             <div class="cart-empty__icon">
               <i class="fa-solid fa-bag-shopping"></i>
             </div>
             <h3>Your cart is beautifully empty</h3>
-            <p>Choose pastries, slices, or juices to begin your premium order.</p>
-            <a href="#menuGrid" class="btn btn--primary">Shop the Menu</a>
+            <p>Choose pastries, slices, or juices to begin your order.</p>
+            <a href="#signature-picks" class="btn btn--primary">Shop the Menu</a>
           </div>
         </div>
 
@@ -114,9 +108,7 @@
     <header class="site-header" id="top">
       <div class="announcement-bar">
         <div class="container announcement-bar__content">
-          <p>
-            Curated pastries, refined slices, premium juices, and elegant gifting — all in one luxury menu.
-          </p>
+          <p>Premium pastries, refined desserts, and fresh juices in Accra.</p>
         </div>
       </div>
 
@@ -148,63 +140,39 @@
     </header>
 
     <main>
-      <!-- Menu Hero -->
-      <section class="menu-hero">
+      <!-- Simple Menu Hero -->
+      <section class="menu-hero menu-hero--simple">
         <div class="container">
-          <div class="menu-hero__grid">
+          <div class="menu-hero__grid menu-hero__grid--simple">
             <div class="menu-hero__copy">
-              <span class="hero-badge">
-                <i class="fa-solid fa-sparkles"></i>
-                Full Signature Collection
-              </span>
+              <span class="hero-badge">Maison Crème Menu</span>
 
               <h1>
-                A menu designed for
-                <span>luxury cravings.</span>
+                Explore the full
+                <span>signature collection.</span>
               </h1>
 
               <p class="hero-text">
-                Explore Maison Crème’s premium pastry range — from best-selling donuts and croissants to brownies,
-                slices, tarts, danishes, cheesecakes, cookies, and fresh juices crafted for a polished Ghanaian dessert experience.
+                Premium pastries, refined slices, brownies, croissants, rolls, and fresh juices — all in one place.
               </p>
 
               <div class="hero-actions">
-                <a href="#menuGrid" class="btn btn--primary">Browse All Items</a>
+                <a href="#signature-picks" class="btn btn--primary">Browse Menu</a>
                 <button class="btn btn--secondary js-open-cart" type="button">Open Cart</button>
-              </div>
-
-              <div class="hero-metrics">
-                <article class="metric-card">
-                  <strong>20+</strong>
-                  <span>Luxury menu items</span>
-                </article>
-                <article class="metric-card">
-                  <strong>GH₵40</strong>
-                  <span>Fresh juices from</span>
-                </article>
-                <article class="metric-card">
-                  <strong>GH₵90+</strong>
-                  <span>Premium pastries & slices</span>
-                </article>
               </div>
             </div>
 
-            <div class="menu-hero__visual">
+            <div class="menu-hero__visual menu-hero__visual--simple">
               <img
                 src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1400&q=80"
                 alt="Luxury pastry table spread"
               />
-              <div class="menu-hero__card">
-                <p>Best Seller Pairing</p>
-                <strong>Oreo Donuts + Fresh Juice</strong>
-                <span>Elegant, rich, and refreshing</span>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Menu Utility Bar -->
+      <!-- Menu Utility -->
       <section class="menu-toolbar">
         <div class="container">
           <div class="menu-toolbar__wrap">
@@ -219,66 +187,30 @@
               />
             </div>
 
-            <div class="menu-toolbar__filters" role="group" aria-label="Filter products">
-              <button class="filter-chip is-active" type="button" data-filter="all">All</button>
-              <button class="filter-chip" type="button" data-filter="Donuts">Donuts</button>
-              <button class="filter-chip" type="button" data-filter="Croissants">Croissants</button>
-              <button class="filter-chip" type="button" data-filter="Rolls">Rolls</button>
-              <button class="filter-chip" type="button" data-filter="Cake Slices">Cake Slices</button>
-              <button class="filter-chip" type="button" data-filter="Brownies">Brownies</button>
-              <button class="filter-chip" type="button" data-filter="Tarts">Tarts</button>
-              <button class="filter-chip" type="button" data-filter="Danishes">Danishes</button>
-              <button class="filter-chip" type="button" data-filter="Pastries">Pastries</button>
-              <button class="filter-chip" type="button" data-filter="Juices">Juices</button>
+            <div class="menu-toolbar__filters" role="group" aria-label="Jump to category">
+              <a class="filter-chip is-active" href="#signature-picks">Signature Picks</a>
+              <a class="filter-chip" href="#croissants">Croissants</a>
+              <a class="filter-chip" href="#rolls-pastries">Rolls & Pastries</a>
+              <a class="filter-chip" href="#cake-slices">Cake Slices</a>
+              <a class="filter-chip" href="#brownies-tarts">Brownies & Tarts</a>
+              <a class="filter-chip" href="#juices">Fresh Juices</a>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Featured Strip -->
-      <section class="menu-highlight-strip">
+      <!-- Signature Picks -->
+      <section class="menu-category-section" id="signature-picks">
         <div class="container">
-          <div class="menu-highlight-strip__grid">
-            <article>
-              <i class="fa-solid fa-star"></i>
-              <div>
-                <h3>Premium bestsellers</h3>
-                <p>Curated favorites for first-time buyers and loyal customers.</p>
-              </div>
-            </article>
-
-            <article>
-              <i class="fa-solid fa-layer-group"></i>
-              <div>
-                <h3>Rich variety</h3>
-                <p>From flaky pastries to dense slices and smooth juice pairings.</p>
-              </div>
-            </article>
-
-            <article>
-              <i class="fa-solid fa-mobile-screen-button"></i>
-              <div>
-                <h3>Mobile-first shopping</h3>
-                <p>Designed to feel elegant, smooth, and effortless on phones.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- Product Grid -->
-      <section class="products-section products-section--menu">
-        <div class="container">
-          <div class="section-heading">
+          <div class="section-heading menu-category-heading">
             <div>
-              <p class="section-tag">Full Menu</p>
-              <h2>Luxury pastries, slices, and fresh pairings</h2>
+              <p class="section-tag">Maison Crème</p>
+              <h2>Signature Picks</h2>
             </div>
-            <p class="section-note">Tap any product for details or add it directly to your cart.</p>
+            <p class="section-note">Our most-loved pastries and pairings.</p>
           </div>
 
-          <div class="products-grid" id="menuGrid">
-            <!-- 1 -->
+          <div class="products-grid products-grid--menu">
             <article
               class="product-card"
               data-id="oreo-donut"
@@ -312,177 +244,6 @@
               </div>
             </article>
 
-            <!-- 2 -->
-            <article
-              class="product-card"
-              data-id="vanilla-glazed-donut"
-              data-name="Vanilla Glazed Donuts"
-              data-price="105"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80"
-              data-category="Donuts"
-            >
-              <a href="product.html?product=vanilla-glazed-donut" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80"
-                  alt="Vanilla glazed donuts"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Gloss Finish</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Vanilla Glazed Donuts to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=vanilla-glazed-donut" class="product-card__title-wrap">
-                  <h3>Vanilla Glazed Donuts</h3>
-                  <p>Elegant donuts coated in smooth vanilla glaze with a clean premium finish.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵105 <span>/ two</span></strong>
-                  <a href="product.html?product=vanilla-glazed-donut" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 3 -->
-            <article
-              class="product-card"
-              data-id="raisin-roll"
-              data-name="Raisin Roll"
-              data-price="110"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=1200&q=80"
-              data-category="Rolls"
-            >
-              <a href="product.html?product=raisin-roll" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=1200&q=80"
-                  alt="Raisin roll"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Classic Richness</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Raisin Roll to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=raisin-roll" class="product-card__title-wrap">
-                  <h3>Raisin Roll</h3>
-                  <p>Soft glazed roll with rich buttery notes and a luxurious bakery finish.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵110 <span>/ two</span></strong>
-                  <a href="product.html?product=raisin-roll" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 4 -->
-            <article
-              class="product-card"
-              data-id="cinnamon-roll"
-              data-name="Cinnamon Rolls"
-              data-price="125"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1200&q=80"
-              data-category="Rolls"
-            >
-              <a href="product.html?product=cinnamon-roll" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1200&q=80"
-                  alt="Cinnamon rolls"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Warm & Indulgent</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Cinnamon Rolls to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=cinnamon-roll" class="product-card__title-wrap">
-                  <h3>Cinnamon Rolls</h3>
-                  <p>Soft spirals layered with spice and finished with a smooth glossy icing.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵125 <span>/ two</span></strong>
-                  <a href="product.html?product=cinnamon-roll" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 5 -->
-            <article
-              class="product-card"
-              data-id="caramel-roll"
-              data-name="Caramel Rolls"
-              data-price="130"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=1200&q=80"
-              data-category="Rolls"
-            >
-              <a href="product.html?product=caramel-roll" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=1200&q=80"
-                  alt="Caramel rolls"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Luxury Drizzle</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Caramel Rolls to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=caramel-roll" class="product-card__title-wrap">
-                  <h3>Caramel Rolls</h3>
-                  <p>Buttery rolls dressed in smooth caramel for a richer, more decadent bite.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵130 <span>/ two</span></strong>
-                  <a href="product.html?product=caramel-roll" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 6 -->
-            <article
-              class="product-card"
-              data-id="signature-bagel"
-              data-name="Signature Bagel"
-              data-price="100"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1597393353415-b3730f3719ce?auto=format&fit=crop&w=1200&q=80"
-              data-category="Pastries"
-            >
-              <a href="product.html?product=signature-bagel" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1597393353415-b3730f3719ce?auto=format&fit=crop&w=1200&q=80"
-                  alt="Bagels"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Brunch Favourite</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Signature Bagel to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=signature-bagel" class="product-card__title-wrap">
-                  <h3>Signature Bagel</h3>
-                  <p>Golden, glossy, and baked for a clean boutique-style brunch moment.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵100 <span>/ two</span></strong>
-                  <a href="product.html?product=signature-bagel" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 7 -->
             <article
               class="product-card"
               data-id="artisan-croissant"
@@ -516,75 +277,6 @@
               </div>
             </article>
 
-            <!-- 8 -->
-            <article
-              class="product-card"
-              data-id="chocolate-croissant"
-              data-name="Chocolate Croissants"
-              data-price="125"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1200&q=80"
-              data-category="Croissants"
-            >
-              <a href="product.html?product=chocolate-croissant" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1200&q=80"
-                  alt="Chocolate croissants"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Deep Cocoa</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Chocolate Croissants to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=chocolate-croissant" class="product-card__title-wrap">
-                  <h3>Chocolate Croissants</h3>
-                  <p>Flaky, elegant croissants layered with a rich chocolate center.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵125 <span>/ two</span></strong>
-                  <a href="product.html?product=chocolate-croissant" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 9 -->
-            <article
-              class="product-card"
-              data-id="almond-croissant"
-              data-name="Almond Croissants"
-              data-price="130"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1200&q=80"
-              data-category="Croissants"
-            >
-              <a href="product.html?product=almond-croissant" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1200&q=80"
-                  alt="Almond croissants"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Refined Finish</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Almond Croissants to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=almond-croissant" class="product-card__title-wrap">
-                  <h3>Almond Croissants</h3>
-                  <p>Layered croissants finished with almond richness and a delicate boutique texture.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵130 <span>/ two</span></strong>
-                  <a href="product.html?product=almond-croissant" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 10 -->
             <article
               class="product-card"
               data-id="mud-cake-slice"
@@ -609,6 +301,321 @@
                 </div>
                 <a href="product.html?product=mud-cake-slice" class="product-card__title-wrap">
                   <h3>Mud Cake Slice</h3>
+                  <p>Dense chocolate luxury with a smooth finish and boutique dessert appeal.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵150 <span>/ two</span></strong>
+                  <a href="product.html?product=mud-cake-slice" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="product-card"
+              data-id="fresh-juice"
+              data-name="Fresh Juice"
+              data-price="40"
+              data-unit="each"
+              data-image="https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1200&q=80"
+              data-category="Juices"
+            >
+              <a href="product.html?product=fresh-juice" class="product-card__media">
+                <img
+                  src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1200&q=80"
+                  alt="Fresh orange juice"
+                />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Freshly Poured</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Fresh Juice to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=fresh-juice" class="product-card__title-wrap">
+                  <h3>Fresh Juices</h3>
+                  <p>Bright, refreshing juices that complete the full pastry experience.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵40 <span>/ each</span></strong>
+                  <a href="product.html?product=fresh-juice" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Croissants -->
+      <section class="menu-category-section" id="croissants">
+        <div class="container">
+          <div class="section-heading menu-category-heading">
+            <div>
+              <p class="section-tag">Layered Luxury</p>
+              <h2>Croissants</h2>
+            </div>
+          </div>
+
+          <div class="products-grid products-grid--menu">
+            <article
+              class="product-card"
+              data-id="artisan-croissant"
+              data-name="Artisan Croissant"
+              data-price="120"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1200&q=80"
+              data-category="Croissants"
+            >
+              <a href="product.html?product=artisan-croissant" class="product-card__media">
+                <img src="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1200&q=80" alt="Assorted croissants" />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Cheese • Plain • Chocolate</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Artisan Croissant to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=artisan-croissant" class="product-card__title-wrap">
+                  <h3>Artisan Croissant</h3>
+                  <p>Flaky layers with a premium golden finish across all signature variants.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵120 <span>/ two</span></strong>
+                  <a href="product.html?product=artisan-croissant" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="product-card"
+              data-id="chocolate-croissant"
+              data-name="Chocolate Croissants"
+              data-price="125"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1200&q=80"
+              data-category="Croissants"
+            >
+              <a href="product.html?product=chocolate-croissant" class="product-card__media">
+                <img src="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1200&q=80" alt="Chocolate croissants" />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Deep Cocoa</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Chocolate Croissants to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=chocolate-croissant" class="product-card__title-wrap">
+                  <h3>Chocolate Croissants</h3>
+                  <p>Flaky, elegant croissants layered with a rich chocolate center.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵125 <span>/ two</span></strong>
+                  <a href="product.html?product=chocolate-croissant" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="product-card"
+              data-id="almond-croissant"
+              data-name="Almond Croissants"
+              data-price="130"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1200&q=80"
+              data-category="Croissants"
+            >
+              <a href="product.html?product=almond-croissant" class="product-card__media">
+                <img src="https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1200&q=80" alt="Almond croissants" />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Refined Finish</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Almond Croissants to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=almond-croissant" class="product-card__title-wrap">
+                  <h3>Almond Croissants</h3>
+                  <p>Layered croissants finished with almond richness and a delicate boutique texture.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵130 <span>/ two</span></strong>
+                  <a href="product.html?product=almond-croissant" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rolls & Pastries -->
+      <section class="menu-category-section" id="rolls-pastries">
+        <div class="container">
+          <div class="section-heading menu-category-heading">
+            <div>
+              <p class="section-tag">Warm & Buttery</p>
+              <h2>Rolls & Pastries</h2>
+            </div>
+          </div>
+
+          <div class="products-grid products-grid--menu">
+            <article
+              class="product-card"
+              data-id="raisin-roll"
+              data-name="Raisin Roll"
+              data-price="110"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=1200&q=80"
+              data-category="Rolls"
+            >
+              <a href="product.html?product=raisin-roll" class="product-card__media">
+                <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=1200&q=80" alt="Raisin roll" />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Classic Richness</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Raisin Roll to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=raisin-roll" class="product-card__title-wrap">
+                  <h3>Raisin Roll</h3>
+                  <p>Soft glazed roll with rich buttery notes and a luxurious bakery finish.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵110 <span>/ two</span></strong>
+                  <a href="product.html?product=raisin-roll" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="product-card"
+              data-id="cinnamon-roll"
+              data-name="Cinnamon Rolls"
+              data-price="125"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1200&q=80"
+              data-category="Rolls"
+            >
+              <a href="product.html?product=cinnamon-roll" class="product-card__media">
+                <img src="https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1200&q=80" alt="Cinnamon rolls" />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Warm & Indulgent</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Cinnamon Rolls to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=cinnamon-roll" class="product-card__title-wrap">
+                  <h3>Cinnamon Rolls</h3>
+                  <p>Soft spirals layered with spice and finished with a smooth glossy icing.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵125 <span>/ two</span></strong>
+                  <a href="product.html?product=cinnamon-roll" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="product-card"
+              data-id="caramel-roll"
+              data-name="Caramel Rolls"
+              data-price="130"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=1200&q=80"
+              data-category="Rolls"
+            >
+              <a href="product.html?product=caramel-roll" class="product-card__media">
+                <img src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=1200&q=80" alt="Caramel rolls" />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Luxury Drizzle</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Caramel Rolls to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=caramel-roll" class="product-card__title-wrap">
+                  <h3>Caramel Rolls</h3>
+                  <p>Buttery rolls dressed in smooth caramel for a richer, more decadent bite.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵130 <span>/ two</span></strong>
+                  <a href="product.html?product=caramel-roll" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="product-card"
+              data-id="signature-bagel"
+              data-name="Signature Bagel"
+              data-price="100"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1597393353415-b3730f3719ce?auto=format&fit=crop&w=1200&q=80"
+              data-category="Pastries"
+            >
+              <a href="product.html?product=signature-bagel" class="product-card__media">
+                <img src="https://images.unsplash.com/photo-1597393353415-b3730f3719ce?auto=format&fit=crop&w=1200&q=80" alt="Bagels" />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Brunch Favourite</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Signature Bagel to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=signature-bagel" class="product-card__title-wrap">
+                  <h3>Signature Bagel</h3>
+                  <p>Golden, glossy, and baked for a clean boutique-style brunch moment.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵100 <span>/ two</span></strong>
+                  <a href="product.html?product=signature-bagel" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cake Slices -->
+      <section class="menu-category-section" id="cake-slices">
+        <div class="container">
+          <div class="section-heading menu-category-heading">
+            <div>
+              <p class="section-tag">Refined Slices</p>
+              <h2>Cake Slices</h2>
+            </div>
+          </div>
+
+          <div class="products-grid products-grid--menu">
+            <article
+              class="product-card"
+              data-id="mud-cake-slice"
+              data-name="Mud Cake Slice"
+              data-price="150"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80"
+              data-category="Cake Slices"
+            >
+              <a href="product.html?product=mud-cake-slice" class="product-card__media">
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80" alt="Mud cake slice" />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Rich & Elegant</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Mud Cake Slice to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=mud-cake-slice" class="product-card__title-wrap">
+                  <h3>Mud Cake Slice</h3>
                   <p>Dense chocolate luxury with a smooth finish and boutique dessert plating appeal.</p>
                 </a>
                 <div class="product-card__bottom">
@@ -618,7 +625,6 @@
               </div>
             </article>
 
-            <!-- 11 -->
             <article
               class="product-card"
               data-id="swirl-cake"
@@ -629,10 +635,7 @@
               data-category="Cake Slices"
             >
               <a href="product.html?product=swirl-cake" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80"
-                  alt="Swirl cake slices"
-                />
+                <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80" alt="Swirl cake slices" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
@@ -652,7 +655,6 @@
               </div>
             </article>
 
-            <!-- 12 -->
             <article
               class="product-card"
               data-id="lemon-raspberry-slice"
@@ -663,10 +665,7 @@
               data-category="Cake Slices"
             >
               <a href="product.html?product=lemon-raspberry-slice" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1200&q=80"
-                  alt="Lemon raspberry slice"
-                />
+                <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1200&q=80" alt="Lemon raspberry slice" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
@@ -686,7 +685,6 @@
               </div>
             </article>
 
-            <!-- 13 -->
             <article
               class="product-card"
               data-id="red-velvet-slice"
@@ -697,10 +695,7 @@
               data-category="Cake Slices"
             >
               <a href="product.html?product=red-velvet-slice" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1586788680434-30d3241b7f8e?auto=format&fit=crop&w=1200&q=80"
-                  alt="Red velvet slice"
-                />
+                <img src="https://images.unsplash.com/photo-1586788680434-30d3241b7f8e?auto=format&fit=crop&w=1200&q=80" alt="Red velvet slice" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
@@ -719,8 +714,21 @@
                 </div>
               </div>
             </article>
+          </div>
+        </div>
+      </section>
 
-            <!-- 14 -->
+      <!-- Brownies & Tarts -->
+      <section class="menu-category-section" id="brownies-tarts">
+        <div class="container">
+          <div class="section-heading menu-category-heading">
+            <div>
+              <p class="section-tag">Dessert Favourites</p>
+              <h2>Brownies & Tarts</h2>
+            </div>
+          </div>
+
+          <div class="products-grid products-grid--menu">
             <article
               class="product-card"
               data-id="brownie-duo"
@@ -731,10 +739,7 @@
               data-category="Brownies"
             >
               <a href="product.html?product=brownie-duo" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80"
-                  alt="Brownies"
-                />
+                <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80" alt="Brownies" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
@@ -754,236 +759,102 @@
               </div>
             </article>
 
-            <!-- 15 -->
             <article
               class="product-card"
               data-id="strawberry-tart"
               data-name="Strawberry Tart"
-              data-price="140"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?auto=format&fit=crop&w=1200&q=80"
+              data-price="135"
+              data-unit="each"
+              data-image="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1200&q=80"
               data-category="Tarts"
             >
               <a href="product.html?product=strawberry-tart" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?auto=format&fit=crop&w=1200&q=80"
-                  alt="Strawberry tarts"
-                />
+                <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1200&q=80" alt="Strawberry tart" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Fruit-Luxe</span>
+                  <span class="pill">Fresh & Polished</span>
                   <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Strawberry Tart to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
                 <a href="product.html?product=strawberry-tart" class="product-card__title-wrap">
                   <h3>Strawberry Tart</h3>
-                  <p>Glossy strawberry finish over a delicate tart base for an elevated sweet bite.</p>
+                  <p>Elegant tart finished with fresh fruit and a refined dessert-shop look.</p>
                 </a>
                 <div class="product-card__bottom">
-                  <strong>GH₵140 <span>/ two</span></strong>
+                  <strong>GH₵135 <span>/ each</span></strong>
                   <a href="product.html?product=strawberry-tart" class="text-link">Details</a>
                 </div>
               </div>
             </article>
 
-            <!-- 16 -->
-            <article
-              class="product-card"
-              data-id="fruit-danish"
-              data-name="Fruit Danish"
-              data-price="130"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?auto=format&fit=crop&w=1200&q=80"
-              data-category="Danishes"
-            >
-              <a href="product.html?product=fruit-danish" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?auto=format&fit=crop&w=1200&q=80"
-                  alt="Fruit danish pastries"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Delicate Layers</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Fruit Danish to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=fruit-danish" class="product-card__title-wrap">
-                  <h3>Fruit Danish</h3>
-                  <p>Light pastry layers with fruit notes and a beautifully finished boutique look.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵130 <span>/ two</span></strong>
-                  <a href="product.html?product=fruit-danish" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 17 -->
-            <article
-              class="product-card"
-              data-id="eclair-selection"
-              data-name="Éclairs"
-              data-price="145"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1623246123320-0d663675f19c?auto=format&fit=crop&w=1200&q=80"
-              data-category="Pastries"
-            >
-              <a href="product.html?product=eclair-selection" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1623246123320-0d663675f19c?auto=format&fit=crop&w=1200&q=80"
-                  alt="Eclairs"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">French-Inspired</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Eclairs to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=eclair-selection" class="product-card__title-wrap">
-                  <h3>Éclairs</h3>
-                  <p>Elegant pastry shells with smooth filling and a polished luxury dessert finish.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵145 <span>/ two</span></strong>
-                  <a href="product.html?product=eclair-selection" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 18 -->
-            <article
-              class="product-card"
-              data-id="puff-pastries"
-              data-name="Puff Pastries"
-              data-price="115"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=1200&q=80"
-              data-category="Pastries"
-            >
-              <a href="product.html?product=puff-pastries" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=1200&q=80"
-                  alt="Puff pastries"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Crisp Layers</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Puff Pastries to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=puff-pastries" class="product-card__title-wrap">
-                  <h3>Puff Pastries</h3>
-                  <p>Light, crisp, and beautifully layered for a polished premium snack moment.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵115 <span>/ two</span></strong>
-                  <a href="product.html?product=puff-pastries" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- 19 -->
             <article
               class="product-card"
               data-id="mini-cheesecake"
-              data-name="Mini Cheesecakes"
-              data-price="155"
+              data-name="Mini Cheesecake"
+              data-price="140"
               data-unit="two"
               data-image="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1200&q=80"
-              data-category="Cake Slices"
+              data-category="Tarts"
             >
               <a href="product.html?product=mini-cheesecake" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1200&q=80"
-                  alt="Mini cheesecakes"
-                />
+                <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1200&q=80" alt="Mini cheesecakes" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Creamy Luxury</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Mini Cheesecakes to cart">
+                  <span class="pill">Soft Luxury</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Mini Cheesecake to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
                 <a href="product.html?product=mini-cheesecake" class="product-card__title-wrap">
-                  <h3>Mini Cheesecakes</h3>
-                  <p>Rich, smooth cheesecake portions with a luxurious finish perfect for gifting.</p>
+                  <h3>Mini Cheesecake</h3>
+                  <p>Rich, creamy, and beautifully portioned for gifting or indulgence.</p>
                 </a>
                 <div class="product-card__bottom">
-                  <strong>GH₵155 <span>/ two</span></strong>
+                  <strong>GH₵140 <span>/ two</span></strong>
                   <a href="product.html?product=mini-cheesecake" class="text-link">Details</a>
                 </div>
               </div>
             </article>
+          </div>
+        </div>
+      </section>
 
-            <!-- 20 -->
-            <article
-              class="product-card"
-              data-id="cookie-selection"
-              data-name="Cookie Selection"
-              data-price="95"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1200&q=80"
-              data-category="Pastries"
-            >
-              <a href="product.html?product=cookie-selection" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1200&q=80"
-                  alt="Cookies"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Elegant Everyday</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Cookie Selection to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=cookie-selection" class="product-card__title-wrap">
-                  <h3>Cookie Selection</h3>
-                  <p>Luxury cookies with a rich bakery feel, perfect for light indulgence or gifting.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵95 <span>/ two</span></strong>
-                  <a href="product.html?product=cookie-selection" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
+      <!-- Fresh Juices -->
+      <section class="menu-category-section" id="juices">
+        <div class="container">
+          <div class="section-heading menu-category-heading">
+            <div>
+              <p class="section-tag">Freshly Poured</p>
+              <h2>Fresh Juices</h2>
+            </div>
+          </div>
 
-            <!-- 21 -->
+          <div class="products-grid products-grid--menu products-grid--juices">
             <article
               class="product-card"
               data-id="pineapple-juice"
               data-name="Pineapple Juice"
               data-price="40"
               data-unit="each"
-              data-image="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1200&q=80"
+              data-image="https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1200&q=80"
               data-category="Juices"
             >
               <a href="product.html?product=pineapple-juice" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1200&q=80"
-                  alt="Pineapple juice"
-                />
+                <img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b8?auto=format&fit=crop&w=1200&q=80" alt="Pineapple juice" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Fresh Juice</span>
+                  <span class="pill">Classic Fresh</span>
                   <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Pineapple Juice to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
                 <a href="product.html?product=pineapple-juice" class="product-card__title-wrap">
                   <h3>Pineapple Juice</h3>
-                  <p>Bright, tropical, and clean — the perfect fresh pairing for rich pastries.</p>
+                  <p>Bright, fresh pineapple juice served chilled and clean.</p>
                 </a>
                 <div class="product-card__bottom">
                   <strong>GH₵40 <span>/ each</span></strong>
@@ -992,66 +863,58 @@
               </div>
             </article>
 
-            <!-- 22 -->
             <article
               class="product-card"
               data-id="mint-pineapple-juice"
-              data-name="Mint & Pineapple Juice"
-              data-price="40"
+              data-name="Mint Pineapple Juice"
+              data-price="45"
               data-unit="each"
-              data-image="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=80"
+              data-image="https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=1200&q=80"
               data-category="Juices"
             >
               <a href="product.html?product=mint-pineapple-juice" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=80"
-                  alt="Mint pineapple juice"
-                />
+                <img src="https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=1200&q=80" alt="Mint pineapple juice" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Refreshing Pairing</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Mint and Pineapple Juice to cart">
+                  <span class="pill">Cool & Bright</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Mint Pineapple Juice to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
                 <a href="product.html?product=mint-pineapple-juice" class="product-card__title-wrap">
-                  <h3>Mint & Pineapple Juice</h3>
-                  <p>Fresh pineapple lifted with mint for a cool, clean premium finish.</p>
+                  <h3>Mint Pineapple Juice</h3>
+                  <p>Fresh pineapple lifted with mint for a smoother, cooler finish.</p>
                 </a>
                 <div class="product-card__bottom">
-                  <strong>GH₵40 <span>/ each</span></strong>
+                  <strong>GH₵45 <span>/ each</span></strong>
                   <a href="product.html?product=mint-pineapple-juice" class="text-link">Details</a>
                 </div>
               </div>
             </article>
 
-            <!-- 23 -->
             <article
               class="product-card"
               data-id="watermelon-juice"
               data-name="Watermelon Juice"
               data-price="40"
               data-unit="each"
-              data-image="https://images.unsplash.com/photo-1525385133512-2f3bdd039054?auto=format&fit=crop&w=1200&q=80"
+              data-image="https://images.unsplash.com/photo-1524593166156-312f362cada0?auto=format&fit=crop&w=1200&q=80"
               data-category="Juices"
             >
               <a href="product.html?product=watermelon-juice" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1525385133512-2f3bdd039054?auto=format&fit=crop&w=1200&q=80"
-                  alt="Watermelon juice"
-                />
+                <img src="https://images.unsplash.com/photo-1524593166156-312f362cada0?auto=format&fit=crop&w=1200&q=80" alt="Watermelon juice" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Cold & Smooth</span>
+                  <span class="pill">Light & Refreshing</span>
                   <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Watermelon Juice to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
                 <a href="product.html?product=watermelon-juice" class="product-card__title-wrap">
                   <h3>Watermelon Juice</h3>
-                  <p>Juicy, fresh, and beautifully light against chocolate and pastry richness.</p>
+                  <p>Clean, crisp, and naturally refreshing for easy pairing.</p>
                 </a>
                 <div class="product-card__bottom">
                   <strong>GH₵40 <span>/ each</span></strong>
@@ -1060,32 +923,28 @@
               </div>
             </article>
 
-            <!-- 24 -->
             <article
               class="product-card"
               data-id="sobolo"
               data-name="Sobolo"
               data-price="40"
               data-unit="each"
-              data-image="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80"
+              data-image="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=80"
               data-category="Juices"
             >
               <a href="product.html?product=sobolo" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80"
-                  alt="Sobolo drink"
-                />
+                <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=80" alt="Sobolo drink" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Local Classic</span>
+                  <span class="pill">Bold & Local</span>
                   <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Sobolo to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
                 <a href="product.html?product=sobolo" class="product-card__title-wrap">
                   <h3>Sobolo</h3>
-                  <p>A premium take on a beloved favourite, served cold and beautifully presented.</p>
+                  <p>Deep, vibrant, and refreshing with a polished Maison Crème finish.</p>
                 </a>
                 <div class="product-card__bottom">
                   <strong>GH₵40 <span>/ each</span></strong>
@@ -1094,96 +953,33 @@
               </div>
             </article>
 
-            <!-- 25 -->
             <article
               class="product-card"
               data-id="orange-juice"
               data-name="Orange Juice"
-              data-price="40"
+              data-price="45"
               data-unit="each"
               data-image="https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1200&q=80"
               data-category="Juices"
             >
               <a href="product.html?product=orange-juice" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1200&q=80"
-                  alt="Orange juice"
-                />
+                <img src="https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1200&q=80" alt="Orange juice" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Clean Citrus</span>
+                  <span class="pill">Fresh Citrus</span>
                   <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Orange Juice to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
                 <a href="product.html?product=orange-juice" class="product-card__title-wrap">
                   <h3>Orange Juice</h3>
-                  <p>Bright citrus freshness that balances rich cakes, donuts, and pastries beautifully.</p>
+                  <p>Bright citrus flavour served with a clean premium presentation.</p>
                 </a>
                 <div class="product-card__bottom">
-                  <strong>GH₵40 <span>/ each</span></strong>
+                  <strong>GH₵45 <span>/ each</span></strong>
                   <a href="product.html?product=orange-juice" class="text-link">Details</a>
                 </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- Pairings -->
-      <section class="collections-section">
-        <div class="container">
-          <div class="section-heading">
-            <div>
-              <p class="section-tag">Recommended Pairings</p>
-              <h2>Luxury combinations customers will love</h2>
-            </div>
-          </div>
-
-          <div class="collections-grid">
-            <article class="collection-card">
-              <div class="collection-card__image">
-                <img
-                  src="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1200&q=80"
-                  alt="Premium donuts"
-                />
-              </div>
-              <div class="collection-card__content">
-                <span class="pill">Best Seller Duo</span>
-                <h3>Oreo Donuts + Orange Juice</h3>
-                <p>Rich, chocolatey, and bright — a smooth premium pairing for quick indulgence.</p>
-                <a href="product.html?product=oreo-donut" class="text-link">View donut details</a>
-              </div>
-            </article>
-
-            <article class="collection-card">
-              <div class="collection-card__image">
-                <img
-                  src="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1200&q=80"
-                  alt="Croissants"
-                />
-              </div>
-              <div class="collection-card__content">
-                <span class="pill">Brunch Luxe</span>
-                <h3>Croissants + Mint Pineapple Juice</h3>
-                <p>Flaky richness paired with something fresh, cool, and refined on the palate.</p>
-                <a href="product.html?product=artisan-croissant" class="text-link">View croissant details</a>
-              </div>
-            </article>
-
-            <article class="collection-card">
-              <div class="collection-card__image">
-                <img
-                  src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80"
-                  alt="Chocolate cake slice"
-                />
-              </div>
-              <div class="collection-card__content">
-                <span class="pill">Rich Dessert Set</span>
-                <h3>Mud Cake Slice + Sobolo</h3>
-                <p>Deep, elegant chocolate balanced by a bold, cold Ghanaian favourite.</p>
-                <a href="product.html?product=mud-cake-slice" class="text-link">View cake details</a>
               </div>
             </article>
           </div>
@@ -1195,16 +991,17 @@
         <div class="container">
           <div class="cta-panel">
             <div class="cta-panel__copy">
-              <p class="section-tag">Need product details?</p>
-              <h2>Open a featured product page for the full premium view.</h2>
+              <p class="section-tag">Maison Crème</p>
+              <h2>Build your box and order your favourites.</h2>
               <p>
-                Browse product information, imagery, pricing, quantity controls, and elegant cart interaction on the dedicated product page.
+                Choose from premium pastries, elegant slices, and fresh juices for gifting,
+                indulgence, and beautifully simple cravings.
               </p>
             </div>
 
             <div class="cta-panel__actions">
-              <a href="product.html?product=oreo-donut" class="btn btn--primary">Open Product Page</a>
-              <button class="btn btn--secondary js-open-cart" type="button">View Cart</button>
+              <button class="btn btn--primary js-open-cart" type="button">Open Cart</button>
+              <a href="#top" class="btn btn--secondary">Back to Top</a>
             </div>
           </div>
         </div>
@@ -1220,7 +1017,8 @@
               <span class="brand__name">Maison Crème</span>
             </a>
             <p>
-              Premium pastries and fresh juices for customers who appreciate rich flavor, polished presentation, and a refined ordering experience.
+              Premium pastries and fresh juices for customers who appreciate rich flavour,
+              polished presentation, and a refined dessert experience.
             </p>
           </div>
 
@@ -1235,13 +1033,13 @@
             <h3>Popular</h3>
             <a href="product.html?product=oreo-donut">Oreo Donuts</a>
             <a href="product.html?product=artisan-croissant">Croissants</a>
-            <a href="product.html?product=brownie-duo">Brownies</a>
+            <a href="product.html?product=mud-cake-slice">Mud Cake Slice</a>
           </div>
 
           <div class="footer-links">
             <h3>Contact</h3>
             <a href="#">Accra, Ghana</a>
-            <a href="#">Daily Orders Available</a>
+            <a href="#">Order Hours: Daily</a>
             <button class="footer-cart-btn js-open-cart" type="button">Open Cart</button>
           </div>
         </div>
