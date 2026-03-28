@@ -121,35 +121,35 @@
     donut1: "https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1400&q=80",
     donut2: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
 
-    roll1: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=1400&q=80",
-    roll2: "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1400&q=80",
-    roll3: "https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=1400&q=80",
+    roll1: "raison.jpg",
+    roll2: "cin.jpg",
+    roll3: "caramel.jpg",
 
-    bagel: "https://images.unsplash.com/photo-1597393353415-b3730f3719ce?auto=format&fit=crop&w=1400&q=80",
+    bagel: "bagels.jpg",
 
-    croissant1: "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
+    croissant1: "crois.webp",
     croissant2: "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
     croissant3: "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
 
     cake1: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
     cake2: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
     cake3: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
-    redVelvet: "https://images.unsplash.com/photo-1586788680434-30d3241b7f8e?auto=format&fit=crop&w=1400&q=80",
+    redVelvet: "red.jpg",
 
     brownie: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=80",
-    tart: "https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?auto=format&fit=crop&w=1400&q=80",
+    tart: "st.webp",
     danish: "https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?auto=format&fit=crop&w=1400&q=80",
     eclair: "https://images.unsplash.com/photo-1623246123320-0d663675f19c?auto=format&fit=crop&w=1400&q=80",
     puff: "https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=1400&q=80",
-    cheesecake: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1400&q=80",
+    cheesecake: "mc.webp",
     cookie: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1400&q=80",
 
     juiceGeneric: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1400&q=80",
-    pineapple: "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1400&q=80",
-    mintPineapple: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1400&q=80",
-    watermelon: "https://images.unsplash.com/photo-1525385133512-2f3bdd039054?auto=format&fit=crop&w=1400&q=80",
-    sobolo: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1400&q=80",
-    orange: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1400&q=80",
+    pineapple: "pine.webp",
+    mintPineapple: "pm.jpg",
+    watermelon: "wm.webp",
+    sobolo: "sobolo.webp",
+    orange: "orange.jpg",
   };
 
   const GALLERY_BY_CATEGORY = {
