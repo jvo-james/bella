@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Luxury pastries, artisan bakes, and fresh juices in Ghana. Discover a premium pastry boutique experience with elegant treats, rich flavors, and seamless online ordering."
+    content="Luxury pastries, refined desserts, and fresh juices in Accra, Ghana. Explore Maison Crème’s premium pastry collection."
   />
   <title>Maison Crème | Luxury Pastry Boutique</title>
 
@@ -22,10 +22,6 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <link rel="stylesheet" href="styles.css" />
   <script src="script.js" defer></script>
@@ -40,7 +36,7 @@
             <span class="brand__eyebrow">Accra, Ghana</span>
             <span class="brand__name">Maison Crème</span>
           </a>
-          <button class="icon-btn js-close-mobile-menu" aria-label="Close menu">
+          <button class="icon-btn js-close-mobile-menu" aria-label="Close menu" type="button">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
@@ -64,6 +60,7 @@
     <!-- Cart Drawer -->
     <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
       <div class="cart-drawer__overlay js-close-cart"></div>
+
       <aside class="cart-drawer__panel" aria-label="Shopping cart">
         <div class="cart-drawer__header">
           <div>
@@ -76,16 +73,14 @@
         </div>
 
         <div class="cart-drawer__body">
-          <div class="cart-items" id="cartItems">
-            <!-- Populated by script.js -->
-          </div>
+          <div class="cart-items" id="cartItems"></div>
 
           <div class="cart-empty" id="cartEmptyState">
             <div class="cart-empty__icon">
               <i class="fa-solid fa-bag-shopping"></i>
             </div>
             <h3>Your cart is beautifully empty</h3>
-            <p>Add pastries, slices, or juices to begin your order.</p>
+            <p>Add pastries or juices to begin your order.</p>
             <a href="menu.html" class="btn btn--primary">Browse Menu</a>
           </div>
         </div>
@@ -114,9 +109,7 @@
     <header class="site-header" id="top">
       <div class="announcement-bar">
         <div class="container announcement-bar__content">
-          <p>
-            Ghana’s premium pastry destination for refined cravings, rich gifting, and beautifully crafted everyday indulgence.
-          </p>
+          <p>Luxury pastries and fresh juices, crafted in Accra.</p>
         </div>
       </div>
 
@@ -130,7 +123,7 @@
           <nav class="desktop-nav" aria-label="Primary navigation">
             <a href="index.html" class="is-active">Home</a>
             <a href="menu.html">Menu</a>
-            <a href="product.html?product=artisan-croissant">Product</a>
+            <a href="product.html?product=oreo-donut">Product</a>
           </nav>
 
           <div class="header-actions">
@@ -151,95 +144,34 @@
       <!-- Hero -->
       <section class="hero-section">
         <div class="container">
-          <div class="hero-grid">
+          <div class="hero-grid hero-grid--simple">
             <div class="hero-copy">
-              <span class="hero-badge">
-                <i class="fa-solid fa-crown"></i>
-                High-End Pastry Experience in Ghana
-              </span>
+              <span class="hero-badge">Luxury Pastry Boutique in Accra</span>
 
               <h1>
-                Pastries made to feel
-                <span>rare, rich, and unforgettable.</span>
+                Beautiful pastries,
+                <span>made to feel special.</span>
               </h1>
 
               <p class="hero-text">
-                From glossy Oreo donuts and layered croissants to refined slices, elegant rolls, and fresh handcrafted juices,
-                Maison Crème brings a premium pastry culture to every order.
+                Maison Crème offers premium pastries, refined desserts, and fresh juices
+                crafted for everyday indulgence, gifting, and soft luxury moments.
               </p>
 
               <div class="hero-actions">
-                <a href="menu.html" class="btn btn--primary">View Full Menu</a>
+                <a href="menu.html" class="btn btn--primary">Explore Menu</a>
                 <a href="product.html?product=oreo-donut" class="btn btn--secondary">See Signature Product</a>
-              </div>
-
-              <div class="hero-metrics">
-                <article class="metric-card">
-                  <strong>20+</strong>
-                  <span>Luxury pastries & juices</span>
-                </article>
-                <article class="metric-card">
-                  <strong>GH₵40+</strong>
-                  <span>Premium drinks & bakes</span>
-                </article>
-                <article class="metric-card">
-                  <strong>Crafted</strong>
-                  <span>For gifting, brunch, and indulgence</span>
-                </article>
               </div>
             </div>
 
-            <div class="hero-visual">
+            <div class="hero-visual hero-visual--simple">
               <div class="hero-visual__main">
                 <img
                   src="https://images.unsplash.com/photo-1747829581686-b5f0bede4a70?auto=format&fit=crop&w=1200&q=80"
                   alt="An elegant spread of premium pastries"
                 />
               </div>
-
-              <div class="hero-floating hero-floating--top">
-                <p>Featured Today</p>
-                <strong>Oreo Donuts</strong>
-                <span>GH₵110 / two</span>
-              </div>
-
-              <div class="hero-floating hero-floating--bottom">
-                <p>Signature Collection</p>
-                <strong>Croissants</strong>
-                <span>Cheese, Plain, Chocolate</span>
-              </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Experience Strip -->
-      <section class="experience-strip">
-        <div class="container">
-          <div class="experience-strip__grid">
-            <article>
-              <i class="fa-solid fa-cookie-bite"></i>
-              <div>
-                <h3>Artisan Finish</h3>
-                <p>Premium presentation, rich flavor, polished detail.</p>
-              </div>
-            </article>
-
-            <article>
-              <i class="fa-solid fa-gift"></i>
-              <div>
-                <h3>Perfect for Gifting</h3>
-                <p>Luxury treats designed for celebrations and soft launches.</p>
-              </div>
-            </article>
-
-            <article>
-              <i class="fa-solid fa-glass-water"></i>
-              <div>
-                <h3>Fresh Juices Daily</h3>
-                <p>Pineapple, mint pineapple, watermelon, sobolo, and orange.</p>
-              </div>
-            </article>
           </div>
         </div>
       </section>
@@ -249,16 +181,16 @@
         <div class="container">
           <div class="section-heading">
             <div>
-              <p class="section-tag">Signature Menu</p>
-              <h2>Bestselling luxury picks</h2>
+              <p class="section-tag">Signature Picks</p>
+              <h2>Bestselling favourites</h2>
             </div>
             <a href="menu.html" class="section-link">
-              <span>See all products</span>
+              <span>See full menu</span>
               <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
 
-          <div class="products-grid">
+          <div class="products-grid products-grid--home">
             <article
               class="product-card"
               data-id="oreo-donut"
@@ -295,86 +227,6 @@
                 <div class="product-card__bottom">
                   <strong>GH₵110 <span>/ two</span></strong>
                   <a href="product.html?product=oreo-donut" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <article
-              class="product-card"
-              data-id="raisin-roll"
-              data-name="Raisin Roll"
-              data-price="110"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1623375477581-eac701d0eebf?auto=format&fit=crop&w=1200&q=80"
-              data-category="Rolls"
-            >
-              <a href="product.html?product=raisin-roll" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1623375477581-eac701d0eebf?auto=format&fit=crop&w=1200&q=80"
-                  alt="Raisin roll"
-                />
-              </a>
-
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Classic Richness</span>
-                  <button
-                    class="product-card__icon js-add-to-cart"
-                    type="button"
-                    aria-label="Add Raisin Roll to cart"
-                  >
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-
-                <a href="product.html?product=raisin-roll" class="product-card__title-wrap">
-                  <h3>Raisin Roll</h3>
-                  <p>Soft glazed roll with deep buttery notes and a smooth, indulgent finish.</p>
-                </a>
-
-                <div class="product-card__bottom">
-                  <strong>GH₵110 <span>/ two</span></strong>
-                  <a href="product.html?product=raisin-roll" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <article
-              class="product-card"
-              data-id="signature-bagel"
-              data-name="Signature Bagel"
-              data-price="100"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1701252714101-498aa919c898?auto=format&fit=crop&w=1200&q=80"
-              data-category="Bagels"
-            >
-              <a href="product.html?product=signature-bagel" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1701252714101-498aa919c898?auto=format&fit=crop&w=1200&q=80"
-                  alt="Bagels"
-                />
-              </a>
-
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Brunch Favourite</span>
-                  <button
-                    class="product-card__icon js-add-to-cart"
-                    type="button"
-                    aria-label="Add Signature Bagel to cart"
-                  >
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-
-                <a href="product.html?product=signature-bagel" class="product-card__title-wrap">
-                  <h3>Signature Bagel</h3>
-                  <p>Golden, beautifully textured, and baked for a refined grab-and-go bite.</p>
-                </a>
-
-                <div class="product-card__bottom">
-                  <strong>GH₵100 <span>/ two</span></strong>
-                  <a href="product.html?product=signature-bagel" class="text-link">Details</a>
                 </div>
               </div>
             </article>
@@ -461,86 +313,6 @@
 
             <article
               class="product-card"
-              data-id="brownie-duo"
-              data-name="Brownie Duo"
-              data-price="150"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1636743715220-d8f8dd900b87?auto=format&fit=crop&w=1200&q=80"
-              data-category="Brownies"
-            >
-              <a href="product.html?product=brownie-duo" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1636743715220-d8f8dd900b87?auto=format&fit=crop&w=1200&q=80"
-                  alt="Brownies"
-                />
-              </a>
-
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Chocolate • Walnut</span>
-                  <button
-                    class="product-card__icon js-add-to-cart"
-                    type="button"
-                    aria-label="Add Brownie Duo to cart"
-                  >
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-
-                <a href="product.html?product=brownie-duo" class="product-card__title-wrap">
-                  <h3>Brownie Duo</h3>
-                  <p>Fudgy, premium brownies available in chocolate and walnut variations.</p>
-                </a>
-
-                <div class="product-card__bottom">
-                  <strong>GH₵150 <span>/ two</span></strong>
-                  <a href="product.html?product=brownie-duo" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <article
-              class="product-card"
-              data-id="cinnamon-roll"
-              data-name="Cinnamon Roll"
-              data-price="125"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1686207855146-c3ffe2166d40?auto=format&fit=crop&w=1200&q=80"
-              data-category="Rolls"
-            >
-              <a href="product.html?product=cinnamon-roll" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1686207855146-c3ffe2166d40?auto=format&fit=crop&w=1200&q=80"
-                  alt="Cinnamon rolls"
-                />
-              </a>
-
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Premium Addition</span>
-                  <button
-                    class="product-card__icon js-add-to-cart"
-                    type="button"
-                    aria-label="Add Cinnamon Roll to cart"
-                  >
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-
-                <a href="product.html?product=cinnamon-roll" class="product-card__title-wrap">
-                  <h3>Cinnamon Roll</h3>
-                  <p>Soft spirals, warm spice, and a smooth iced finish for elevated comfort.</p>
-                </a>
-
-                <div class="product-card__bottom">
-                  <strong>GH₵125 <span>/ two</span></strong>
-                  <a href="product.html?product=cinnamon-roll" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
-            <article
-              class="product-card"
               data-id="fresh-juice"
               data-name="Fresh Juice"
               data-price="40"
@@ -557,7 +329,7 @@
 
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Pineapple • Watermelon • Sobolo</span>
+                  <span class="pill">Freshly Poured</span>
                   <button
                     class="product-card__icon js-add-to-cart"
                     type="button"
@@ -582,156 +354,22 @@
         </div>
       </section>
 
-      <!-- Collections -->
-      <section class="collections-section">
-        <div class="container">
-          <div class="section-heading">
-            <div>
-              <p class="section-tag">Beyond the bestsellers</p>
-              <h2>Curated pastry collections</h2>
-            </div>
-          </div>
-
-          <div class="collections-grid">
-            <article class="collection-card">
-              <div class="collection-card__image">
-                <img
-                  src="https://images.unsplash.com/photo-1747829581686-b5f0bede4a70?auto=format&fit=crop&w=1200&q=80"
-                  alt="Luxury pastry assortment"
-                />
-              </div>
-              <div class="collection-card__content">
-                <span class="pill">Boutique Selection</span>
-                <h3>Signature Pastries</h3>
-                <p>
-                  Croissants, rolls, donuts, cakes, brownies, tarts, danishes, cookies, mini cheesecakes, and more.
-                </p>
-                <a href="menu.html" class="text-link">Explore collection</a>
-              </div>
-            </article>
-
-            <article class="collection-card">
-              <div class="collection-card__image">
-                <img
-                  src="https://images.unsplash.com/photo-1606943932434-2f21e1c54ef2?auto=format&fit=crop&w=1200&q=80"
-                  alt="Fresh lemonade style juice"
-                />
-              </div>
-              <div class="collection-card__content">
-                <span class="pill">Freshly Poured</span>
-                <h3>Juice Bar</h3>
-                <p>
-                  Pineapple, mint pineapple, watermelon, sobolo, and orange served with a clean premium presentation.
-                </p>
-                <a href="menu.html" class="text-link">Shop drinks</a>
-              </div>
-            </article>
-
-            <article class="collection-card">
-              <div class="collection-card__image">
-                <img
-                  src="https://images.unsplash.com/photo-1623334044303-241021148842?auto=format&fit=crop&w=1200&q=80"
-                  alt="Premium croissants"
-                />
-              </div>
-              <div class="collection-card__content">
-                <span class="pill">Layered Luxury</span>
-                <h3>Croissant Studio</h3>
-                <p>
-                  Choose plain, chocolate, cheese, almond, or chocolate-filled croissants for a more indulgent order.
-                </p>
-                <a href="product.html?product=artisan-croissant" class="text-link">View product</a>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- Brand Story -->
-      <section class="story-section">
-        <div class="container">
-          <div class="story-grid">
-            <div class="story-visual">
-              <img
-                src="https://images.unsplash.com/photo-1737700087822-0dfbb754db30?auto=format&fit=crop&w=1200&q=80"
-                alt="Elegant plated pastry"
-              />
-            </div>
-
-            <div class="story-copy">
-              <p class="section-tag">The Maison Crème standard</p>
-              <h2>
-                Not fast food. Not ordinary.
-                <span>Just refined pastry culture.</span>
-              </h2>
-              <p>
-                Maison Crème is built for customers who want their pastries to feel elevated. Every item is positioned as
-                a polished indulgence: rich ingredients, boutique presentation, smooth ordering, and a visual identity that
-                feels worthy of a premium Ghanaian pastry house.
-              </p>
-
-              <div class="story-points">
-                <article>
-                  <h3>Premium pricing, premium perception</h3>
-                  <p>Every detail is designed to match a high-end product experience, not a budget bakery.</p>
-                </article>
-
-                <article>
-                  <h3>Made for social buzz and repeat orders</h3>
-                  <p>Beautiful product pages, giftable selections, and rich imagery built to convert attention into sales.</p>
-                </article>
-
-                <article>
-                  <h3>Elegant on mobile first</h3>
-                  <p>The entire experience is structured to feel smooth, fast, and premium on phones.</p>
-                </article>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Highlights -->
-      <section class="highlights-section">
-        <div class="container">
-          <div class="highlights-grid">
-            <article class="highlight-card">
-              <span>01</span>
-              <h3>Luxury pastries</h3>
-              <p>Oreo donuts, croissants, rolls, slices, brownies, tarts, danishes, eclairs, cookies, and more.</p>
-            </article>
-
-            <article class="highlight-card">
-              <span>02</span>
-              <h3>Premium pairings</h3>
-              <p>Fresh juices complete each order with bright, clean flavor and premium presentation.</p>
-            </article>
-
-            <article class="highlight-card">
-              <span>03</span>
-              <h3>Designed to impress</h3>
-              <p>A polished storefront feel for a brand that already stands out in Ghana’s pastry scene.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- CTA -->
+      <!-- Simple Brand / CTA -->
       <section class="cta-section">
         <div class="container">
           <div class="cta-panel">
             <div class="cta-panel__copy">
-              <p class="section-tag">Ready to order?</p>
-              <h2>Enter the full menu and build your box.</h2>
+              <p class="section-tag">Maison Crème</p>
+              <h2>Pastries, slices, and juices for soft luxury moments.</h2>
               <p>
-                Explore the complete collection of premium pastries, slices, donuts, rolls, croissants, brownies, cakes,
-                and juices.
+                Explore our menu of premium pastries and fresh drinks, crafted for gifting,
+                indulgence, and beautifully simple cravings.
               </p>
             </div>
 
             <div class="cta-panel__actions">
               <a href="menu.html" class="btn btn--primary">Open Menu</a>
-              <a href="product.html?product=mud-cake-slice" class="btn btn--secondary">See Product Page</a>
+              <button class="btn btn--secondary js-open-cart" type="button">Open Cart</button>
             </div>
           </div>
         </div>
@@ -747,8 +385,8 @@
               <span class="brand__name">Maison Crème</span>
             </a>
             <p>
-              Premium pastries and fresh juices for customers who appreciate rich flavor, polished presentation, and a
-              refined dessert experience.
+              Premium pastries and fresh juices for customers who appreciate rich flavour,
+              polished presentation, and a refined dessert experience.
             </p>
           </div>
 
@@ -763,7 +401,7 @@
             <h3>Popular</h3>
             <a href="product.html?product=oreo-donut">Oreo Donuts</a>
             <a href="product.html?product=artisan-croissant">Croissants</a>
-            <a href="product.html?product=brownie-duo">Brownies</a>
+            <a href="product.html?product=mud-cake-slice">Mud Cake Slice</a>
           </div>
 
           <div class="footer-links">
