@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Discover Maison Crème’s premium pastry details, elegant imagery, refined product information, and a luxury cart experience built for Ghana’s high-end pastry lovers."
+  />
+  <title>Maison Crème | Product Detail</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8D6LJgyAHIhR35VZc2oM/gI1w1BzQAw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
+</head>
+<body class="page-product" data-page="product">
+  <div class="site-shell">
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="mobile-menu__panel">
+        <div class="mobile-menu__top">
+          <a href="index.html" class="brand brand--mobile" aria-label="Maison Crème home">
+            <span class="brand__eyebrow">Accra, Ghana</span>
+            <span class="brand__name">Maison Crème</span>
+          </a>
+          <button class="icon-btn js-close-mobile-menu" aria-label="Close menu">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+          <a href="index.html">Home</a>
+          <a href="menu.html">Menu</a>
+          <a href="product.html?product=oreo-donut" class="is-active">Product</a>
+        </nav>
+
+        <div class="mobile-menu__actions">
+          <a href="menu.html" class="btn btn--primary">Explore Menu</a>
+          <button class="btn btn--secondary js-open-cart" type="button">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span>Open Cart</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+      <div class="cart-drawer__overlay js-close-cart"></div>
+      <aside class="cart-drawer__panel" aria-label="Shopping cart">
+        <div class="cart-drawer__header">
+          <div>
+            <p class="section-tag">Your Selection</p>
+            <h2>Luxury Cart</h2>
+          </div>
+          <button class="icon-btn js-close-cart" type="button" aria-label="Close cart">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="cart-drawer__body">
+          <div class="cart-items" id="cartItems">
+            <!-- Populated by script.js -->
+          </div>
+
+          <div class="cart-empty" id="cartEmptyState">
+            <div class="cart-empty__icon">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <h3>Your cart is beautifully empty</h3>
+            <p>Add pastries or juices to begin your premium order.</p>
+            <a href="menu.html" class="btn btn--primary">Browse Menu</a>
+          </div>
+        </div>
+
+        <div class="cart-drawer__footer">
+          <div class="cart-summary">
+            <div class="cart-summary__row">
+              <span>Items</span>
+              <strong id="cartCountLabel">0</strong>
+            </div>
+            <div class="cart-summary__row">
+              <span>Subtotal</span>
+              <strong id="cartSubtotal">GH₵0</strong>
+            </div>
+          </div>
+
+          <div class="cart-drawer__actions">
+            <button class="btn btn--secondary js-clear-cart" type="button">Clear Cart</button>
+            <button class="btn btn--primary" type="button">Checkout</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header" id="top">
+      <div class="announcement-bar">
+        <div class="container announcement-bar__content">
+          <p>
+            Luxury pastries, refined pairings, and a polished product experience designed for premium customers in Ghana.
+          </p>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="header-main">
+          <a href="index.html" class="brand" aria-label="Maison Crème home">
+            <span class="brand__eyebrow">Luxury Pastry Boutique</span>
+            <span class="brand__name">Maison Crème</span>
+          </a>
+
+          <nav class="desktop-nav" aria-label="Primary navigation">
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="product.html?product=oreo-donut" class="is-active">Product</a>
+          </nav>
+
+          <div class="header-actions">
+            <button class="icon-btn js-open-cart" type="button" aria-label="Open cart">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+
+            <button class="icon-btn mobile-only js-open-mobile-menu" type="button" aria-label="Open menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Breadcrumb -->
+      <section class="breadcrumb-section">
+        <div class="container">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <a href="menu.html">Menu</a>
+            <span>/</span>
+            <span id="breadcrumbProductName">Product Detail</span>
+          </nav>
+        </div>
+      </section>
+
+      <!-- Product Hero -->
+      <section class="product-hero">
+        <div class="container">
+          <div class="product-layout">
+            <!-- Gallery -->
+            <div class="product-gallery">
+              <div class="product-gallery__main">
+                <img
+                  id="productMainImage"
+                  src="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1400&q=80"
+                  alt="Maison Crème premium pastry"
+                />
+                <div class="product-gallery__badge" id="productBadge">
+                  Signature Collection
+                </div>
+              </div>
+
+              <div class="product-gallery__thumbs">
+                <button
+                  class="product-thumb is-active"
+                  type="button"
+                  data-image="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1400&q=80"
+                  aria-label="View product image 1"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=500&q=80"
+                    alt="Product thumbnail 1"
+                  />
+                </button>
+
+                <button
+                  class="product-thumb"
+                  type="button"
+                  data-image="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80"
+                  aria-label="View product image 2"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80"
+                    alt="Product thumbnail 2"
+                  />
+                </button>
+
+                <button
+                  class="product-thumb"
+                  type="button"
+                  data-image="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1400&q=80"
+                  aria-label="View product image 3"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=500&q=80"
+                    alt="Product thumbnail 3"
+                  />
+                </button>
+
+                <button
+                  class="product-thumb"
+                  type="button"
+                  data-image="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80"
+                  aria-label="View product image 4"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=500&q=80"
+                    alt="Product thumbnail 4"
+                  />
+                </button>
+              </div>
+            </div>
+
+            <!-- Product Info -->
+            <div
+              class="product-info"
+              id="productInfo"
+              data-default-id="oreo-donut"
+              data-default-name="Oreo Donuts"
+              data-default-price="110"
+              data-default-unit="two"
+              data-default-category="Donuts"
+              data-default-image="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1200&q=80"
+            >
+              <div class="product-info__top">
+                <p class="section-tag" id="productCategory">Luxury Donuts</p>
+                <h1 id="productName">Oreo Donuts</h1>
+
+                <div class="product-rating">
+                  <div class="product-rating__stars" aria-label="Rated 5 out of 5">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                  </div>
+                  <span>Maison Crème Signature Favourite</span>
+                </div>
+              </div>
+
+              <div class="product-price-row">
+                <div class="product-price">
+                  <strong id="productPrice">GH₵110</strong>
+                  <span id="productUnit">/ two</span>
+                </div>
+
+                <div class="product-status">
+                  <i class="fa-solid fa-circle"></i>
+                  <span>Freshly available today</span>
+                </div>
+              </div>
+
+              <p class="product-description" id="productDescription">
+                A rich premium donut experience finished with smooth chocolate, elegant texture, and Oreo crunch.
+                Designed for customers who want their pastries to feel indulgent, polished, and worth every cedi.
+              </p>
+
+              <div class="product-highlights">
+                <article>
+                  <i class="fa-solid fa-cookie-bite"></i>
+                  <div>
+                    <h3>Premium finish</h3>
+                    <p>Glossy presentation and rich flavor layering.</p>
+                  </div>
+                </article>
+
+                <article>
+                  <i class="fa-solid fa-gift"></i>
+                  <div>
+                    <h3>Perfect for gifting</h3>
+                    <p>Elegant enough for premium dessert boxes.</p>
+                  </div>
+                </article>
+
+                <article>
+                  <i class="fa-solid fa-sparkles"></i>
+                  <div>
+                    <h3>Maison Crème quality</h3>
+                    <p>Crafted for refined pastry lovers in Ghana.</p>
+                  </div>
+                </article>
+              </div>
+
+              <!-- Variant Selector -->
+              <div class="product-panel">
+                <div class="product-panel__head">
+                  <h2>Choose a variation</h2>
+                  <p>Some pastries come in signature options.</p>
+                </div>
+
+                <div class="product-options" id="productOptions">
+                  <button class="option-chip is-active" type="button" data-option="Classic">Classic</button>
+                  <button class="option-chip" type="button" data-option="Premium Box">Premium Box</button>
+                  <button class="option-chip" type="button" data-option="Gift Pick">Gift Pick</button>
+                </div>
+              </div>
+
+              <!-- Quantity -->
+              <div class="product-panel">
+                <div class="product-panel__head">
+                  <h2>Quantity</h2>
+                  <p>Adjust how many you want in your cart.</p>
+                </div>
+
+                <div class="quantity-row">
+                  <div class="quantity-selector">
+                    <button class="quantity-btn js-qty-decrease" type="button" aria-label="Decrease quantity">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                    <input
+                      type="number"
+                      id="productQuantity"
+                      class="quantity-input"
+                      value="1"
+                      min="1"
+                      max="20"
+                      inputmode="numeric"
+                      aria-label="Product quantity"
+                    />
+                    <button class="quantity-btn js-qty-increase" type="button" aria-label="Increase quantity">
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+
+                  <div class="quantity-note">
+                    <span>Luxury orders prepared with care.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="product-action-row">
+                <button
+                  class="btn btn--primary btn--wide js-product-add-to-cart"
+                  type="button"
+                  id="addCurrentProductToCart"
+                >
+                  <i class="fa-solid fa-bag-shopping"></i>
+                  <span>Add to Cart</span>
+                </button>
+
+                <a href="menu.html" class="btn btn--secondary btn--wide">
+                  <i class="fa-solid fa-grid-2"></i>
+                  <span>Back to Menu</span>
+                </a>
+              </div>
+
+              <!-- Meta -->
+              <div class="product-meta">
+                <article>
+                  <span>Category</span>
+                  <strong id="productMetaCategory">Donuts</strong>
+                </article>
+                <article>
+                  <span>Serving</span>
+                  <strong id="productMetaServing">Sold in pairs</strong>
+                </article>
+                <article>
+                  <span>Style</span>
+                  <strong>Premium pastry boutique</strong>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Product Details Tabs -->
+      <section class="product-details-section">
+        <div class="container">
+          <div class="details-layout">
+            <div class="details-main">
+              <div class="details-tabs" role="tablist" aria-label="Product detail tabs">
+                <button class="details-tab is-active" type="button" data-tab="overview">Overview</button>
+                <button class="details-tab" type="button" data-tab="notes">Tasting Notes</button>
+                <button class="details-tab" type="button" data-tab="pairing">Pairing</button>
+              </div>
+
+              <div class="details-panels">
+                <div class="details-panel is-active" id="tab-overview">
+                  <h2>Luxury pastry, elevated.</h2>
+                  <p>
+                    This product page is designed to feel like a premium boutique ordering experience. Whether the customer
+                    lands here from the homepage, menu, or a social media link, everything should feel polished, rich,
+                    and intentionally high-end.
+                  </p>
+                  <p id="productOverviewText">
+                    Oreo Donuts offer a soft, rich base with smooth chocolate personality and crunchy contrast. It is a
+                    dessert that feels indulgent enough for gifting, but easy enough for everyday premium cravings.
+                  </p>
+                </div>
+
+                <div class="details-panel" id="tab-notes">
+                  <h2>What makes it special</h2>
+                  <ul class="luxury-list" id="productNotesList">
+                    <li>Refined visual presentation with premium pastry appeal.</li>
+                    <li>Balanced sweetness designed for a richer customer experience.</li>
+                    <li>Perfect for brunch, gifting, dessert boxes, and soft celebrations.</li>
+                    <li>Pairs beautifully with bright fresh juices.</li>
+                  </ul>
+                </div>
+
+                <div class="details-panel" id="tab-pairing">
+                  <h2>Recommended pairing</h2>
+                  <p id="productPairingText">
+                    Pair Oreo Donuts with orange juice or sobolo for a clean contrast against the rich chocolate finish.
+                    This creates a complete premium-order experience.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <aside class="details-sidebar">
+              <div class="sidebar-card">
+                <p class="section-tag">Quick Facts</p>
+                <div class="sidebar-stats">
+                  <article>
+                    <span>Price</span>
+                    <strong id="sidebarPrice">GH₵110</strong>
+                  </article>
+                  <article>
+                    <span>Unit</span>
+                    <strong id="sidebarUnit">two</strong>
+                  </article>
+                  <article>
+                    <span>Style</span>
+                    <strong>Premium</strong>
+                  </article>
+                </div>
+              </div>
+
+              <div class="sidebar-card">
+                <p class="section-tag">Why customers love it</p>
+                <div class="sidebar-points">
+                  <article>
+                    <i class="fa-solid fa-check"></i>
+                    <span>Looks luxurious on arrival</span>
+                  </article>
+                  <article>
+                    <i class="fa-solid fa-check"></i>
+                    <span>Feels gift-worthy and premium</span>
+                  </article>
+                  <article>
+                    <i class="fa-solid fa-check"></i>
+                    <span>Pairs easily with the juice menu</span>
+                  </article>
+                </div>
+              </div>
+
+              <div class="sidebar-card">
+                <p class="section-tag">Need more options?</p>
+                <a href="menu.html" class="btn btn--primary btn--wide">See Full Menu</a>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Products -->
+      <section class="products-section">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="section-tag">You may also like</p>
+              <h2>Other premium selections</h2>
+            </div>
+            <a href="menu.html" class="section-link">
+              <span>Browse all</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <div class="products-grid">
+            <article
+              class="product-card"
+              data-id="artisan-croissant"
+              data-name="Artisan Croissant"
+              data-price="120"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1200&q=80"
+              data-category="Croissants"
+            >
+              <a href="product.html?product=artisan-croissant" class="product-card__media">
+                <img
+                  src="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1200&q=80"
+                  alt="Croissants"
+                />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Cheese • Plain • Chocolate</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Artisan Croissant to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=artisan-croissant" class="product-card__title-wrap">
+                  <h3>Artisan Croissant</h3>
+                  <p>Flaky premium layers with a polished finish across all signature variants.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵120 <span>/ two</span></strong>
+                  <a href="product.html?product=artisan-croissant" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="product-card"
+              data-id="mud-cake-slice"
+              data-name="Mud Cake Slice"
+              data-price="150"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80"
+              data-category="Cake Slices"
+            >
+              <a href="product.html?product=mud-cake-slice" class="product-card__media">
+                <img
+                  src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80"
+                  alt="Mud cake slice"
+                />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Rich & Elegant</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Mud Cake Slice to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=mud-cake-slice" class="product-card__title-wrap">
+                  <h3>Mud Cake Slice</h3>
+                  <p>Dense chocolate luxury with a boutique dessert finish and premium feel.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵150 <span>/ two</span></strong>
+                  <a href="product.html?product=mud-cake-slice" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="product-card"
+              data-id="brownie-duo"
+              data-name="Brownie Duo"
+              data-price="150"
+              data-unit="two"
+              data-image="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80"
+              data-category="Brownies"
+            >
+              <a href="product.html?product=brownie-duo" class="product-card__media">
+                <img
+                  src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80"
+                  alt="Brownies"
+                />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Chocolate • Walnut</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Brownie Duo to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=brownie-duo" class="product-card__title-wrap">
+                  <h3>Brownie Duo</h3>
+                  <p>Fudgy premium brownies with deep flavor and a rich boutique-style finish.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵150 <span>/ two</span></strong>
+                  <a href="product.html?product=brownie-duo" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              class="product-card"
+              data-id="pineapple-juice"
+              data-name="Pineapple Juice"
+              data-price="40"
+              data-unit="each"
+              data-image="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1200&q=80"
+              data-category="Juices"
+            >
+              <a href="product.html?product=pineapple-juice" class="product-card__media">
+                <img
+                  src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1200&q=80"
+                  alt="Pineapple juice"
+                />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Fresh Pairing</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Pineapple Juice to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=pineapple-juice" class="product-card__title-wrap">
+                  <h3>Pineapple Juice</h3>
+                  <p>Bright and refreshing, perfect beside rich pastries and slices.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵40 <span>/ each</span></strong>
+                  <a href="product.html?product=pineapple-juice" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="container">
+          <div class="cta-panel">
+            <div class="cta-panel__copy">
+              <p class="section-tag">Luxury selection</p>
+              <h2>Keep browsing the Maison Crème menu.</h2>
+              <p>
+                Discover more donuts, croissants, brownies, rolls, slices, tarts, danishes, cheesecakes, cookies, and juices.
+              </p>
+            </div>
+
+            <div class="cta-panel__actions">
+              <a href="menu.html" class="btn btn--primary">Open Full Menu</a>
+              <button class="btn btn--secondary js-open-cart" type="button">Open Cart</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="brand brand--footer">
+              <span class="brand__eyebrow">Luxury Pastry Boutique</span>
+              <span class="brand__name">Maison Crème</span>
+            </a>
+            <p>
+              Premium pastries and fresh juices for customers who appreciate rich flavor, polished presentation, and a refined dessert experience.
+            </p>
+          </div>
+
+          <div class="footer-links">
+            <h3>Navigate</h3>
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="product.html?product=oreo-donut">Product Page</a>
+          </div>
+
+          <div class="footer-links">
+            <h3>Popular</h3>
+            <a href="product.html?product=oreo-donut">Oreo Donuts</a>
+            <a href="product.html?product=artisan-croissant">Croissants</a>
+            <a href="product.html?product=brownie-duo">Brownies</a>
+          </div>
+
+          <div class="footer-links">
+            <h3>Contact</h3>
+            <a href="#">Accra, Ghana</a>
+            <a href="#">Daily Orders Available</a>
+            <button class="footer-cart-btn js-open-cart" type="button">Open Cart</button>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 Maison Crème. Crafted for a premium pastry experience.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
