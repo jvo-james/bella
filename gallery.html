@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Explore Maison Crème's gallery of pastries, desserts, and drinks through a beautiful mixed masonry layout of photos and videos."
+  />
+  <title>Maison Crème | Gallery</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8D6LJgyAHIhR35VZc2oM/gI1w1BzQAw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
+
+  <style>
+    .page-gallery {
+      background:
+        radial-gradient(circle at top left, rgba(215, 173, 98, 0.12), transparent 22%),
+        radial-gradient(circle at top right, rgba(122, 81, 70, 0.16), transparent 24%),
+        linear-gradient(180deg, #0c0807 0%, #120c0a 48%, #0d0807 100%);
+    }
+
+    .page-gallery main {
+      padding-bottom: 4rem;
+    }
+
+    .gallery-hero {
+      padding-top: 2.4rem;
+    }
+
+    .gallery-hero__wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    .gallery-hero__copy,
+    .gallery-hero__card {
+      border-radius: 34px;
+      border: 1px solid rgba(255, 240, 228, 0.1);
+      background:
+        radial-gradient(circle at top right, rgba(215, 173, 98, 0.08), transparent 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.025));
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .gallery-hero__copy {
+      padding: 2rem;
+    }
+
+    .gallery-hero__copy h1 {
+      margin: 0.9rem 0 0.9rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(3rem, 5.4vw, 5.6rem);
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+    }
+
+    .gallery-hero__copy h1 span {
+      display: inline-block;
+      color: var(--gold-2);
+    }
+
+    .gallery-hero__copy p {
+      margin: 0;
+      max-width: 60ch;
+      color: var(--text-soft);
+      font-size: 1rem;
+    }
+
+    .gallery-hero__meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-top: 1.45rem;
+    }
+
+    .gallery-hero__meta article {
+      padding: 1rem;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 240, 228, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .gallery-hero__meta span {
+      display: block;
+      margin-bottom: 0.3rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .gallery-hero__meta strong {
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+
+    .gallery-hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .gallery-hero__card {
+      padding: 1rem;
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .gallery-hero__spotlight {
+      position: relative;
+      min-height: 100%;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 240, 228, 0.1);
+      background: #140f0d;
+    }
+
+    .gallery-hero__spotlight img {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      filter: saturate(1.02) contrast(1.02);
+    }
+
+    .gallery-hero__spotlight-badge {
+      position: absolute;
+      left: 1rem;
+      bottom: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.72rem 0.95rem;
+      border-radius: 999px;
+      background: rgba(17, 12, 10, 0.78);
+      border: 1px solid rgba(255, 240, 228, 0.12);
+      color: var(--gold-2);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .gallery-section {
+      padding-top: 2rem;
+    }
+
+    .gallery-toolbar {
+      margin-bottom: 1.2rem;
+      padding: 1rem;
+      border-radius: 26px;
+      border: 1px solid rgba(255, 240, 228, 0.1);
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.03));
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .gallery-toolbar__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .gallery-toolbar p {
+      margin: 0;
+      color: var(--text-soft);
+    }
+
+    .gallery-toolbar__chips {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .gallery-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 240, 228, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-soft);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .gallery-masonry {
+      column-count: 4;
+      column-gap: 1rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      display: block;
+      width: 100%;
+      margin: 0 0 1rem;
+      break-inside: avoid;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 240, 228, 0.1);
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025));
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      isolation: isolate;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-6px);
+      border-color: rgba(240, 200, 130, 0.26);
+      box-shadow: var(--shadow-md);
+    }
+
+    .gallery-item::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(10, 7, 6, 0.16) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .gallery-item img,
+    .gallery-item video {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      background: #110c0a;
+      transition: transform 480ms ease;
+    }
+
+    .gallery-item:hover img,
+    .gallery-item:hover video {
+      transform: scale(1.03);
+    }
+
+    .gallery-item__overlay {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 1rem;
+      pointer-events: none;
+    }
+
+    .gallery-item__label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 0.82rem;
+      border-radius: 999px;
+      background: rgba(15, 10, 8, 0.76);
+      border: 1px solid rgba(255, 240, 228, 0.1);
+      color: var(--text);
+      font-size: 0.84rem;
+      font-weight: 600;
+      backdrop-filter: blur(12px);
+    }
+
+    .gallery-item__icon {
+      width: 42px;
+      height: 42px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(15, 10, 8, 0.78);
+      border: 1px solid rgba(255, 240, 228, 0.12);
+      color: var(--gold-2);
+      backdrop-filter: blur(12px);
+    }
+
+    .gallery-item--video .gallery-item__icon {
+      color: #fff2da;
+    }
+
+    .gallery-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(9, 6, 5, 0.78);
+      backdrop-filter: blur(12px);
+    }
+
+    .gallery-lightbox.is-open {
+      display: flex;
+    }
+
+    .gallery-lightbox__dialog {
+      position: relative;
+      width: min(1100px, 100%);
+      max-height: min(92vh, 980px);
+      padding: 0.9rem;
+      border-radius: 34px;
+      border: 1px solid rgba(255, 240, 228, 0.1);
+      background: linear-gradient(180deg, rgba(24,17,15,0.98), rgba(13,8,7,0.98));
+      box-shadow: 0 36px 90px rgba(0, 0, 0, 0.4);
+    }
+
+    .gallery-lightbox__close {
+      position: absolute;
+      top: 0.9rem;
+      right: 0.9rem;
+      z-index: 2;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 240, 228, 0.12);
+      background: rgba(16, 11, 9, 0.82);
+      color: var(--text);
+    }
+
+    .gallery-lightbox__media {
+      width: 100%;
+      max-height: calc(92vh - 2rem);
+      overflow: hidden;
+      border-radius: 26px;
+      background: #100b09;
+      display: grid;
+      place-items: center;
+    }
+
+    .gallery-lightbox__media img,
+    .gallery-lightbox__media video {
+      width: 100%;
+      height: auto;
+      max-height: calc(92vh - 2rem);
+      object-fit: contain;
+    }
+
+    .gallery-note {
+      margin-top: 1rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 1100px) {
+      .gallery-hero__wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-masonry {
+        column-count: 3;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .gallery-hero {
+        padding-top: 2rem;
+      }
+
+      .gallery-hero__copy {
+        padding: 1.35rem;
+      }
+
+      .gallery-hero__meta {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gallery-masonry {
+        column-count: 2;
+        column-gap: 0.85rem;
+      }
+
+      .gallery-item {
+        margin-bottom: 0.85rem;
+        border-radius: 24px;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .gallery-hero__copy h1 {
+        font-size: clamp(2.35rem, 11vw, 3.4rem);
+      }
+
+      .gallery-hero__meta {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-masonry {
+        column-count: 2;
+        column-gap: 0.72rem;
+      }
+
+      .gallery-item {
+        margin-bottom: 0.72rem;
+        border-radius: 22px;
+      }
+
+      .gallery-item__overlay {
+        padding: 0.72rem;
+      }
+
+      .gallery-item__label {
+        font-size: 0.75rem;
+        padding: 0.55rem 0.72rem;
+      }
+
+      .gallery-item__icon {
+        width: 38px;
+        height: 38px;
+      }
+    }
+  </style>
+</head>
+<body class="page-gallery" data-page="gallery">
+  <div class="site-shell">
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="mobile-menu__panel">
+        <div class="mobile-menu__top">
+          <a href="index.html" class="brand brand--mobile" aria-label="Maison Crème home">
+            <span class="brand__eyebrow">Accra, Ghana</span>
+            <span class="brand__name">Maison Crème</span>
+          </a>
+          <button class="icon-btn js-close-mobile-menu" aria-label="Close menu" type="button">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+          <a href="index.html">Home</a>
+          <a href="menu.html">Menu</a>
+          <a href="gallery.html" class="is-active">Gallery</a>
+        </nav>
+
+        <div class="mobile-menu__actions">
+          <a href="gallery.html" class="btn btn--primary">Open Gallery</a>
+          <button class="btn btn--secondary js-open-cart" type="button">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span>Open Cart</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+      <div class="cart-drawer__overlay js-close-cart"></div>
+
+      <aside class="cart-drawer__panel" aria-label="Shopping cart">
+        <div class="cart-drawer__header">
+          <div>
+            <p class="section-tag">Your Selection</p>
+            <h2>Cart</h2>
+          </div>
+          <button class="icon-btn js-close-cart" type="button" aria-label="Close cart">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="cart-drawer__body">
+          <div class="cart-items" id="cartItems"></div>
+
+          <div class="cart-empty" id="cartEmptyState">
+            <div class="cart-empty__icon">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <h3>Your cart is beautifully empty</h3>
+            <p>Add pastries or juices to begin your order.</p>
+            <a href="menu.html" class="btn btn--primary">Browse Menu</a>
+          </div>
+        </div>
+
+        <div class="cart-drawer__footer">
+          <div class="cart-summary">
+            <div class="cart-summary__row">
+              <span>Items</span>
+              <strong id="cartCountLabel">0</strong>
+            </div>
+            <div class="cart-summary__row">
+              <span>Subtotal</span>
+              <strong id="cartSubtotal">GH₵0</strong>
+            </div>
+          </div>
+
+          <div class="cart-drawer__actions">
+            <button class="btn btn--secondary js-clear-cart" type="button">Clear Cart</button>
+            <button class="btn btn--primary" type="button">Checkout</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <header class="site-header" id="top">
+      <div class="container">
+        <div class="header-main">
+          <a href="index.html" class="brand" aria-label="Maison Crème home">
+            <span class="brand__eyebrow">Pastry Boutique</span>
+            <span class="brand__name">Maison Crème</span>
+          </a>
+
+          <nav class="desktop-nav" aria-label="Primary navigation">
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="gallery.html" class="is-active">Gallery</a>
+          </nav>
+
+          <div class="header-actions">
+            <button class="icon-btn js-open-cart" type="button" aria-label="Open cart">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+
+            <button class="icon-btn mobile-only js-open-mobile-menu" type="button" aria-label="Open menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="gallery-hero">
+        <div class="container">
+          <div class="gallery-hero__wrap">
+            <div class="gallery-hero__copy">
+              <span class="hero-badge">Mixed Photo & Video Gallery</span>
+              <h1>
+                Beautiful details,
+                <span>captured as they are.</span>
+              </h1>
+              <p>
+                Explore a flowing visual gallery of Maison Crème creations through a mixed masonry layout of photos and short videos. Every tile is clickable, polished, and designed to feel rich on every screen size.
+              </p>
+
+              <div class="gallery-hero__meta">
+                <article>
+                  <span>Photos</span>
+                  <strong>7 images</strong>
+                </article>
+                <article>
+                  <span>Videos</span>
+                  <strong>24 short clips</strong>
+                </article>
+                <article>
+                  <span>Layout</span>
+                  <strong>Mixed masonry on all devices</strong>
+                </article>
+              </div>
+
+              <div class="gallery-hero__actions">
+                <a href="#galleryGrid" class="btn btn--primary">View Gallery</a>
+                <a href="menu.html" class="btn btn--secondary">Back to Menu</a>
+              </div>
+            </div>
+
+            <div class="gallery-hero__card">
+              <div class="gallery-hero__spotlight">
+                <img src="gallery/p1.jpg" alt="Featured Maison Crème gallery preview" />
+                <div class="gallery-hero__spotlight-badge">
+                  <i class="fa-solid fa-camera-retro"></i>
+                  <span>Mixed visual showcase</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-section">
+        <div class="container">
+          <div class="gallery-toolbar">
+            <div class="gallery-toolbar__row">
+              <p>Photos and videos are intentionally mixed together for a natural, stylish gallery feel.</p>
+              <div class="gallery-toolbar__chips">
+                <span class="gallery-chip"><i class="fa-regular fa-image"></i> 7 Photos</span>
+                <span class="gallery-chip"><i class="fa-solid fa-film"></i> 24 Videos</span>
+                <span class="gallery-chip"><i class="fa-solid fa-expand"></i> Click to open</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="gallery-masonry" id="galleryGrid">
+            <button class="gallery-item" type="button" data-type="image" data-src="gallery/p1.jpg" aria-label="Open gallery photo 1">
+              <img src="gallery/p1.jpg" alt="Maison Crème gallery photo 1" loading="lazy" />
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-regular fa-image"></i> Photo 01</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v1.mov" aria-label="Open gallery video 1">
+              <video src="gallery/v1.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 01</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item" type="button" data-type="image" data-src="gallery/p2.jpg" aria-label="Open gallery photo 2">
+              <img src="gallery/p2.jpg" alt="Maison Crème gallery photo 2" loading="lazy" />
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-regular fa-image"></i> Photo 02</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v2.mov" aria-label="Open gallery video 2">
+              <video src="gallery/v2.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 02</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v3.mov" aria-label="Open gallery video 3">
+              <video src="gallery/v3.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 03</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item" type="button" data-type="image" data-src="gallery/p3.jpg" aria-label="Open gallery photo 3">
+              <img src="gallery/p3.jpg" alt="Maison Crème gallery photo 3" loading="lazy" />
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-regular fa-image"></i> Photo 03</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v4.mov" aria-label="Open gallery video 4">
+              <video src="gallery/v4.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 04</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v5.mov" aria-label="Open gallery video 5">
+              <video src="gallery/v5.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 05</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item" type="button" data-type="image" data-src="gallery/p4.jpg" aria-label="Open gallery photo 4">
+              <img src="gallery/p4.jpg" alt="Maison Crème gallery photo 4" loading="lazy" />
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-regular fa-image"></i> Photo 04</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v6.mov" aria-label="Open gallery video 6">
+              <video src="gallery/v6.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 06</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v7.mov" aria-label="Open gallery video 7">
+              <video src="gallery/v7.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 07</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item" type="button" data-type="image" data-src="gallery/p5.jpg" aria-label="Open gallery photo 5">
+              <img src="gallery/p5.jpg" alt="Maison Crème gallery photo 5" loading="lazy" />
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-regular fa-image"></i> Photo 05</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v8.mov" aria-label="Open gallery video 8">
+              <video src="gallery/v8.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 08</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v9.mov" aria-label="Open gallery video 9">
+              <video src="gallery/v9.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 09</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item" type="button" data-type="image" data-src="gallery/p6.jpg" aria-label="Open gallery photo 6">
+              <img src="gallery/p6.jpg" alt="Maison Crème gallery photo 6" loading="lazy" />
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-regular fa-image"></i> Photo 06</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v10.mov" aria-label="Open gallery video 10">
+              <video src="gallery/v10.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 10</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v11.mov" aria-label="Open gallery video 11">
+              <video src="gallery/v11.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 11</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item" type="button" data-type="image" data-src="gallery/p7.jpg" aria-label="Open gallery photo 7">
+              <img src="gallery/p7.jpg" alt="Maison Crème gallery photo 7" loading="lazy" />
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-regular fa-image"></i> Photo 07</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v12.mov" aria-label="Open gallery video 12">
+              <video src="gallery/v12.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 12</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v13.mov" aria-label="Open gallery video 13">
+              <video src="gallery/v13.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 13</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v14.mov" aria-label="Open gallery video 14">
+              <video src="gallery/v14.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 14</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v15.mov" aria-label="Open gallery video 15">
+              <video src="gallery/v15.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 15</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v16.mov" aria-label="Open gallery video 16">
+              <video src="gallery/v16.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 16</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v17.mov" aria-label="Open gallery video 17">
+              <video src="gallery/v17.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 17</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v18.mov" aria-label="Open gallery video 18">
+              <video src="gallery/v18.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 18</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v19.mov" aria-label="Open gallery video 19">
+              <video src="gallery/v19.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 19</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v20.mov" aria-label="Open gallery video 20">
+              <video src="gallery/v20.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 20</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v21.mov" aria-label="Open gallery video 21">
+              <video src="gallery/v21.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 21</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v22.mov" aria-label="Open gallery video 22">
+              <video src="gallery/v22.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 22</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v23.mov" aria-label="Open gallery video 23">
+              <video src="gallery/v23.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 23</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+
+            <button class="gallery-item gallery-item--video" type="button" data-type="video" data-src="gallery/v24.mov" aria-label="Open gallery video 24">
+              <video src="gallery/v24.mov" muted playsinline preload="metadata"></video>
+              <div class="gallery-item__overlay">
+                <span class="gallery-item__label"><i class="fa-solid fa-film"></i> Video 24</span>
+                <span class="gallery-item__icon"><i class="fa-solid fa-play"></i></span>
+              </div>
+            </button>
+          </div>
+
+          <p class="gallery-note">Tip: some browsers handle <code>.mov</code> differently. If any clip does not play reliably on the web, convert it to <code>.mp4</code> later and keep the same file naming pattern.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="brand brand--footer">
+              <span class="brand__eyebrow">Luxury Pastry Boutique</span>
+              <span class="brand__name">Maison Crème</span>
+            </a>
+            <p>
+              Premium pastries and fresh juices for customers who appreciate rich flavour,
+              polished presentation, and a refined dessert experience.
+            </p>
+          </div>
+
+          <div class="footer-links">
+            <h3>Navigate</h3>
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="gallery.html">Gallery</a>
+          </div>
+
+          <div class="footer-links">
+            <h3>Popular</h3>
+            <a href="gallery.html#galleryGrid">Photos</a>
+            <a href="gallery.html#galleryGrid">Videos</a>
+            <a href="menu.html">Shop Menu</a>
+          </div>
+
+          <div class="footer-links">
+            <h3>Contact</h3>
+            <a href="#">Accra, Ghana</a>
+            <a href="#">Daily Orders Available</a>
+            <button class="footer-cart-btn js-open-cart" type="button">Open Cart</button>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 Maison Crème. Crafted for a premium pastry experience.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true">
+    <div class="gallery-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Gallery preview">
+      <button class="gallery-lightbox__close" type="button" id="galleryLightboxClose" aria-label="Close preview">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="gallery-lightbox__media" id="galleryLightboxMedia"></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+      const lightbox = document.getElementById('galleryLightbox');
+      const lightboxMedia = document.getElementById('galleryLightboxMedia');
+      const closeBtn = document.getElementById('galleryLightboxClose');
+
+      if (!galleryItems.length || !lightbox || !lightboxMedia || !closeBtn) return;
+
+      function pauseAllTiles() {
+        document.querySelectorAll('.gallery-item video').forEach((video) => {
+          video.pause();
+        });
+      }
+
+      function openLightbox(type, src, label) {
+        lightboxMedia.innerHTML = '';
+
+        if (type === 'video') {
+          const video = document.createElement('video');
+          video.src = src;
+          video.controls = true;
+          video.autoplay = true;
+          video.playsInline = true;
+          video.setAttribute('aria-label', label);
+          lightboxMedia.appendChild(video);
+        } else {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = label;
+          lightboxMedia.appendChild(img);
+        }
+
+        lightbox.classList.add('is-open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('is-open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightboxMedia.innerHTML = '';
+        document.body.style.overflow = '';
+      }
+
+      galleryItems.forEach((item) => {
+        const type = item.dataset.type;
+        const src = item.dataset.src;
+        const label = item.getAttribute('aria-label') || 'Gallery item';
+
+        item.addEventListener('click', () => {
+          pauseAllTiles();
+          openLightbox(type, src, label);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeLightbox);
+
+      lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
+          closeLightbox();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
