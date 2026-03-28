@@ -152,6 +152,25 @@
     orange: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1400&q=80",
   };
 
+  const MAIN_IMAGE_BY_ID = {
+  "oreo-donut": "https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1200&q=80",
+  "artisan-croissant": "crois.webp",
+  "mud-cake-slice": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80",
+  "fresh-juice": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1200&q=80",
+
+  "raisin-roll": "raison.jpg",
+  "cinnamon-roll": "cin.jpg",
+  "caramel-roll": "caramel.jpg",
+  "signature-bagel": "bagels.jpg",
+
+  "red-velvet-slice": "red.jpg",
+
+  "pineapple-juice": "pine.webp",
+  "mint-pineapple-juice": "pm.jpg",
+  "watermelon-juice": "wm.webp",
+  "sobolo": "sobolo.webp"
+};
+  
   const GALLERY_BY_CATEGORY = {
     donuts: [IMG.donut1, IMG.donut2, IMG.spread, IMG.pastrySpread],
     rolls: [IMG.roll1, IMG.roll2, IMG.roll3, IMG.pastrySpread],
@@ -165,17 +184,19 @@
     juices: [IMG.juiceGeneric, IMG.pineapple, IMG.orange, IMG.watermelon],
   };
 
-  function getGallery(product) {
-    const key =
-      normalise(product.category) === "bagels"
-        ? "bagels"
-        : GALLERY_BY_CATEGORY[normalise(product.category)]
-        ? normalise(product.category)
-        : "pastries";
+ function getGallery(product) {
+  const key =
+    normalise(product.category) === "bagels"
+      ? "bagels"
+      : GALLERY_BY_CATEGORY[normalise(product.category)]
+      ? normalise(product.category)
+      : "pastries";
 
-    const combined = [product.image, ...(GALLERY_BY_CATEGORY[key] || [])];
-    return [...new Set(combined)].slice(0, 4);
-  }
+  const mainImage = MAIN_IMAGE_BY_ID[product.id] || product.image;
+  const combined = [mainImage, ...(GALLERY_BY_CATEGORY[key] || [])];
+
+  return [...new Set(combined)].slice(0, 4);
+}
 
   /* -------------------------------------------------------------------------- */
   /* Product Data                                                               */
@@ -212,7 +233,7 @@
       category: config.category,
       price: Number(config.price),
       unit: config.unit,
-      image: config.image,
+      image: MAIN_IMAGE_BY_ID[config.id] || config.image,
       badge: config.badge || "Maison Crème Selection",
       description:
         config.description ||
