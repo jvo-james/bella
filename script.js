@@ -154,7 +154,10 @@
 
   const MAIN_IMAGE_BY_ID = {
   "oreo-donut": "https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1200&q=80",
-  "artisan-croissant": "crois.webp",
+  "plain-croissant": "crois.webp",
+"cheese-croissant": "cc.png",
+   "chocolate-croissant": "chc.jpg",
+    "almond-croissant": "ac.jpg",
   "mud-cake-slice": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80",
   "fresh-juice": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1200&q=80",
 
@@ -340,42 +343,54 @@
         "Golden, glossy, and beautifully baked for a clean boutique-style brunch experience.",
       options: ["Classic", "Toasted", "Brunch Box"],
     }),
-    createProduct({
-      id: "artisan-croissant",
-      name: "Artisan Croissant",
-      category: "Croissants",
-      price: 120,
-      unit: "two",
-      image: IMG.croissant1,
-      badge: "Layered Signature",
-      description:
-        "Flaky premium layers with a golden finish across the cheese, plain, and chocolate collection.",
-      options: ["Cheese", "Plain", "Chocolate"],
-    }),
-    createProduct({
-      id: "chocolate-croissant",
-      name: "Chocolate Croissants",
-      category: "Croissants",
-      price: 125,
-      unit: "two",
-      image: IMG.croissant2,
-      badge: "Deep Cocoa",
-      description:
-        "Layered croissants with a rich chocolate center and a premium bakery finish.",
-      options: ["Chocolate Classic", "Extra Cocoa", "Gift Box"],
-    }),
-    createProduct({
-      id: "almond-croissant",
-      name: "Almond Croissants",
-      category: "Croissants",
-      price: 130,
-      unit: "two",
-      image: IMG.croissant3,
-      badge: "Refined Finish",
-      description:
-        "Buttery layers finished with almond richness for a more elegant croissant experience.",
-      options: ["Almond Classic", "Glazed Almond", "Gift Box"],
-    }),
+  createProduct({
+  id: "plain-croissant",
+  name: "Plain Croissant",
+  category: "Croissants",
+  price: 110,
+  unit: "two",
+  image: "crois.webp",
+  badge: "Classic Layers",
+  description:
+    "Flaky plain croissants with a clean golden finish and a refined bakery texture.",
+  options: ["Classic", "Fresh Pair"],
+}),
+createProduct({
+  id: "cheese-croissant",
+  name: "Cheese Croissant",
+  category: "Croissants",
+  price: 120,
+  unit: "two",
+  image: "crois.webp",
+  badge: "Savory Favourite",
+  description:
+    "Buttery croissants with a rich cheese filling and a polished golden finish.",
+  options: ["Cheese", "Fresh Pair"],
+}),
+createProduct({
+  id: "chocolate-croissant",
+  name: "Chocolate Croissant",
+  category: "Croissants",
+  price: 120,
+  unit: "two",
+  image: IMG.croissant2,
+  badge: "Deep Cocoa",
+  description:
+    "Layered croissants with a rich chocolate center and a premium bakery finish.",
+  options: ["Chocolate Classic", "Fresh Pair"],
+}),
+createProduct({
+  id: "almond-croissant",
+  name: "Almond Croissant",
+  category: "Croissants",
+  price: 140,
+  unit: "two",
+  image: IMG.croissant3,
+  badge: "Refined Finish",
+  description:
+    "Buttery layers finished with almond richness for a more elegant croissant experience.",
+  options: ["Almond Classic", "Fresh Pair"],
+}),
     createProduct({
       id: "mud-cake-slice",
       name: "Mud Cake Slice",
