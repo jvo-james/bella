@@ -754,70 +754,107 @@
   /* Menu Filters                                                               */
   /* -------------------------------------------------------------------------- */
 
-  function initMenuFiltering() {
-    const menuGrid = $("#menuGrid");
-    const searchInput = $("#productSearch");
-    const filterButtons = $$(".filter-chip");
+function initMenuFiltering() {
+  const searchInput = $("#productSearch");
+  const filterButtons = $$(".filter-chip");
+  const sections = $$(".menu-category-section");
 
-    if (!menuGrid || !searchInput || !filterButtons.length) return;
+  if (!searchInput || !filterButtons.length || !sections.length) return;
 
-    let activeFilter = "all";
+  let activeFilter = "all";
 
-    const getCards = () => $$(".product-card", menuGrid);
+  function getAllCards() {
+    return $$(".product-card");
+  }
 
-    function getOrCreateEmptyState() {
-      let message = $(".empty-state-message", menuGrid);
-      if (!message) {
-        message = document.createElement("div");
-        message.className = "empty-state-message";
-        message.innerHTML =
-          "<strong style='display:block;margin-bottom:0.4rem;'>No products matched your search.</strong>Try another keyword or category.";
-        menuGrid.appendChild(message);
+  function getOrCreateEmptyState() {
+    let message = $("#menuEmptyState");
+
+    if (!message) {
+      message = document.createElement("div");
+      message.id = "menuEmptyState";
+      message.className = "empty-state-message is-hidden";
+      message.innerHTML =
+        "<strong style='display:block;margin-bottom:0.4rem;'>No products matched your search.</strong>Try another keyword or category.";
+
+      const toolbar = $(".menu-toolbar .container");
+      if (toolbar) {
+        toolbar.insertAdjacentElement("afterend", message);
       }
-      return message;
     }
 
-    function applyFilters() {
-      const searchTerm = normalise(searchInput.value);
-      const cards = getCards();
-      let visibleCount = 0;
+    return message;
+  }
 
-      cards.forEach((card) => {
-        const name = normalise(card.dataset.name || "");
-        const category = normalise(card.dataset.category || "");
-        const id = normalise(card.dataset.id || "");
+  function applyFilters() {
+    const searchTerm = normalise(searchInput.value);
+    const cards = getAllCards();
+    let visibleCount = 0;
 
-        const matchesFilter =
-          activeFilter === "all" || category === normalise(activeFilter);
+    cards.forEach((card) => {
+      const name = normalise(card.dataset.name || "");
+      const category = normalise(card.dataset.category || "");
+      const id = normalise(card.dataset.id || "");
 
-        const matchesSearch =
-          !searchTerm ||
-          name.includes(searchTerm) ||
-          category.includes(searchTerm) ||
-          id.includes(searchTerm);
+      const matchesFilter =
+        activeFilter === "all" || category === normalise(activeFilter);
 
-        const shouldShow = matchesFilter && matchesSearch;
+      const matchesSearch =
+        !searchTerm ||
+        name.includes(searchTerm) ||
+        category.includes(searchTerm) ||
+        id.includes(searchTerm);
 
-        card.classList.toggle("is-hidden", !shouldShow);
-        if (shouldShow) visibleCount += 1;
-      });
+      const shouldShow = matchesFilter && matchesSearch;
 
-      const emptyState = getOrCreateEmptyState();
-      emptyState.classList.toggle("is-hidden", visibleCount > 0);
-    }
+      card.classList.toggle("is-hidden", !shouldShow);
 
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        activeFilter = button.dataset.filter || "all";
-        filterButtons.forEach((btn) => btn.classList.remove("is-active"));
-        button.classList.add("is-active");
-        applyFilters();
-      });
+      if (shouldShow) visibleCount += 1;
     });
 
-    searchInput.addEventListener("input", applyFilters);
-    applyFilters();
+    sections.forEach((section) => {
+      const visibleCards = $$(".product-card:not(.is-hidden)", section);
+      section.classList.toggle("is-hidden", visibleCards.length === 0);
+    });
+
+    const emptyState = getOrCreateEmptyState();
+    emptyState.classList.toggle("is-hidden", visibleCount > 0);
   }
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const filter = button.dataset.filter || "all";
+
+      if (filter !== "all") {
+        event.preventDefault();
+      }
+
+      activeFilter = filter;
+      filterButtons.forEach((btn) => btn.classList.remove("is-active"));
+      button.classList.add("is-active");
+      applyFilters();
+
+      if (filter === "all") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        const targetSection = document.querySelector(button.getAttribute("href"));
+        targetSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+
+  searchInput.addEventListener("input", () => {
+    if (searchInput.value.trim()) {
+      activeFilter = "all";
+      filterButtons.forEach((btn) => btn.classList.remove("is-active"));
+      filterButtons[0]?.classList.add("is-active");
+    }
+
+    applyFilters();
+  });
+
+  applyFilters();
+}
 
   /* -------------------------------------------------------------------------- */
   /* Product Page                                                               */
