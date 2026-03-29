@@ -242,7 +242,7 @@
       unit: "two",
       image: "menu/cheese.jpg",
       images: [
-        "crois.webp",
+        "menu/cheese.jpg",
         "menu/cheese.jpg",
         "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
         "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
@@ -282,7 +282,7 @@
       category: "Croissants",
       price: 120,
       unit: "two",
-      image: "menu/chocolate.jpg,
+      image: "menu/chocolate.jpg",
       images: [
         "menu/chocolate.jpg",
         "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
