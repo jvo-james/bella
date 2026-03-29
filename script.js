@@ -1811,7 +1811,7 @@ function renderCart() {
 /* Checkout                                                                   */
 /* -------------------------------------------------------------------------- */
 
-const PAYSTACK_PUBLIC_KEY = "YOUR_PAYSTACK_TEST_KEY_HERE";
+const PAYSTACK_PUBLIC_KEY = "pk_test_297586e51710e83d3c159bfe71ff45c7e23411fa";
 const CHECKOUT_CONFIRMATION_KEY = "mbb-last-order-confirmation";
 
 function calculateProcessingFee(subtotal) {
