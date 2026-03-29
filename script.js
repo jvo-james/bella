@@ -1057,55 +1057,63 @@
     document.body.classList.remove("cart-open");
   }
 
-  function renderCart() {
-    const itemsHost = $("#cartItems");
-    const emptyState = $("#cartEmptyState");
+function renderCart() {
+  const itemsHost = $("#cartItems");
+  const emptyState = $("#cartEmptyState");
 
-    updateCartIndicators();
+  updateCartIndicators();
 
-    if (!itemsHost) return;
+  if (!itemsHost) return;
 
-    if (!cart.length) {
-      itemsHost.innerHTML = "";
-      if (emptyState) emptyState.hidden = false;
-      return;
+  if (!cart.length) {
+    itemsHost.innerHTML = "";
+
+    if (emptyState) {
+      emptyState.hidden = false;
+      emptyState.classList.remove("is-hidden");
     }
 
-    if (emptyState) emptyState.hidden = true;
-
-    itemsHost.innerHTML = cart
-      .map(
-        (item) => `
-          <article class="cart-item" data-cart-product-id="${escapeHtml(item.id)}" tabindex="0" role="button" aria-label="Open ${escapeHtml(item.name)} details">
-            <div class="cart-item__image">
-              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
-            </div>
-
-            <div class="cart-item__content">
-              <h3>${escapeHtml(item.name)}</h3>
-              <div class="cart-item__meta">
-                ${escapeHtml(item.category)}${item.variant ? ` • ${escapeHtml(item.variant)}` : ""}
-              </div>
-              <div class="cart-item__price">
-                ${formatPrice(item.price)} <span>/ ${escapeHtml(item.unit)}</span>
-              </div>
-
-              <div class="cart-item__actions">
-                <button class="cart-item__qty-btn" type="button" data-cart-action="decrease" data-key="${escapeHtml(item.key)}" aria-label="Decrease quantity">−</button>
-                <span class="cart-item__qty">${item.qty}</span>
-                <button class="cart-item__qty-btn" type="button" data-cart-action="increase" data-key="${escapeHtml(item.key)}" aria-label="Increase quantity">+</button>
-                <button class="cart-item__remove" type="button" data-cart-action="remove" data-key="${escapeHtml(item.key)}" aria-label="Remove item">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="cart-item__total">${formatPrice(item.qty * item.price)}</div>
-          </article>
-        `
-      )
-      .join("");
+    return;
   }
+
+  if (emptyState) {
+    emptyState.hidden = true;
+    emptyState.classList.add("is-hidden");
+  }
+
+  itemsHost.innerHTML = cart
+    .map(
+      (item) => `
+        <article class="cart-item" data-cart-product-id="${escapeHtml(item.id)}" tabindex="0" role="button" aria-label="Open ${escapeHtml(item.name)} details">
+          <div class="cart-item__image">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
+          </div>
+
+          <div class="cart-item__content">
+            <h3>${escapeHtml(item.name)}</h3>
+            <div class="cart-item__meta">
+              ${escapeHtml(item.category)}${item.variant ? ` • ${escapeHtml(item.variant)}` : ""}
+            </div>
+            <div class="cart-item__price">
+              ${formatPrice(item.price)} <span>/ ${escapeHtml(item.unit)}</span>
+            </div>
+
+            <div class="cart-item__actions">
+              <button class="cart-item__qty-btn" type="button" data-cart-action="decrease" data-key="${escapeHtml(item.key)}" aria-label="Decrease quantity">−</button>
+              <span class="cart-item__qty">${item.qty}</span>
+              <button class="cart-item__qty-btn" type="button" data-cart-action="increase" data-key="${escapeHtml(item.key)}" aria-label="Increase quantity">+</button>
+              <button class="cart-item__remove" type="button" data-cart-action="remove" data-key="${escapeHtml(item.key)}" aria-label="Remove item">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="cart-item__total">${formatPrice(item.qty * item.price)}</div>
+        </article>
+      `
+    )
+    .join("");
+}
 
   function addToCart(product, qty = 1, variant = "") {
     if (!product) return;
