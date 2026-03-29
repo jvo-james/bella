@@ -1826,7 +1826,7 @@ function formatCartItemsForSubmission(items) {
   return items
     .map(
       (item) =>
-        `${item.name}${item.variant ? ` (${item.variant})` : ""} — ${item.qty} x ${formatPrice(item.price)} = ${formatPrice(item.qty * item.price)}`
+        `${item.name}${item.variant ? ` (${item.variant})` : ""} - ${item.qty} x ${formatPrice(item.price)} = ${formatPrice(item.qty * item.price)}`
     )
     .join("\n");
 }
@@ -1866,7 +1866,6 @@ function renderCheckoutSummary() {
     subtotalNode,
     feeNode,
     totalNode,
-    form,
     payNowButton,
   } = getCheckoutElements();
 
@@ -1894,10 +1893,12 @@ function renderCheckoutSummary() {
 
   if (!cart.length) {
     itemsHost.innerHTML = "";
+
     if (emptyState) {
       emptyState.hidden = false;
       emptyState.classList.remove("is-hidden");
     }
+
     if (payNowButton) payNowButton.disabled = true;
     return;
   }
@@ -1906,6 +1907,7 @@ function renderCheckoutSummary() {
     emptyState.hidden = true;
     emptyState.classList.add("is-hidden");
   }
+
   if (payNowButton) payNowButton.disabled = false;
 
   itemsHost.innerHTML = cart
@@ -1932,6 +1934,7 @@ function renderCheckoutSummary() {
 function openTermsDrawer() {
   const { termsDrawer } = getCheckoutElements();
   if (!termsDrawer) return;
+
   termsDrawer.classList.add("is-open");
   termsDrawer.setAttribute("aria-hidden", "false");
   document.body.classList.add("lightbox-open");
@@ -1940,6 +1943,7 @@ function openTermsDrawer() {
 function closeTermsDrawer() {
   const { termsDrawer } = getCheckoutElements();
   if (!termsDrawer) return;
+
   termsDrawer.classList.remove("is-open");
   termsDrawer.setAttribute("aria-hidden", "true");
   document.body.classList.remove("lightbox-open");
@@ -1948,6 +1952,7 @@ function closeTermsDrawer() {
 function openInvoiceModal() {
   const { invoiceModal } = getCheckoutElements();
   if (!invoiceModal) return;
+
   invoiceModal.classList.add("is-open");
   invoiceModal.setAttribute("aria-hidden", "false");
   document.body.classList.add("lightbox-open");
@@ -1956,12 +1961,13 @@ function openInvoiceModal() {
 function closeInvoiceModal() {
   const { invoiceModal } = getCheckoutElements();
   if (!invoiceModal) return;
+
   invoiceModal.classList.remove("is-open");
   invoiceModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("lightbox-open");
 }
 
-function buildInvoiceData(form) {
+function buildInvoiceData() {
   const subtotal = getCartSubtotal();
   const processingFee = calculateProcessingFee(subtotal);
   const total = calculateCheckoutTotal(subtotal);
@@ -2104,6 +2110,7 @@ function generateInvoicePdf(invoiceData) {
   y += 6;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
+
   const customerLines = [
     `Name: ${invoiceData.fullName}`,
     `Phone: ${invoiceData.phone}`,
@@ -2156,18 +2163,24 @@ function generateInvoicePdf(invoiceData) {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.setTextColor(109, 84, 68);
-  const note =
-    "Processing fee includes 1.95% Paystack charge and 1% Mobile Money charge.";
-  doc.text(doc.splitTextToSize(note, 170), left, y);
+  doc.text(
+    doc.splitTextToSize(
+      "Processing fee includes 1.95% Paystack charge and 1% Mobile Money charge.",
+      170
+    ),
+    left,
+    y
+  );
 
   doc.save(`Meals-by-Bella-Invoice-${invoiceData.reference}.pdf`);
 }
 
-async function submitCheckoutToFormspree(form, invoiceData) {
-  const endpoint = form.dataset.formspreeEndpoint?.trim();
+async function submitCheckoutToFormspree(invoiceData) {
+  const form = $("#checkoutForm");
+  const endpoint = form?.dataset.formspreeEndpoint?.trim();
+
   if (!endpoint || endpoint === "YOUR_FORMSPREE_ENDPOINT_HERE") {
-    showToast("Formspree endpoint is not set yet.", "danger");
-    return;
+    throw new Error("Formspree endpoint is not set yet.");
   }
 
   const payload = {
@@ -2213,7 +2226,9 @@ function enableInvoiceButtons(invoiceData) {
     openInvoiceModal();
   };
 
-  const downloadPdf = () => generateInvoicePdf(invoiceData);
+  const downloadPdf = () => {
+    generateInvoicePdf(invoiceData);
+  };
 
   if (viewInvoiceButton) {
     viewInvoiceButton.disabled = false;
@@ -2264,7 +2279,6 @@ function showCheckoutConfirmation(invoiceData) {
 
   renderInvoicePreview(invoiceData);
   enableInvoiceButtons(invoiceData);
-
   generateInvoicePdf(invoiceData);
 
   setTimeout(() => {
@@ -2291,15 +2305,15 @@ function restoreCheckoutConfirmationIfNeeded() {
   }
 }
 
-function validateCheckoutForm(form) {
-  const requiredFields = [
-    $("#customerFullName"),
-    $("#customerPhone"),
-    $("#customerEmail"),
-    $("#customerLocation"),
-    $("#orderType"),
-    $("#agreeTerms"),
-  ].filter(Boolean);
+function validateCheckoutForm() {
+  const fullName = $("#customerFullName");
+  const phone = $("#customerPhone");
+  const email = $("#customerEmail");
+  const location = $("#customerLocation");
+  const orderType = $("#orderType");
+  const agreeTerms = $("#agreeTerms");
+
+  const requiredFields = [fullName, phone, email, location, orderType, agreeTerms].filter(Boolean);
 
   for (const field of requiredFields) {
     if (field.type === "checkbox") {
@@ -2315,17 +2329,123 @@ function validateCheckoutForm(form) {
     }
   }
 
+  const emailValue = email?.value.trim() || "";
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailPattern.test(emailValue)) {
+    showToast("Please enter a valid email address.", "danger");
+    email.focus();
+    return false;
+  }
+
   if (!cart.length) {
     showToast("Your cart is empty.", "danger");
     return false;
   }
 
- if (!PAYSTACK_PUBLIC_KEY) {
-  showToast("Add your Paystack public key in script.js first.", "danger");
-  return false;
-}
+  if (!PAYSTACK_PUBLIC_KEY) {
+    showToast("Add your Paystack public key in script.js first.", "danger");
+    return false;
+  }
 
   return true;
+}
+
+function payWithPaystackCheckout() {
+  const { payNowButton } = getCheckoutElements();
+
+  const subtotal = getCartSubtotal();
+  const total = calculateCheckoutTotal(subtotal);
+
+  const email = $("#customerEmail")?.value.trim();
+  const fullName = $("#customerFullName")?.value.trim();
+  const phone = $("#customerPhone")?.value.trim();
+  const location = $("#customerLocation")?.value.trim();
+  const orderType = $("#orderType")?.value;
+
+  try {
+    if (!window.PaystackPop || typeof window.PaystackPop.setup !== "function") {
+      throw new Error("PaystackPop is not available.");
+    }
+
+    const handler = PaystackPop.setup({
+      key: PAYSTACK_PUBLIC_KEY,
+      email: email,
+      amount: Math.round(total * 100),
+      currency: "GHS",
+      ref: `MBB-${Date.now()}`,
+      metadata: {
+        custom_fields: [
+          {
+            display_name: "Full Name",
+            variable_name: "full_name",
+            value: fullName || "",
+          },
+          {
+            display_name: "Phone",
+            variable_name: "phone",
+            value: phone || "",
+          },
+          {
+            display_name: "Location",
+            variable_name: "location",
+            value: location || "",
+          },
+          {
+            display_name: "Order Type",
+            variable_name: "order_type",
+            value: orderType || "",
+          },
+        ],
+      },
+      callback: function (response) {
+        const paymentRefInput = $("#formPaymentReference");
+        const paymentStatusInput = $("#formPaymentStatus");
+
+        if (paymentRefInput) paymentRefInput.value = response.reference;
+        if (paymentStatusInput) paymentStatusInput.value = "paid";
+
+        const invoiceData = buildInvoiceData();
+        invoiceData.reference = response.reference;
+        invoiceData.paymentStatus = "paid";
+
+        submitCheckoutToFormspree(invoiceData)
+          .then(() => {
+            sessionStorage.setItem(
+              CHECKOUT_CONFIRMATION_KEY,
+              JSON.stringify(invoiceData)
+            );
+            location.replace("checkout.html?paid=1");
+          })
+          .catch((error) => {
+            console.error("Post-payment error:", error);
+            showToast("Payment succeeded, but saving the order failed.", "danger");
+
+            if (payNowButton) {
+              payNowButton.disabled = false;
+              payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+            }
+          });
+      },
+      onClose: function () {
+        if (payNowButton) {
+          payNowButton.disabled = false;
+          payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+        }
+        showToast("Payment window closed.");
+      },
+    });
+
+    handler.openIframe();
+  } catch (error) {
+    console.error("Paystack setup error:", error);
+    showToast(`Paystack could not open: ${error.message}`, "danger");
+
+    if (payNowButton) {
+      payNowButton.disabled = false;
+      payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+    }
+  }
 }
 
 function initCheckoutPage() {
@@ -2360,95 +2480,21 @@ function initCheckoutPage() {
 
   if (!form) return;
 
-  form.addEventListener("submit", async (event) => {
+  form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    if (!validateCheckoutForm(form)) return;
+    if (!validateCheckoutForm()) return;
 
     if (payNowButton) {
       payNowButton.disabled = true;
       payNowButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Processing...</span>`;
     }
 
-    const subtotal = getCartSubtotal();
-    const total = calculateCheckoutTotal(subtotal);
-
-    const email = $("#customerEmail")?.value.trim();
-    const fullName = $("#customerFullName")?.value.trim();
-    const phone = $("#customerPhone")?.value.trim();
-    const location = $("#customerLocation")?.value.trim();
-    const orderType = $("#orderType")?.value;
-    const instructions = $("#customerInstructions")?.value.trim() || "";
-
-try {
-  if (!window.PaystackPop || typeof window.PaystackPop.setup !== "function") {
-    throw new Error("PaystackPop is not available.");
-  }
-
-  const paystack = window.PaystackPop.setup({
-    key: PAYSTACK_PUBLIC_KEY,
-    email,
-    amount: Math.round(total * 100),
-    currency: "GHS",
-    ref: `MBB-${Date.now()}`,
-    metadata: {
-      custom_fields: [
-        { display_name: "Full Name", variable_name: "full_name", value: fullName },
-        { display_name: "Phone", variable_name: "phone", value: phone },
-        { display_name: "Location", variable_name: "location", value: location },
-        { display_name: "Order Type", variable_name: "order_type", value: orderType },
-      ],
-    },
-   callback: function (response) {
-  console.log("Paystack callback response:", response);
-
-  (async () => {
-    try {
-      $("#formPaymentReference").value = response.reference;
-      $("#formPaymentStatus").value = "paid";
-
-      const invoiceData = buildInvoiceData(form);
-      invoiceData.reference = response.reference;
-      invoiceData.paymentStatus = "paid";
-
-      await submitCheckoutToFormspree(form, invoiceData);
-
-      sessionStorage.setItem(CHECKOUT_CONFIRMATION_KEY, JSON.stringify(invoiceData));
-      location.replace("checkout.html?paid=1");
-    } catch (error) {
-      console.error("Post-payment error:", error);
-      showToast("Payment went through, but saving the order failed.", "danger");
-
-      if (payNowButton) {
-        payNowButton.disabled = false;
-        payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-      }
-    }
-  })();
-},
-    onClose: function () {
-      if (payNowButton) {
-        payNowButton.disabled = false;
-        payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-      }
-      showToast("Payment window closed.");
-    },
-  });
-
-  paystack.openIframe();
-} catch (error) {
-  console.error("Paystack setup error:", error);
-  showToast("Paystack could not open. Check your public key and browser console.", "danger");
-
-  if (payNowButton) {
-    payNowButton.disabled = false;
-    payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-  }
-}
+    payWithPaystackCheckout();
   });
 }
 
-  function initCheckoutNavigation() {
+function initCheckoutNavigation() {
   $$(".js-go-to-checkout").forEach((button) => {
     button.addEventListener("click", () => {
       if (!cart.length) {
@@ -2459,22 +2505,6 @@ try {
       window.location.href = "checkout.html";
     });
   });
-}
-  /* -------------------------------------------------------------------------- */
-  /* Init                                                                       */
-  /* -------------------------------------------------------------------------- */
-
-function init() {
-  renderCart();
-  initMobileMenu();
-  initCartEvents();
-  initCheckoutNavigation();
-  initCardAddToCart();
-  initMenuFiltering();
-  initProductGalleryClicks();
-  initProductPage();
-  initGalleryLightbox();
-  initCheckoutPage();
 }
 
   document.addEventListener("DOMContentLoaded", init);
