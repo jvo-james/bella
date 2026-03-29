@@ -1812,7 +1812,6 @@ function renderCart() {
 /* -------------------------------------------------------------------------- */
 
 const PAYSTACK_PUBLIC_KEY = "pk_test_297586e51710e83d3c159bfe71ff45c7e23411fa";
-const CHECKOUT_CONFIRMATION_KEY = "mbb-last-order-confirmation";
 
 function calculateProcessingFee(subtotal) {
   return Number((subtotal * 0.0295).toFixed(2));
@@ -2256,7 +2255,13 @@ function showCheckoutConfirmation(invoiceData) {
     confirmationReference,
     confirmationTotalPaid,
     confirmationMessage,
+    payNowButton,
   } = getCheckoutElements();
+
+  if (payNowButton) {
+    payNowButton.disabled = false;
+    payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+  }
 
   if (form) {
     const main = form.closest(".checkout-main");
@@ -2268,42 +2273,37 @@ function showCheckoutConfirmation(invoiceData) {
 
   if (confirmationSection) {
     confirmationSection.classList.remove("is-hidden");
+    confirmationSection.hidden = false;
   }
 
-  if (confirmationReference) confirmationReference.textContent = invoiceData.reference;
-  if (confirmationTotalPaid) confirmationTotalPaid.textContent = formatPrice(invoiceData.total);
+  if (confirmationReference) {
+    confirmationReference.textContent = invoiceData.reference;
+  }
+
+  if (confirmationTotalPaid) {
+    confirmationTotalPaid.textContent = formatPrice(invoiceData.total);
+  }
+
   if (confirmationMessage) {
     confirmationMessage.textContent =
-      "Your payment was successful, your invoice is ready, and your order details have been recorded.";
+      "Your payment was successful, your invoice has been generated, and your order has been recorded.";
   }
 
   renderInvoicePreview(invoiceData);
   enableInvoiceButtons(invoiceData);
-  generateInvoicePdf(invoiceData);
+
+  setTimeout(() => {
+    generateInvoicePdf(invoiceData);
+  }, 300);
+
+  scrollToTopSmooth();
 
   setTimeout(() => {
     clearCart();
-    sessionStorage.removeItem(CHECKOUT_CONFIRMATION_KEY);
     location.replace("index.html");
   }, 9000);
 }
 
-function restoreCheckoutConfirmationIfNeeded() {
-  if (document.body.dataset.page !== "checkout") return;
-
-  const params = new URLSearchParams(window.location.search);
-  const paid = params.get("paid");
-  const saved = sessionStorage.getItem(CHECKOUT_CONFIRMATION_KEY);
-
-  if (!paid || !saved) return;
-
-  try {
-    const invoiceData = JSON.parse(saved);
-    showCheckoutConfirmation(invoiceData);
-  } catch {
-    sessionStorage.removeItem(CHECKOUT_CONFIRMATION_KEY);
-  }
-}
 
 function validateCheckoutForm() {
   const fullName = $("#customerFullName");
@@ -2398,7 +2398,7 @@ function payWithPaystackCheckout() {
           },
         ],
       },
-callback: function (response) {
+callback: async function (response) {
   const paymentRefInput = $("#formPaymentReference");
   const paymentStatusInput = $("#formPaymentStatus");
 
@@ -2409,16 +2409,13 @@ callback: function (response) {
   invoiceData.reference = response.reference;
   invoiceData.paymentStatus = "paid";
 
-  sessionStorage.setItem(
-    CHECKOUT_CONFIRMATION_KEY,
-    JSON.stringify(invoiceData)
-  );
+  try {
+    await submitCheckoutToFormspree(invoiceData);
+  } catch (error) {
+    console.error("Formspree save error:", error);
+  }
 
   showCheckoutConfirmation(invoiceData);
-
-  submitCheckoutToFormspree(invoiceData).catch((error) => {
-    console.error("Post-payment save error:", error);
-  });
 },
       onClose: function () {
         if (payNowButton) {
@@ -2455,7 +2452,6 @@ function initCheckoutPage() {
   } = getCheckoutElements();
 
   renderCheckoutSummary();
-  restoreCheckoutConfirmationIfNeeded();
 
   openTermsBtn?.addEventListener("click", openTermsDrawer);
   closeTermsBtn?.addEventListener("click", closeTermsDrawer);
