@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Luxury pastries, artisan bakes, and fresh juices in Ghana. Discover a premium pastry boutique experience with elegant treats, rich flavors, and seamless online ordering."
+    content="Meals by Bella offers pastries, brownies, cakes, drinks, and more in a beautiful official business website experience."
   />
-  <title>Maison Crème </title>
+  <title>Meals by Bella | Home</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
     rel="stylesheet"
   />
   <link
@@ -22,10 +22,6 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <link rel="stylesheet" href="styles.css" />
   <script src="script.js" defer></script>
@@ -36,9 +32,9 @@
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <div class="mobile-menu__panel">
         <div class="mobile-menu__top">
-          <a href="index.html" class="brand brand--mobile" aria-label="Maison Crème home">
-            <span class="brand__eyebrow">Accra, Ghana</span>
-            <span class="brand__name">Maison Crème</span>
+          <a href="index.html" class="brand brand--mobile" aria-label="Meals by Bella home">
+            <span class="brand__eyebrow">Fresh bakes & treats</span>
+            <span class="brand__name">Meals by Bella</span>
           </a>
           <button class="icon-btn js-close-mobile-menu" aria-label="Close menu" type="button">
             <i class="fa-solid fa-xmark"></i>
@@ -47,16 +43,14 @@
 
         <nav class="mobile-menu__nav" aria-label="Mobile navigation">
           <a href="index.html" class="is-active">Home</a>
+          <a href="#contact">Contact</a>
           <a href="menu.html">Menu</a>
-          <a href="product.html?product=oreo-donut">Featured Product</a>
+          <a href="gallery.html">Gallery</a>
         </nav>
 
         <div class="mobile-menu__actions">
           <a href="menu.html" class="btn btn--primary">Explore Menu</a>
-          <button class="btn btn--secondary js-open-cart" type="button">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span>Open Cart</span>
-          </button>
+          <a href="gallery.html" class="btn btn--secondary">See Gallery</a>
         </div>
       </div>
     </div>
@@ -68,8 +62,8 @@
       <aside class="cart-drawer__panel" aria-label="Shopping cart">
         <div class="cart-drawer__header">
           <div>
-            <p class="section-tag">Your Selection</p>
-            <h2> Cart</h2>
+            <p class="section-tag">Your Cart</p>
+            <h2>Order Summary</h2>
           </div>
           <button class="icon-btn js-close-cart" type="button" aria-label="Close cart">
             <i class="fa-solid fa-xmark"></i>
@@ -83,8 +77,8 @@
             <div class="cart-empty__icon">
               <i class="fa-solid fa-bag-shopping"></i>
             </div>
-            <h3>Your cart is beautifully empty</h3>
-            <p>Add pastries or juices to begin your order.</p>
+            <h3>Your cart is empty</h3>
+            <p>Add some treats and drinks to begin your order.</p>
             <a href="menu.html" class="btn btn--primary">Browse Menu</a>
           </div>
         </div>
@@ -111,18 +105,18 @@
 
     <!-- Header -->
     <header class="site-header" id="top">
-    
       <div class="container">
         <div class="header-main">
-          <a href="index.html" class="brand" aria-label="Maison Crème home">
-            <span class="brand__eyebrow"> Pastry Boutique</span>
-            <span class="brand__name">Maison Crème</span>
+          <a href="index.html" class="brand" aria-label="Meals by Bella home">
+            <span class="brand__eyebrow">Fresh bakes & treats</span>
+            <span class="brand__name">Meals by Bella</span>
           </a>
 
           <nav class="desktop-nav" aria-label="Primary navigation">
             <a href="index.html" class="is-active">Home</a>
+            <a href="#contact">Contact</a>
             <a href="menu.html">Menu</a>
-            <a href="product.html?product=oreo-donut">Product</a>
+            <a href="gallery.html">Gallery</a>
           </nav>
 
           <div class="header-actions">
@@ -141,50 +135,52 @@
 
     <main>
       <!-- Hero -->
-      <section class="hero-section">
+      <section class="hero-section hero-section--background">
+        <div class="hero-background">
+          <img
+            src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1800&q=80"
+            alt="Baked pastries and treats"
+          />
+        </div>
+
+        <div class="hero-overlay"></div>
+
         <div class="container">
-          <div class="hero-grid hero-grid--simple">
-            <div class="hero-copy">
-              <span class="hero-badge"> Pastry Boutique in Accra</span>
+          <div class="hero-content hero-content--center">
+            <span class="hero-badge">Official Meals by Bella Website</span>
 
-              <h1>
-                Beautiful pastries,
-                <span>made to feel special.</span>
-              </h1>
+            <h1>
+              Fresh bakes, sweet treats,
+              <span>and good food moments.</span>
+            </h1>
 
-              <p class="hero-text">
-                Maison Crème offers premium pastries, refined desserts, and fresh juices
-                crafted for everyday indulgence, gifting and soft  moments.
-              </p>
+            <p class="hero-text">
+              Welcome to Meals by Bella...a simple and beautiful place to explore pastries,
+              brownies, cakes, drinks, and more. Order your favourites and discover more from the gallery.
+            </p>
 
-              <div class="hero-actions">
-                <a href="menu.html" class="btn btn--primary">Explore Menu</a>
-                <a href="product.html?product=oreo-donut" class="btn btn--secondary">See Signature Product</a>
-              </div>
-            </div>
-
-            <div class="hero-visual hero-visual--simple">
-              <div class="hero-visual__main">
-                <img
-                  src="https://images.unsplash.com/photo-1747829581686-b5f0bede4a70?auto=format&fit=crop&w=1200&q=80"
-                  alt="An elegant spread of premium pastries"
-                />
-              </div>
+            <div class="hero-actions">
+              <a href="menu.html" class="btn btn--primary">Explore Menu</a>
+              <a href="gallery.html" class="btn btn--secondary">See Gallery</a>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Featured Products -->
+      <!-- Bestselling favourites -->
       <section class="products-section">
         <div class="container">
-          <div class="section-heading">
+          <div class="section-heading section-heading--with-note">
             <div>
-              <p class="section-tag">Signature Picks</p>
+              <p class="section-tag">Popular Picks</p>
               <h2>Bestselling favourites</h2>
+              <p class="section-subtext">
+                These are just a few customer favourites...there are more items waiting on the full menu.
+              </p>
             </div>
-            <a href="menu.html" class="section-link">
-              <span>See full menu</span>
+
+            <a href="menu.html" class="btn btn--primary section-cta">
+              <span>See Full Menu</span>
               <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
@@ -192,80 +188,80 @@
           <div class="products-grid products-grid--home">
             <article
               class="product-card"
-              data-id="oreo-donut"
-              data-name="Oreo Donuts"
-              data-price="110"
+              data-id="chocolate-croissant"
+              data-name="Chocolate Croissant"
+              data-price="120"
               data-unit="two"
-              data-image="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1200&q=80"
-              data-category="Donuts"
+              data-image="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1200&q=80"
+              data-category="Croissants"
             >
-              <a href="product.html?product=oreo-donut" class="product-card__media">
+              <a href="product.html?product=chocolate-croissant" class="product-card__media">
                 <img
-                  src="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1200&q=80"
-                  alt="Oreo donuts"
+                  src="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1200&q=80"
+                  alt="Chocolate croissant"
                 />
               </a>
 
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Signature</span>
+                  <span class="pill">Popular</span>
                   <button
                     class="product-card__icon js-add-to-cart"
                     type="button"
-                    aria-label="Add Oreo Donuts to cart"
+                    aria-label="Add Chocolate Croissant to cart"
                   >
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
 
-                <a href="product.html?product=oreo-donut" class="product-card__title-wrap">
-                  <h3>Oreo Donuts</h3>
-                  <p>Soft premium donuts finished with rich chocolate and crunchy topping.</p>
+                <a href="product.html?product=chocolate-croissant" class="product-card__title-wrap">
+                  <h3>Chocolate Croissant</h3>
+                  <p>Flaky croissants with a rich chocolate center, served as a pair.</p>
                 </a>
 
                 <div class="product-card__bottom">
-                  <strong>GH₵110 <span>/ two</span></strong>
-                  <a href="product.html?product=oreo-donut" class="text-link">Details</a>
+                  <strong>GH₵120 <span>/ two</span></strong>
+                  <a href="product.html?product=chocolate-croissant" class="text-link">Details</a>
                 </div>
               </div>
             </article>
 
             <article
               class="product-card"
-              data-id="artisan-croissant"
-              data-name="Artisan Croissant"
-              data-price="120"
+              data-id="walnut-brownie"
+              data-name="Walnut Brownie"
+              data-price="150"
               data-unit="two"
-              data-image="https://images.unsplash.com/photo-1623334044303-241021148842?auto=format&fit=crop&w=1200&q=80"
-              data-category="Croissants"
+              data-image="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80"
+              data-category="Brownies"
             >
-              <a href="product.html?product=artisan-croissant" class="product-card__media">
+              <a href="product.html?product=walnut-brownie" class="product-card__media">
                 <img
-                  src="https://images.unsplash.com/photo-1623334044303-241021148842?auto=format&fit=crop&w=1200&q=80"
-                  alt="Croissants"
+                  src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80"
+                  alt="Walnut brownie"
                 />
               </a>
 
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Cheese • Plain • Chocolate</span>
+                  <span class="pill">Popular</span>
                   <button
                     class="product-card__icon js-add-to-cart"
                     type="button"
-                    aria-label="Add Artisan Croissant to cart"
+                    aria-label="Add Walnut Brownie to cart"
                   >
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
 
-                <a href="product.html?product=artisan-croissant" class="product-card__title-wrap">
-                  <h3>Artisan Croissant</h3>
-                  <p>Flaky layers with a glossy bake and premium fillings across every variant.</p>
+                <a href="product.html?product=walnut-brownie" class="product-card__title-wrap">
+                  <h3>Walnut Brownie</h3>
+                  <p>Soft, rich brownies with walnut goodness and a satisfying bite.</p>
                 </a>
 
                 <div class="product-card__bottom">
-                  <strong>GH₵120 <span>/ two</span></strong>
-                  <a href="product.html?product=artisan-croissant" class="text-link">Details</a>
+                  <strong>GH₵150 <span>/ two</span></strong>
+                  <a href="product.html?product=walnut-brownie" class="text-link">Details</a>
                 </div>
               </div>
             </article>
@@ -276,19 +272,19 @@
               data-name="Mud Cake Slice"
               data-price="150"
               data-unit="two"
-              data-image="https://images.unsplash.com/photo-1737700087822-0dfbb754db30?auto=format&fit=crop&w=1200&q=80"
+              data-image="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80"
               data-category="Cake Slices"
             >
               <a href="product.html?product=mud-cake-slice" class="product-card__media">
                 <img
-                  src="https://images.unsplash.com/photo-1737700087822-0dfbb754db30?auto=format&fit=crop&w=1200&q=80"
+                  src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80"
                   alt="Mud cake slice"
                 />
               </a>
 
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Rich & Elegant</span>
+                  <span class="pill">Popular</span>
                   <button
                     class="product-card__icon js-add-to-cart"
                     type="button"
@@ -300,7 +296,7 @@
 
                 <a href="product.html?product=mud-cake-slice" class="product-card__title-wrap">
                   <h3>Mud Cake Slice</h3>
-                  <p>Dense, polished, chocolate-forward luxury with a boutique dessert finish.</p>
+                  <p>Chocolate cake slices served in pairs for sharing or enjoying yourself.</p>
                 </a>
 
                 <div class="product-card__bottom">
@@ -312,109 +308,157 @@
 
             <article
               class="product-card"
-              data-id="fresh-juice"
-              data-name="Fresh Juice"
+              data-id="pineapple-juice"
+              data-name="Pineapple Juice"
               data-price="40"
               data-unit="each"
-              data-image="https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1200&q=80"
+              data-image="pine.webp"
               data-category="Juices"
             >
-              <a href="product.html?product=fresh-juice" class="product-card__media">
+              <a href="product.html?product=pineapple-juice" class="product-card__media">
                 <img
-                  src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1200&q=80"
-                  alt="Fresh orange juice"
+                  src="pine.webp"
+                  alt="Pineapple juice"
                 />
               </a>
 
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Freshly Poured</span>
+                  <span class="pill">Popular</span>
                   <button
                     class="product-card__icon js-add-to-cart"
                     type="button"
-                    aria-label="Add Fresh Juice to cart"
+                    aria-label="Add Pineapple Juice to cart"
                   >
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
 
-                <a href="product.html?product=fresh-juice" class="product-card__title-wrap">
-                  <h3>Fresh Juices</h3>
-                  <p>Bright, refreshing juices that complete the full premium pastry experience.</p>
+                <a href="product.html?product=pineapple-juice" class="product-card__title-wrap">
+                  <h3>Pineapple Juice</h3>
+                  <p>Fresh pineapple juice that pairs well with pastries, brownies, and cakes.</p>
                 </a>
 
                 <div class="product-card__bottom">
                   <strong>GH₵40 <span>/ each</span></strong>
-                  <a href="product.html?product=fresh-juice" class="text-link">Details</a>
+                  <a href="product.html?product=pineapple-juice" class="text-link">Details</a>
                 </div>
               </div>
             </article>
           </div>
+
+          <div class="products-more">
+            <p>Want to see everything available? Browse the full collection of items on the menu page.</p>
+            <a href="menu.html" class="btn btn--secondary">Show More</a>
+          </div>
         </div>
       </section>
 
- 
-      <!-- Simple Brand / CTA -->
-      <section class="cta-section">
+      <!-- Contact -->
+      <section class="contact-section" id="contact">
         <div class="container">
-          <div class="cta-panel">
-            <div class="cta-panel__copy">
-              <p class="section-tag">Maison Crème</p>
-              <h2>Pastries, slices, and juices for soft  moments.</h2>
-              <p>
-                Explore our menu of premium pastries and fresh drinks, crafted for gifting,
-                indulgence, and beautifully simple cravings.
-              </p>
+          <div class="section-heading">
+            <div>
+              <p class="section-tag">Contact</p>
+              <h2>Get in touch</h2>
+            </div>
+          </div>
+
+          <div class="contact-grid">
+            <div class="contact-card">
+              <div class="contact-list">
+                <article>
+                  <i class="fa-brands fa-whatsapp"></i>
+                  <div>
+                    <h3>WhatsApp</h3>
+                    <a href="https://wa.me/233000000000" target="_blank" rel="noopener noreferrer">
+                      Chat on WhatsApp
+                    </a>
+                  </div>
+                </article>
+
+                <article>
+                  <i class="fa-brands fa-snapchat"></i>
+                  <div>
+                    <h3>Snapchat</h3>
+                    <a href="#" target="_blank" rel="noopener noreferrer">@mealsbybella</a>
+                  </div>
+                </article>
+
+                <article>
+                  <i class="fa-solid fa-location-dot"></i>
+                  <div>
+                    <h3>Location</h3>
+                    <p>Near UPSA, Accra, Ghana</p>
+                  </div>
+                </article>
+              </div>
             </div>
 
-            <div class="cta-panel__actions">
-              <a href="menu.html" class="btn btn--primary">Open Menu</a>
-              <button class="btn btn--secondary js-open-cart" type="button">Open Cart</button>
+            <div class="map-card">
+              <iframe
+                title="Map showing UPSA location"
+                src="https://www.google.com/maps?q=UPSA%20Accra&z=15&output=embed"
+                width="100%"
+                height="100%"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <a href="index.html" class="brand brand--footer">
-              <span class="brand__eyebrow">Luxury Pastry Boutique</span>
-              <span class="brand__name">Maison Crème</span>
-            </a>
-            <p>
-              Premium pastries and fresh juices for customers who appreciate rich flavour,
-              polished presentation, and a refined dessert experience.
-            </p>
-          </div>
+    <footer class="site-footer site-footer--full">
+      <div class="footer-main">
+        <div class="footer-branding">
+          <a href="index.html" class="brand brand--footer">
+            <span class="brand__eyebrow">Fresh bakes & treats</span>
+            <span class="brand__name">Meals by Bella</span>
+          </a>
+          <p>
+            A student-run food brand serving pastries, cakes, brownies, drinks, and more with care.
+          </p>
 
+          <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links-wrap">
           <div class="footer-links">
-            <h3>Navigate</h3>
+            <h3>Navigation</h3>
             <a href="index.html">Home</a>
+            <a href="#contact">Contact</a>
             <a href="menu.html">Menu</a>
-            <a href="product.html?product=oreo-donut">Product Page</a>
+            <a href="gallery.html">Gallery</a>
           </div>
 
           <div class="footer-links">
-            <h3>Popular</h3>
-            <a href="product.html?product=oreo-donut">Oreo Donuts</a>
-            <a href="product.html?product=artisan-croissant">Croissants</a>
+            <h3>Popular Items</h3>
+            <a href="product.html?product=chocolate-croissant">Chocolate Croissant</a>
+            <a href="product.html?product=walnut-brownie">Walnut Brownie</a>
             <a href="product.html?product=mud-cake-slice">Mud Cake Slice</a>
+            <a href="product.html?product=pineapple-juice">Pineapple Juice</a>
           </div>
 
           <div class="footer-links">
             <h3>Contact</h3>
-            <a href="#">Accra, Ghana</a>
-            <a href="#">Order Hours: Daily</a>
-            <button class="footer-cart-btn js-open-cart" type="button">Open Cart</button>
+            <a href="https://wa.me/233000000000" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="#">Snapchat</a>
+            <a href="#contact">UPSA, Accra</a>
           </div>
         </div>
+      </div>
 
-        <div class="footer-bottom">
-          <p>© 2026 Maison Crème. Crafted for a premium pastry experience.</p>
-        </div>
+      <div class="footer-bottom-bar">
+        <p>© 2026 Meals by Bella. All rights reserved.</p>
       </div>
     </footer>
   </div>
