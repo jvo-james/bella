@@ -2437,14 +2437,28 @@ function initCheckoutPage() {
     paystack.openIframe();
   });
 }
+
+  function initCheckoutNavigation() {
+  $$(".js-go-to-checkout").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!cart.length) {
+        showToast("Your cart is empty.", "danger");
+        return;
+      }
+
+      window.location.href = "checkout.html";
+    });
+  });
+}
   /* -------------------------------------------------------------------------- */
   /* Init                                                                       */
   /* -------------------------------------------------------------------------- */
 
-  function init() {
+function init() {
   renderCart();
   initMobileMenu();
   initCartEvents();
+  initCheckoutNavigation();
   initCardAddToCart();
   initMenuFiltering();
   initProductGalleryClicks();
