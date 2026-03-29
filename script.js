@@ -2256,6 +2256,8 @@ function showCheckoutConfirmation(invoiceData) {
     confirmationReference,
     confirmationTotalPaid,
     confirmationMessage,
+    confirmationViewInvoiceButton,
+    confirmationDownloadInvoiceButton,
     payNowButton,
   } = getCheckoutElements();
 
@@ -2272,16 +2274,31 @@ function showCheckoutConfirmation(invoiceData) {
   const sidebar = $(".checkout-sidebar");
   if (sidebar) sidebar.classList.add("is-hidden");
 
+  const checkoutHero = $(".checkout-hero");
+  if (checkoutHero) checkoutHero.classList.add("is-hidden");
+
+  const breadcrumbSection = $(".breadcrumb-section");
+  if (breadcrumbSection) breadcrumbSection.classList.add("is-hidden");
+
+  const checkoutSection = $(".checkout-section");
+  if (checkoutSection) checkoutSection.classList.add("is-hidden");
+
   if (confirmationSection) {
     confirmationSection.hidden = false;
     confirmationSection.classList.remove("is-hidden");
   }
 
-  if (confirmationReference) confirmationReference.textContent = invoiceData.reference;
-  if (confirmationTotalPaid) confirmationTotalPaid.textContent = formatPrice(invoiceData.total);
+  if (confirmationReference) {
+    confirmationReference.textContent = invoiceData.reference;
+  }
+
+  if (confirmationTotalPaid) {
+    confirmationTotalPaid.textContent = `GHS ${Number(invoiceData.total || 0)}`;
+  }
+
   if (confirmationMessage) {
     confirmationMessage.textContent =
-      "Your payment was successful, your invoice is ready, and your order details have been recorded.";
+      "Your payment was successful and your order has been confirmed. Your invoice is ready.";
   }
 
   renderInvoicePreview(invoiceData);
@@ -2293,11 +2310,19 @@ function showCheckoutConfirmation(invoiceData) {
 
   scrollToTopSmooth();
 
-  setTimeout(() => {
-    clearCart();
-    location.replace("index.html");
-  }, 9000);
+  const returnHomeButton = document.getElementById("returnHomeButton");
+  if (returnHomeButton) {
+    returnHomeButton.onclick = () => {
+      clearCart();
+      location.replace("index.html");
+    };
+  }
+
+  if (confirmationViewInvoiceButton) {
+    confirmationViewInvoiceButton.focus();
+  }
 }
+  
 
 function validateCheckoutForm() {
   const fullName = $("#customerFullName");
@@ -2478,17 +2503,32 @@ function initCheckoutPage() {
 }
 
 function initCheckoutNavigation() {
-  $$(".js-go-to-checkout").forEach((button) => {
-    button.addEventListener("click", () => {
-      if (!cart.length) {
-        showToast("Your cart is empty.", "danger");
-        return;
-      }
+  function goToCheckout(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
-      window.location.href = "checkout.html";
-    });
+    if (!cart.length) {
+      showToast("Your cart is empty.", "danger");
+      return;
+    }
+
+    closeCart();
+    window.location.href = "checkout.html";
+  }
+
+  $$(".js-go-to-checkout").forEach((button) => {
+    button.addEventListener("click", goToCheckout);
+  });
+
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest(".js-go-to-checkout");
+    if (!button) return;
+    goToCheckout(event);
   });
 }
+  
   function init() {
   renderCart();
   initMobileMenu();
