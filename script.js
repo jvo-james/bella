@@ -2072,105 +2072,267 @@ function generateInvoicePdf(invoiceData) {
     format: "a4",
   });
 
-  const left = 18;
-  let y = 20;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
 
-  doc.setFillColor(246, 232, 214);
-  doc.rect(0, 0, 210, 297, "F");
+  const colors = {
+    cream: [250, 245, 238],
+    sand: [236, 224, 208],
+    brown: [78, 56, 42],
+    muted: [128, 104, 88],
+    accent: [181, 137, 99],
+    white: [255, 255, 255],
+    line: [225, 210, 194],
+    soft: [245, 238, 229],
+    dark: [50, 36, 28],
+    green: [77, 127, 91],
+  };
 
-  doc.setFillColor(255, 255, 255);
-  doc.roundedRect(12, 12, 186, 273, 6, 6, "F");
+  const money = (value) => `GHS ${Number(value || 0).toFixed(2)}`;
 
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(63, 43, 32);
-  doc.setFontSize(22);
-  doc.text("Meals by Bella", left, y);
+  let y = 0;
 
-  y += 7;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.setTextColor(109, 84, 68);
-  doc.text("Invoice", left, y);
+  function setTextColor(rgb) {
+    doc.setTextColor(rgb[0], rgb[1], rgb[2]);
+  }
 
-  y += 10;
-  doc.setDrawColor(220, 200, 180);
-  doc.line(left, y, 190, y);
+  function setFillColor(rgb) {
+    doc.setFillColor(rgb[0], rgb[1], rgb[2]);
+  }
 
-  y += 8;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(63, 43, 32);
-  doc.text(`Reference: ${invoiceData.reference}`, left, y);
-  doc.text(`Date: ${invoiceData.date}`, 120, y);
+  function setDrawColor(rgb) {
+    doc.setDrawColor(rgb[0], rgb[1], rgb[2]);
+  }
 
-  y += 10;
-  doc.setFont("helvetica", "bold");
-  doc.text("Customer Details", left, y);
+  function addPageIfNeeded(spaceNeeded = 20) {
+    if (y + spaceNeeded > pageHeight - 20) {
+      doc.addPage();
+      drawPageBackground();
+      y = 22;
+    }
+  }
 
-  y += 6;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
+  function drawPageBackground() {
+    setFillColor(colors.cream);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-  const customerLines = [
-    `Name: ${invoiceData.fullName}`,
-    `Phone: ${invoiceData.phone}`,
-    `Email: ${invoiceData.email}`,
-    `Location: ${invoiceData.location}`,
-    `Order Type: ${invoiceData.orderType}`,
-    invoiceData.instructions ? `Instructions: ${invoiceData.instructions}` : "",
-  ].filter(Boolean);
+    setFillColor(colors.white);
+    doc.roundedRect(10, 10, pageWidth - 20, pageHeight - 20, 6, 6, "F");
+  }
 
-  customerLines.forEach((line) => {
-    const wrapped = doc.splitTextToSize(line, 170);
-    doc.text(wrapped, left, y);
-    y += wrapped.length * 5;
-  });
+  function drawHeader() {
+    setFillColor(colors.brown);
+    doc.roundedRect(10, 10, pageWidth - 20, 34, 6, 6, "F");
 
-  y += 4;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.text("Items Ordered", left, y);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);
+    setTextColor(colors.white);
+    doc.text("Meals by Bella", 18, 24);
 
-  y += 7;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text("Fresh bakes & treats", 18, 31);
 
-  invoiceData.items.forEach((item) => {
-    const line = `${item.name}${item.variant ? ` (${item.variant})` : ""} x ${item.qty}`;
-    const amount = formatPrice(item.qty * item.price);
-    const wrapped = doc.splitTextToSize(line, 120);
-    doc.text(wrapped, left, y);
-    doc.text(amount, 170, y);
-    y += wrapped.length * 5 + 2;
-  });
+    setFillColor(colors.white);
+    doc.roundedRect(pageWidth - 62, 16, 44, 14, 4, 4, "F");
 
-  y += 4;
-  doc.line(left, y, 190, y);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    setTextColor(colors.brown);
+    doc.text("INVOICE", pageWidth - 40, 25, { align: "center" });
 
-  y += 8;
-  doc.setFont("helvetica", "normal");
-  doc.text(`Subtotal: ${formatPrice(invoiceData.subtotal)}`, left, y);
+    y = 52;
+  }
 
-  y += 6;
-  doc.text(`Processing fee (2.95%): ${formatPrice(invoiceData.processingFee)}`, left, y);
+  function drawMetaCard(invoiceData) {
+    setFillColor(colors.soft);
+    doc.roundedRect(15, y, pageWidth - 30, 24, 4, 4, "F");
 
-  y += 6;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(12);
-  doc.text(`Total: ${formatPrice(invoiceData.total)}`, left, y);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    setTextColor(colors.brown);
+    doc.text("Reference", 20, y + 8);
+    doc.text("Date", 85, y + 8);
+    doc.text("Status", 145, y + 8);
 
-  y += 10;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(109, 84, 68);
-  doc.text(
-    doc.splitTextToSize(
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    setTextColor(colors.dark);
+    doc.text(String(invoiceData.reference || "Pending"), 20, y + 16);
+    doc.text(String(invoiceData.date || ""), 85, y + 16);
+
+    doc.setFont("helvetica", "bold");
+    setTextColor(colors.green);
+    doc.text(String(invoiceData.paymentStatus || "paid").toUpperCase(), 145, y + 16);
+
+    y += 32;
+  }
+
+  function drawSectionTitle(title) {
+    addPageIfNeeded(16);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    setTextColor(colors.brown);
+    doc.text(title, 18, y);
+
+    setDrawColor(colors.accent);
+    doc.setLineWidth(0.6);
+    doc.line(18, y + 2, pageWidth - 18, y + 2);
+
+    y += 10;
+  }
+
+  function drawKeyValueBlock(rows) {
+    rows.forEach(([label, value]) => {
+      if (!value) return;
+
+      addPageIfNeeded(10);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      setTextColor(colors.brown);
+      doc.text(`${label}:`, 20, y);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      setTextColor(colors.dark);
+
+      const wrapped = doc.splitTextToSize(String(value), 120);
+      doc.text(wrapped, 55, y);
+
+      y += Math.max(7, wrapped.length * 5);
+    });
+
+    y += 3;
+  }
+
+  function drawItemsTable(items) {
+    addPageIfNeeded(24);
+
+    const startX = 18;
+    const col1 = startX;
+    const col2 = 124;
+    const col3 = 168;
+    const rowWidth = pageWidth - 36;
+
+    setFillColor(colors.brown);
+    doc.roundedRect(startX, y, rowWidth, 10, 2, 2, "F");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    setTextColor(colors.white);
+    doc.text("Item", col1 + 3, y + 6.5);
+    doc.text("Qty", col2, y + 6.5, { align: "right" });
+    doc.text("Total", col3 + 12, y + 6.5, { align: "right" });
+
+    y += 13;
+
+    items.forEach((item, index) => {
+      const itemName = `${item.name}${item.variant ? ` (${item.variant})` : ""}`;
+      const wrappedName = doc.splitTextToSize(itemName, 96);
+      const rowHeight = Math.max(10, wrappedName.length * 5 + 4);
+
+      addPageIfNeeded(rowHeight + 4);
+
+      if (index % 2 === 0) {
+        setFillColor(colors.soft);
+        doc.roundedRect(startX, y - 4, rowWidth, rowHeight, 2, 2, "F");
+      }
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      setTextColor(colors.dark);
+      doc.text(wrappedName, col1 + 3, y + 1);
+
+      doc.text(String(item.qty), col2, y + 1, { align: "right" });
+      doc.text(money(item.qty * item.price), col3 + 12, y + 1, { align: "right" });
+
+      y += rowHeight;
+    });
+
+    y += 4;
+  }
+
+  function drawTotals(invoiceData) {
+    addPageIfNeeded(34);
+
+    const boxX = 112;
+    const boxY = y;
+    const boxW = pageWidth - 130;
+    const lineGap = 8;
+
+    setFillColor(colors.soft);
+    doc.roundedRect(boxX, boxY, boxW, 30, 4, 4, "F");
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    setTextColor(colors.brown);
+    doc.text("Subtotal", boxX + 4, boxY + 8);
+    doc.text(money(invoiceData.subtotal), boxX + boxW - 4, boxY + 8, { align: "right" });
+
+    doc.text("Processing fee (2.95%)", boxX + 4, boxY + 8 + lineGap);
+    doc.text(money(invoiceData.processingFee), boxX + boxW - 4, boxY + 8 + lineGap, { align: "right" });
+
+    setDrawColor(colors.line);
+    doc.line(boxX + 4, boxY + 19, boxX + boxW - 4, boxY + 19);
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    setTextColor(colors.dark);
+    doc.text("Total", boxX + 4, boxY + 27);
+    doc.text(money(invoiceData.total), boxX + boxW - 4, boxY + 27, { align: "right" });
+
+    y += 38;
+  }
+
+  function drawFooterNote() {
+    addPageIfNeeded(22);
+
+    setFillColor(colors.sand);
+    doc.roundedRect(18, y, pageWidth - 36, 18, 4, 4, "F");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    setTextColor(colors.brown);
+    doc.text("Payment note", 22, y + 7);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    setTextColor(colors.dark);
+    doc.text(
       "Processing fee includes 1.95% Paystack charge and 1% Mobile Money charge.",
-      170
-    ),
-    left,
-    y
-  );
+      22,
+      y + 13
+    );
+
+    y += 24;
+
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(9);
+    setTextColor(colors.muted);
+    doc.text("Thank you for ordering from Meals by Bella.", 18, pageHeight - 16);
+  }
+
+  drawPageBackground();
+  drawHeader();
+  drawMetaCard(invoiceData);
+
+  drawSectionTitle("Customer Details");
+  drawKeyValueBlock([
+    ["Name", invoiceData.fullName],
+    ["Phone", invoiceData.phone],
+    ["Email", invoiceData.email],
+    ["Location", invoiceData.location],
+    ["Order Type", invoiceData.orderType],
+    ["Instructions", invoiceData.instructions],
+  ]);
+
+  drawSectionTitle("Items Ordered");
+  drawItemsTable(invoiceData.items || []);
+
+  drawTotals(invoiceData);
+  drawFooterNote();
 
   doc.save(`Meals-by-Bella-Invoice-${invoiceData.reference}.pdf`);
 }
