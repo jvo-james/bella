@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta
     name="description"
-    content="Discover Maison Crème’s premium pastry details, elegant imagery, refined product information, and a luxury cart experience built for Ghana’s high-end pastry lovers."
+    content="View product details for Meals by Bella items including pastries, brownies, cake slices, and drinks."
   />
-  <title>Maison Crème | Product Detail</title>
+  <title>Meals by Bella | Product</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
     rel="stylesheet"
   />
   <link
@@ -22,563 +22,9 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <link rel="stylesheet" href="styles.css" />
   <script src="script.js" defer></script>
-  <style>
-  .page-product {
-    background:
-      radial-gradient(circle at top left, rgba(215, 173, 98, 0.12), transparent 24%),
-      radial-gradient(circle at bottom right, rgba(122, 81, 70, 0.18), transparent 22%),
-      linear-gradient(180deg, #0c0807 0%, #120c0a 48%, #0d0807 100%);
-  }
-
-  .page-product .announcement-bar__content p {
-    max-width: 960px;
-  }
-
-  .page-product .breadcrumb-section {
-    padding-top: 1rem;
-  }
-
-  .page-product .breadcrumb {
-    padding: 0.95rem 1.1rem;
-    border: 1px solid rgba(255, 240, 228, 0.1);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.03);
-    width: fit-content;
-    max-width: 100%;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
-  }
-
-  .page-product .breadcrumb span:last-child {
-    color: var(--text-soft);
-    font-weight: 600;
-  }
-
-  .page-product .product-hero {
-    padding-top: 1.4rem;
-  }
-
-  .page-product .product-layout {
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    gap: 1.5rem;
-    align-items: start;
-  }
-
-  .page-product .product-gallery {
-    position: sticky;
-    top: calc(var(--header-height) + 1.2rem);
-    gap: 0.9rem;
-  }
-
-  .page-product .product-gallery__main {
-    min-height: 640px;
-    border-radius: 34px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 240, 228, 0.12);
-    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.34);
-  }
-
-  .page-product .product-gallery__main img {
-    width: 100%;
-    height: 100%;
-    min-height: 640px;
-    object-fit: cover;
-  }
-
-  .page-product .product-gallery__badge {
-    top: 1rem;
-    left: 1rem;
-    padding: 0.72rem 0.95rem;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 240, 228, 0.14);
-    background: rgba(19, 14, 12, 0.78);
-    color: var(--gold-2);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-  }
-
-  .page-product .product-gallery__thumbs {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.7rem;
-    padding: 0.75rem;
-    border-radius: 24px;
-    border: 1px solid rgba(255, 240, 228, 0.1);
-    background: rgba(255, 255, 255, 0.035);
-  }
-
-  .page-product .product-thumb {
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    border-radius: 18px;
-    border: 1px solid transparent;
-    background: rgba(255, 255, 255, 0.02);
-    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
-  }
-
-  .page-product .product-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .page-product .product-thumb:hover,
-  .page-product .product-thumb.is-active {
-    transform: translateY(-2px);
-    border-color: rgba(240, 200, 130, 0.34);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
-  }
-
-  .page-product .product-info {
-    gap: 1rem;
-  }
-
-  .page-product .product-info__top {
-    padding: 0.15rem 0;
-  }
-
-  .page-product #productCategory {
-    margin-bottom: 0.4rem;
-  }
-
-  .page-product .product-info__top h1 {
-    font-size: clamp(2.8rem, 4.8vw, 5rem);
-    margin: 0.2rem 0 0.7rem;
-    line-height: 0.92;
-  }
-
-  .page-product .product-rating {
-    gap: 0.7rem;
-    color: var(--text-soft);
-    font-size: 0.95rem;
-  }
-
-  .page-product .product-rating__stars {
-    color: var(--gold-2);
-  }
-
-  .page-product .product-price-row {
-    padding: 1rem 0;
-    border-top: 1px solid rgba(255, 240, 228, 0.1);
-    border-bottom: 1px solid rgba(255, 240, 228, 0.1);
-    gap: 1rem;
-  }
-
-  .page-product .product-price strong {
-    font-size: clamp(2.3rem, 4vw, 3.4rem);
-    line-height: 1;
-  }
-
-  .page-product .product-status {
-    padding: 0.7rem 0.95rem;
-    border-radius: 999px;
-    border: 1px solid rgba(143, 211, 164, 0.2);
-    background: rgba(143, 211, 164, 0.08);
-    color: var(--success);
-    font-weight: 600;
-  }
-
-  .page-product .product-description {
-    font-size: 1rem;
-    color: var(--text-soft);
-    max-width: 62ch;
-  }
-
-  .page-product .product-highlights {
-    gap: 0.75rem;
-  }
-
-  .page-product .product-highlights article {
-    padding: 1rem;
-    border-radius: 22px;
-    border: 1px solid rgba(255, 240, 228, 0.1);
-    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
-    transition: transform var(--transition), border-color var(--transition), background var(--transition);
-  }
-
-  .page-product .product-highlights article:hover {
-    transform: translateY(-2px);
-    border-color: rgba(240, 200, 130, 0.24);
-    background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.03));
-  }
-
-  .page-product .product-highlights i {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-    background: rgba(215, 173, 98, 0.12);
-    color: var(--gold-2);
-  }
-
-  .page-product .product-panel {
-    padding: 1.1rem;
-    border-radius: 26px;
-    border: 1px solid rgba(255, 240, 228, 0.1);
-    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.028));
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-  }
-
-  .page-product .product-panel__head h2 {
-    font-size: 1.05rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .page-product .product-panel__head p {
-    color: var(--text-muted);
-    font-size: 0.94rem;
-  }
-
-  .page-product .product-options {
-    gap: 0.65rem;
-  }
-
-  .page-product .option-chip {
-    min-height: 42px;
-    padding: 0.7rem 0.95rem;
-    font-weight: 600;
-  }
-
-  .page-product .quantity-row {
-    align-items: center;
-  }
-
-  .page-product .quantity-selector {
-    padding: 0.35rem;
-    border: 1px solid rgba(255, 240, 228, 0.12);
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.015);
-  }
-
-  .page-product .quantity-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-  }
-
-  .page-product .quantity-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .page-product .quantity-input {
-    width: 64px;
-    font-weight: 700;
-  }
-
-  .page-product .quantity-note {
-    color: var(--text-muted);
-  }
-
-  .page-product .product-action-row {
-    margin-top: 0.1rem;
-  }
-
-  .page-product .product-meta {
-    gap: 0.75rem;
-  }
-
-  .page-product .product-meta article {
-    padding: 1rem;
-    border-radius: 22px;
-    border: 1px solid rgba(255, 240, 228, 0.1);
-    background: rgba(255, 255, 255, 0.03);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.012);
-  }
-
-  .page-product .product-meta span {
-    margin-bottom: 0.28rem;
-  }
-
-  .page-product .product-meta strong {
-    line-height: 1.3;
-  }
-
-  .page-product .product-details-section {
-    padding-top: 2rem;
-  }
-
-  .page-product .details-layout {
-    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.55fr);
-    gap: 1.2rem;
-    align-items: start;
-  }
-
-  .page-product .details-main {
-    padding: 1.35rem;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 240, 228, 0.1);
-    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.03));
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.13);
-  }
-
-  .page-product .details-tabs {
-    margin-bottom: 1rem;
-    gap: 0.65rem;
-  }
-
-  .page-product .details-tab {
-    font-weight: 600;
-  }
-
-  .page-product .details-panel h2 {
-    margin-bottom: 0.75rem;
-  }
-
-  .page-product .details-panel p {
-    max-width: 66ch;
-  }
-
-  .page-product .luxury-list {
-    gap: 0.7rem;
-  }
-
-  .page-product .luxury-list li {
-    background: rgba(255,255,255,0.03);
-  }
-
-  .page-product .sidebar-card {
-    padding: 1.15rem;
-    border-radius: 26px;
-    border: 1px solid rgba(255, 240, 228, 0.1);
-    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.03));
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-  }
-
-  .page-product .sidebar-stats article,
-  .page-product .sidebar-points article {
-    padding: 0.2rem 0;
-  }
-
-  .page-product .sidebar-stats strong {
-    font-weight: 700;
-  }
-
-  .page-product .sidebar-points span {
-    color: var(--text-soft);
-  }
-
-  .page-product .products-section {
-    padding-top: 2.4rem;
-  }
-
-  .page-product .products-section .section-heading {
-    margin-bottom: 1.2rem;
-  }
-
-  .page-product .products-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .page-product .cta-section {
-    padding-top: 2.4rem;
-  }
-
-  .page-product .cta-panel__copy p:not(.section-tag) {
-    max-width: 58ch;
-  }
-
-  .page-product .site-footer {
-    padding-top: 3.5rem;
-  }
-
-  @media (max-width: 1180px) {
-    .page-product .product-layout,
-    .page-product .details-layout {
-      grid-template-columns: 1fr;
-    }
-
-    .page-product .product-gallery {
-      position: static;
-    }
-
-    .page-product .product-gallery__main,
-    .page-product .product-gallery__main img {
-      min-height: 520px;
-    }
-
-    .page-product .products-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 900px) {
-    .page-product .product-meta {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .page-product .products-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 820px) {
-    .page-product .product-hero,
-    .page-product .product-details-section,
-    .page-product .products-section,
-    .page-product .cta-section {
-      padding-top: 2rem;
-    }
-
-    .page-product .breadcrumb {
-      width: 100%;
-      border-radius: 20px;
-      padding: 0.85rem 1rem;
-    }
-
-    .page-product .product-gallery__main,
-    .page-product .product-gallery__main img {
-      min-height: 420px;
-    }
-
-    .page-product .product-price-row,
-    .page-product .quantity-row {
-      align-items: flex-start;
-    }
-
-    .page-product .product-action-row {
-      grid-template-columns: 1fr;
-    }
-
-    .page-product .products-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.9rem;
-    }
-
-    .page-product .product-card__title-wrap p {
-      display: none;
-    }
-
-    .page-product .product-card__content {
-      padding: 0.85rem;
-    }
-
-    .page-product .product-card__title-wrap {
-      margin: 0.75rem 0 0.8rem;
-    }
-
-    .page-product .product-card__title-wrap h3 {
-      font-size: 0.98rem;
-    }
-
-    .page-product .product-card__bottom strong {
-      font-size: 0.95rem;
-    }
-
-    .page-product .pill {
-      font-size: 0.68rem;
-      padding: 0.45rem 0.7rem;
-    }
-
-    .page-product .product-card__icon {
-      width: 38px;
-      height: 38px;
-    }
-  }
-
-  @media (max-width: 560px) {
-    .page-product .breadcrumb-section {
-      padding-top: 0.85rem;
-    }
-
-    .page-product .product-hero {
-      padding-top: 1.2rem;
-    }
-
-    .page-product .product-info__top h1 {
-      font-size: clamp(2.2rem, 11vw, 3.2rem);
-      margin-bottom: 0.6rem;
-    }
-
-    .page-product .product-rating {
-      font-size: 0.9rem;
-    }
-
-    .page-product .product-price strong,
-    .page-product #sidebarPrice {
-      font-size: 2.3rem;
-    }
-
-    .page-product .product-gallery__main,
-    .page-product .product-gallery__main img {
-      min-height: 320px;
-      border-radius: 28px;
-    }
-
-    .page-product .product-gallery__thumbs {
-      gap: 0.55rem;
-      padding: 0.55rem;
-    }
-
-    .page-product .product-panel,
-    .page-product .details-main,
-    .page-product .sidebar-card {
-      padding: 1rem;
-    }
-
-    .page-product .product-meta {
-      grid-template-columns: 1fr;
-    }
-
-    .page-product .details-tabs,
-    .page-product .product-options {
-      overflow-x: auto;
-      flex-wrap: nowrap;
-      padding-bottom: 0.25rem;
-      scrollbar-width: none;
-    }
-
-    .page-product .details-tabs::-webkit-scrollbar,
-    .page-product .product-options::-webkit-scrollbar {
-      display: none;
-    }
-
-    .page-product .details-tab,
-    .page-product .option-chip {
-      flex: 0 0 auto;
-    }
-
-    .page-product .products-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.8rem;
-    }
-
-    .page-product .product-card {
-      border-radius: 24px;
-    }
-
-    .page-product .product-card__bottom {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.35rem;
-    }
-  }
-
-  @media (max-width: 390px) {
-    .page-product .products-grid {
-      gap: 0.72rem;
-    }
-
-    .page-product .product-card__title-wrap h3 {
-      font-size: 0.92rem;
-    }
-
-    .page-product .product-card__bottom strong {
-      font-size: 0.9rem;
-    }
-
-    .page-product .pill {
-      font-size: 0.64rem;
-    }
-  }
-</style>
 </head>
 <body class="page-product" data-page="product">
   <div class="site-shell">
@@ -586,27 +32,25 @@
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <div class="mobile-menu__panel">
         <div class="mobile-menu__top">
-          <a href="index.html" class="brand brand--mobile" aria-label="Maison Crème home">
-            <span class="brand__eyebrow">Accra, Ghana</span>
-            <span class="brand__name">Maison Crème</span>
+          <a href="index.html" class="brand brand--mobile" aria-label="Meals by Bella home">
+            <span class="brand__eyebrow">Fresh bakes & treats</span>
+            <span class="brand__name">Meals by Bella</span>
           </a>
-          <button class="icon-btn js-close-mobile-menu" aria-label="Close menu">
+          <button class="icon-btn js-close-mobile-menu" aria-label="Close menu" type="button">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
 
         <nav class="mobile-menu__nav" aria-label="Mobile navigation">
           <a href="index.html">Home</a>
+          <a href="index.html#contact">Contact</a>
           <a href="menu.html">Menu</a>
-          <a href="product.html?product=oreo-donut" class="is-active">Product</a>
+          <a href="gallery.html">Gallery</a>
         </nav>
 
         <div class="mobile-menu__actions">
           <a href="menu.html" class="btn btn--primary">Explore Menu</a>
-          <button class="btn btn--secondary js-open-cart" type="button">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span>Open Cart</span>
-          </button>
+          <a href="gallery.html" class="btn btn--secondary">See Gallery</a>
         </div>
       </div>
     </div>
@@ -614,11 +58,12 @@
     <!-- Cart Drawer -->
     <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
       <div class="cart-drawer__overlay js-close-cart"></div>
+
       <aside class="cart-drawer__panel" aria-label="Shopping cart">
         <div class="cart-drawer__header">
           <div>
-            <p class="section-tag">Your Selection</p>
-            <h2>Luxury Cart</h2>
+            <p class="section-tag">Your Cart</p>
+            <h2>Order Summary</h2>
           </div>
           <button class="icon-btn js-close-cart" type="button" aria-label="Close cart">
             <i class="fa-solid fa-xmark"></i>
@@ -626,16 +71,14 @@
         </div>
 
         <div class="cart-drawer__body">
-          <div class="cart-items" id="cartItems">
-            <!-- Populated by script.js -->
-          </div>
+          <div class="cart-items" id="cartItems"></div>
 
           <div class="cart-empty" id="cartEmptyState">
             <div class="cart-empty__icon">
               <i class="fa-solid fa-bag-shopping"></i>
             </div>
-            <h3>Your cart is beautifully empty</h3>
-            <p>Add pastries or juices to begin your premium order.</p>
+            <h3>Your cart is empty</h3>
+            <p>Add something from the menu to begin your order.</p>
             <a href="menu.html" class="btn btn--primary">Browse Menu</a>
           </div>
         </div>
@@ -662,19 +105,18 @@
 
     <!-- Header -->
     <header class="site-header" id="top">
-    
-
       <div class="container">
         <div class="header-main">
-          <a href="index.html" class="brand" aria-label="Maison Crème home">
-            <span class="brand__eyebrow">Luxury Pastry Boutique</span>
-            <span class="brand__name">Maison Crème</span>
+          <a href="index.html" class="brand" aria-label="Meals by Bella home">
+            <span class="brand__eyebrow">Fresh bakes & treats</span>
+            <span class="brand__name">Meals by Bella</span>
           </a>
 
           <nav class="desktop-nav" aria-label="Primary navigation">
             <a href="index.html">Home</a>
-            <a href="menu.html">Menu</a>
-            <a href="product.html?product=oreo-donut" class="is-active">Product</a>
+            <a href="index.html#contact">Contact</a>
+            <a href="menu.html" class="is-active">Menu</a>
+            <a href="gallery.html">Gallery</a>
           </nav>
 
           <div class="header-actions">
@@ -700,7 +142,7 @@
             <span>/</span>
             <a href="menu.html">Menu</a>
             <span>/</span>
-            <span id="breadcrumbProductName">Product Detail</span>
+            <span id="breadcrumbProductName">Chocolate Croissant</span>
           </nav>
         </div>
       </section>
@@ -708,29 +150,35 @@
       <!-- Product Hero -->
       <section class="product-hero">
         <div class="container">
-          <div class="product-layout">
-            <!-- Gallery -->
+          <div
+            class="product-layout"
+            id="productInfo"
+            data-default-id="chocolate-croissant"
+            data-default-name="Chocolate Croissant"
+            data-default-price="120"
+            data-default-unit="two"
+            data-default-category="Croissants"
+            data-default-image="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1200&q=80"
+          >
+            <!-- Product Gallery -->
             <div class="product-gallery">
               <div class="product-gallery__main">
                 <img
                   id="productMainImage"
-                  src="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1400&q=80"
-                  alt="Maison Crème premium pastry"
+                  src="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80"
+                  alt="Chocolate Croissant"
                 />
-                <div class="product-gallery__badge" id="productBadge">
-                  Signature Collection
-                </div>
               </div>
 
               <div class="product-gallery__thumbs">
                 <button
                   class="product-thumb is-active"
                   type="button"
-                  data-image="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1400&q=80"
+                  data-image="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80"
                   aria-label="View product image 1"
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=500&q=80"
+                    src="https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=500&q=80"
                     alt="Product thumbnail 1"
                   />
                 </button>
@@ -738,11 +186,11 @@
                 <button
                   class="product-thumb"
                   type="button"
-                  data-image="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80"
+                  data-image="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80"
                   aria-label="View product image 2"
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80"
+                    src="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=500&q=80"
                     alt="Product thumbnail 2"
                   />
                 </button>
@@ -750,11 +198,11 @@
                 <button
                   class="product-thumb"
                   type="button"
-                  data-image="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1400&q=80"
+                  data-image="https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80"
                   aria-label="View product image 3"
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=500&q=80"
+                    src="https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=500&q=80"
                     alt="Product thumbnail 3"
                   />
                 </button>
@@ -762,106 +210,93 @@
                 <button
                   class="product-thumb"
                   type="button"
-                  data-image="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80"
+                  data-image="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1400&q=80"
                   aria-label="View product image 4"
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=500&q=80"
+                    src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=500&q=80"
                     alt="Product thumbnail 4"
                   />
                 </button>
               </div>
             </div>
 
-            <!-- Product Info -->
-            <div
-              class="product-info"
-              id="productInfo"
-              data-default-id="oreo-donut"
-              data-default-name="Oreo Donuts"
-              data-default-price="110"
-              data-default-unit="two"
-              data-default-category="Donuts"
-              data-default-image="https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1200&q=80"
-            >
+            <!-- Product Content -->
+            <div class="product-info">
               <div class="product-info__top">
-                <p class="section-tag" id="productCategory">Luxury Donuts</p>
-                <h1 id="productName">Oreo Donuts</h1>
+                <p class="section-tag" id="productCategory">Croissants</p>
+                <h1 id="productName">Chocolate Croissant</h1>
 
                 <div class="product-rating">
-                  <div class="product-rating__stars" aria-label="Rated 5 out of 5">
+                  <span class="product-rating__stars" aria-hidden="true">
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
-                  </div>
-                  <span>Maison Crème Signature Favourite</span>
+                  </span>
+                  <span id="productTagline">A warm favourite for breakfast, snacks, or sharing.</span>
                 </div>
               </div>
 
               <div class="product-price-row">
                 <div class="product-price">
-                  <strong id="productPrice">GH₵110</strong>
+                  <strong id="productPrice">GH₵120</strong>
                   <span id="productUnit">/ two</span>
                 </div>
 
                 <div class="product-status">
                   <i class="fa-solid fa-circle"></i>
-                  <span>Freshly available today</span>
+                  <span id="productAvailability">Available to order</span>
                 </div>
               </div>
 
               <p class="product-description" id="productDescription">
-                A rich premium donut experience finished with smooth chocolate, elegant texture, and Oreo crunch.
-                Designed for customers who want their pastries to feel indulgent, polished, and worth every cedi.
+                Flaky croissants with a chocolate filling and a soft, buttery bite. A good pick when you want something warm, satisfying, and easy to enjoy with a drink.
               </p>
 
               <div class="product-highlights">
                 <article>
-                  <i class="fa-solid fa-cookie-bite"></i>
+                  <i class="fa-solid fa-heart"></i>
                   <div>
-                    <h3>Premium finish</h3>
-                    <p>Glossy presentation and rich flavor layering.</p>
+                    <h3>Why customers love it</h3>
+                    <p id="highlightLove">It is soft, flaky, and filling without feeling too heavy.</p>
                   </div>
                 </article>
 
                 <article>
-                  <i class="fa-solid fa-gift"></i>
+                  <i class="fa-solid fa-clock"></i>
                   <div>
-                    <h3>Perfect for gifting</h3>
-                    <p>Elegant enough for premium dessert boxes.</p>
+                    <h3>Best time to enjoy it</h3>
+                    <p id="highlightTime">Great for breakfast, a quick snack, or something to go with a chilled drink.</p>
                   </div>
                 </article>
 
                 <article>
-                  <i class="fa-solid fa-sparkles"></i>
+                  <i class="fa-solid fa-box-open"></i>
                   <div>
-                    <h3>Maison Crème quality</h3>
-                    <p>Crafted for refined pastry lovers in Ghana.</p>
+                    <h3>Serving note</h3>
+                    <p id="highlightServing">Served as a pair, which makes it easy to share or keep both for yourself.</p>
                   </div>
                 </article>
               </div>
 
-              <!-- Variant Selector -->
               <div class="product-panel">
                 <div class="product-panel__head">
-                  <h2>Choose a variation</h2>
-                  <p>Some pastries come in signature options.</p>
+                  <h2>Choose an option</h2>
+                  <p>Select the version you want before adding it to cart.</p>
                 </div>
 
                 <div class="product-options" id="productOptions">
-                  <button class="option-chip is-active" type="button" data-option="Classic">Classic</button>
-                  <button class="option-chip" type="button" data-option="Premium Box">Premium Box</button>
-                  <button class="option-chip" type="button" data-option="Gift Pick">Gift Pick</button>
+                  <button class="option-chip is-active" type="button" data-option="Standard">Standard</button>
+                  <button class="option-chip" type="button" data-option="Fresh Batch">Fresh Batch</button>
                 </div>
               </div>
 
-              <!-- Quantity -->
               <div class="product-panel">
                 <div class="product-panel__head">
                   <h2>Quantity</h2>
-                  <p>Adjust how many you want in your cart.</p>
+                  <p>Adjust how many you want to add.</p>
                 </div>
 
                 <div class="quantity-row">
@@ -885,12 +320,11 @@
                   </div>
 
                   <div class="quantity-note">
-                    <span>Luxury orders prepared with care.</span>
+                    <span id="quantityNote">You can adjust this later from your cart too.</span>
                   </div>
                 </div>
               </div>
 
-              <!-- Actions -->
               <div class="product-action-row">
                 <button
                   class="btn btn--primary btn--wide js-product-add-to-cart"
@@ -902,24 +336,23 @@
                 </button>
 
                 <a href="menu.html" class="btn btn--secondary btn--wide">
-                  <i class="fa-solid fa-grid-2"></i>
+                  <i class="fa-solid fa-arrow-left"></i>
                   <span>Back to Menu</span>
                 </a>
               </div>
 
-              <!-- Meta -->
               <div class="product-meta">
                 <article>
                   <span>Category</span>
-                  <strong id="productMetaCategory">Donuts</strong>
+                  <strong id="productMetaCategory">Croissants</strong>
                 </article>
                 <article>
                   <span>Serving</span>
                   <strong id="productMetaServing">Sold in pairs</strong>
                 </article>
                 <article>
-                  <span>Style</span>
-                  <strong>Premium pastry boutique</strong>
+                  <span>Best with</span>
+                  <strong id="productMetaBestWith">Juice, sobolo, or a light snack break</strong>
                 </article>
               </div>
             </div>
@@ -927,7 +360,7 @@
         </div>
       </section>
 
-      <!-- Product Details Tabs -->
+      <!-- Product Details -->
       <section class="product-details-section">
         <div class="container">
           <div class="details-layout">
@@ -940,33 +373,29 @@
 
               <div class="details-panels">
                 <div class="details-panel is-active" id="tab-overview">
-                  <h2>Luxury pastry, elevated.</h2>
-                  <p>
-                    This product page is designed to feel like a premium boutique ordering experience. Whether the customer
-                    lands here from the homepage, menu, or a social media link, everything should feel polished, rich,
-                    and intentionally high-end.
-                  </p>
+                  <h2>About this item</h2>
                   <p id="productOverviewText">
-                    Oreo Donuts offer a soft, rich base with smooth chocolate personality and crunchy contrast. It is a
-                    dessert that feels indulgent enough for gifting, but easy enough for everyday premium cravings.
+                    Chocolate Croissant is a simple favourite for anyone who enjoys soft pastry with a rich filling. It works well as a breakfast option, an afternoon snack, or a quick treat when you want something warm and satisfying.
+                  </p>
+                  <p id="productOverviewExtra">
+                    It is easy to enjoy on its own, but it also goes well with a drink if you want something more filling.
                   </p>
                 </div>
 
                 <div class="details-panel" id="tab-notes">
-                  <h2>What makes it special</h2>
+                  <h2>What to expect</h2>
                   <ul class="luxury-list" id="productNotesList">
-                    <li>Refined visual presentation with premium pastry appeal.</li>
-                    <li>Balanced sweetness designed for a richer customer experience.</li>
-                    <li>Perfect for brunch, gifting, dessert boxes, and soft celebrations.</li>
-                    <li>Pairs beautifully with bright fresh juices.</li>
+                    <li>Soft, flaky layers with a buttery texture.</li>
+                    <li>A chocolate filling that adds sweetness without being too much.</li>
+                    <li>Best enjoyed fresh when the pastry is still soft and light.</li>
+                    <li>A good choice if you want something easy to share.</li>
                   </ul>
                 </div>
 
                 <div class="details-panel" id="tab-pairing">
-                  <h2>Recommended pairing</h2>
+                  <h2>What it goes well with</h2>
                   <p id="productPairingText">
-                    Pair Oreo Donuts with orange juice or sobolo for a clean contrast against the rich chocolate finish.
-                    This creates a complete premium-order experience.
+                    This pairs nicely with pineapple juice, orange juice, or sobolo. If you want something refreshing beside a warm pastry, any of those work well.
                   </p>
                 </div>
               </div>
@@ -974,98 +403,66 @@
 
             <aside class="details-sidebar">
               <div class="sidebar-card">
-                <p class="section-tag">Quick Facts</p>
+                <p class="section-tag">Quick Details</p>
+
                 <div class="sidebar-stats">
                   <article>
                     <span>Price</span>
-                    <strong id="sidebarPrice">GH₵110</strong>
+                    <strong id="sidebarPrice">GH₵120</strong>
                   </article>
                   <article>
                     <span>Unit</span>
                     <strong id="sidebarUnit">two</strong>
                   </article>
                   <article>
-                    <span>Style</span>
-                    <strong>Premium</strong>
+                    <span>Category</span>
+                    <strong id="sidebarCategory">Croissants</strong>
                   </article>
                 </div>
               </div>
 
               <div class="sidebar-card">
-                <p class="section-tag">Why customers love it</p>
-                <div class="sidebar-points">
+                <p class="section-tag">Good to know</p>
+
+                <div class="sidebar-points" id="productSidebarPoints">
                   <article>
-                    <i class="fa-solid fa-check"></i>
-                    <span>Looks luxurious on arrival</span>
+                    <strong>Freshly prepared</strong>
+                    <span>Best enjoyed while fresh for the best texture.</span>
                   </article>
                   <article>
-                    <i class="fa-solid fa-check"></i>
-                    <span>Feels gift-worthy and premium</span>
+                    <strong>Easy to pair</strong>
+                    <span>Works well with juice or as part of a snack order.</span>
                   </article>
                   <article>
-                    <i class="fa-solid fa-check"></i>
-                    <span>Pairs easily with the juice menu</span>
+                    <strong>Simple serving</strong>
+                    <span>Served in a clear, easy-to-order portion.</span>
                   </article>
                 </div>
-              </div>
-
-              <div class="sidebar-card">
-                <p class="section-tag">Need more options?</p>
-                <a href="menu.html" class="btn btn--primary btn--wide">See Full Menu</a>
               </div>
             </aside>
           </div>
         </div>
       </section>
 
-      <!-- Related Products -->
-      <section class="products-section">
+      <!-- You may also like -->
+      <section class="products-section related-products-section" id="relatedProductsSection">
         <div class="container">
-          <div class="section-heading">
+          <div class="section-heading section-heading--with-note">
             <div>
-              <p class="section-tag">You may also like</p>
-              <h2>Other premium selections</h2>
+              <p class="section-tag">More to try</p>
+              <h2>You may also like</h2>
+              <p class="section-subtext">
+                Here are a few other items from the menu you may want to check out.
+              </p>
             </div>
-            <a href="menu.html" class="section-link">
-              <span>Browse all</span>
+
+            <a href="menu.html" class="btn btn--secondary section-cta">
+              <span>Back to Full Menu</span>
               <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
 
-          <div class="products-grid">
-            <article
-              class="product-card"
-              data-id="artisan-croissant"
-              data-name="Artisan Croissant"
-              data-price="120"
-              data-unit="two"
-              data-image="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1200&q=80"
-              data-category="Croissants"
-            >
-              <a href="product.html?product=artisan-croissant" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1200&q=80"
-                  alt="Croissants"
-                />
-              </a>
-              <div class="product-card__content">
-                <div class="product-card__top">
-                  <span class="pill">Cheese • Plain • Chocolate</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Artisan Croissant to cart">
-                    <i class="fa-solid fa-plus"></i>
-                  </button>
-                </div>
-                <a href="product.html?product=artisan-croissant" class="product-card__title-wrap">
-                  <h3>Artisan Croissant</h3>
-                  <p>Flaky premium layers with a polished finish across all signature variants.</p>
-                </a>
-                <div class="product-card__bottom">
-                  <strong>GH₵120 <span>/ two</span></strong>
-                  <a href="product.html?product=artisan-croissant" class="text-link">Details</a>
-                </div>
-              </div>
-            </article>
-
+          <div class="products-grid products-grid--related">
             <article
               class="product-card"
               data-id="mud-cake-slice"
@@ -1083,14 +480,14 @@
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Rich & Elegant</span>
+                  <span class="pill">Cake Slice</span>
                   <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Mud Cake Slice to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
                 <a href="product.html?product=mud-cake-slice" class="product-card__title-wrap">
                   <h3>Mud Cake Slice</h3>
-                  <p>Dense chocolate luxury with a boutique dessert finish and premium feel.</p>
+                  <p>Chocolate cake slices served as a pair.</p>
                 </a>
                 <div class="product-card__bottom">
                   <strong>GH₵150 <span>/ two</span></strong>
@@ -1101,33 +498,33 @@
 
             <article
               class="product-card"
-              data-id="brownie-duo"
-              data-name="Brownie Duo"
+              data-id="walnut-brownie"
+              data-name="Walnut Brownie"
               data-price="150"
               data-unit="two"
               data-image="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80"
               data-category="Brownies"
             >
-              <a href="product.html?product=brownie-duo" class="product-card__media">
+              <a href="product.html?product=walnut-brownie" class="product-card__media">
                 <img
                   src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80"
-                  alt="Brownies"
+                  alt="Walnut brownie"
                 />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Chocolate • Walnut</span>
-                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Brownie Duo to cart">
+                  <span class="pill">Brownie</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Walnut Brownie to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
-                <a href="product.html?product=brownie-duo" class="product-card__title-wrap">
-                  <h3>Brownie Duo</h3>
-                  <p>Fudgy premium brownies with deep flavor and a rich boutique-style finish.</p>
+                <a href="product.html?product=walnut-brownie" class="product-card__title-wrap">
+                  <h3>Walnut Brownie</h3>
+                  <p>Chocolate brownies with walnut pieces, served as a pair.</p>
                 </a>
                 <div class="product-card__bottom">
                   <strong>GH₵150 <span>/ two</span></strong>
-                  <a href="product.html?product=brownie-duo" class="text-link">Details</a>
+                  <a href="product.html?product=walnut-brownie" class="text-link">Details</a>
                 </div>
               </div>
             </article>
@@ -1138,25 +535,22 @@
               data-name="Pineapple Juice"
               data-price="40"
               data-unit="each"
-              data-image="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1200&q=80"
+              data-image="pine.webp"
               data-category="Juices"
             >
               <a href="product.html?product=pineapple-juice" class="product-card__media">
-                <img
-                  src="https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1200&q=80"
-                  alt="Pineapple juice"
-                />
+                <img src="pine.webp" alt="Pineapple juice" />
               </a>
               <div class="product-card__content">
                 <div class="product-card__top">
-                  <span class="pill">Fresh Pairing</span>
+                  <span class="pill">Juice</span>
                   <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Pineapple Juice to cart">
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
                 <a href="product.html?product=pineapple-juice" class="product-card__title-wrap">
                   <h3>Pineapple Juice</h3>
-                  <p>Bright and refreshing, perfect beside rich pastries and slices.</p>
+                  <p>Fresh pineapple juice served chilled.</p>
                 </a>
                 <div class="product-card__bottom">
                   <strong>GH₵40 <span>/ each</span></strong>
@@ -1164,69 +558,104 @@
                 </div>
               </div>
             </article>
-          </div>
-        </div>
-      </section>
 
-      <!-- CTA -->
-      <section class="cta-section">
-        <div class="container">
-          <div class="cta-panel">
-            <div class="cta-panel__copy">
-              <p class="section-tag">Luxury selection</p>
-              <h2>Keep browsing the Maison Crème menu.</h2>
-              <p>
-                Discover more donuts, croissants, brownies, rolls, slices, tarts, danishes, cheesecakes, cookies, and juices.
-              </p>
-            </div>
-
-            <div class="cta-panel__actions">
-              <a href="menu.html" class="btn btn--primary">Open Full Menu</a>
-              <button class="btn btn--secondary js-open-cart" type="button">Open Cart</button>
-            </div>
+            <article
+              class="product-card"
+              data-id="sobolo"
+              data-name="Sobolo"
+              data-price="40"
+              data-unit="each"
+              data-image="sobolo.webp"
+              data-category="Juices"
+            >
+              <a href="product.html?product=sobolo" class="product-card__media">
+                <img src="sobolo.webp" alt="Sobolo" />
+              </a>
+              <div class="product-card__content">
+                <div class="product-card__top">
+                  <span class="pill">Drink</span>
+                  <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add Sobolo to cart">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+                <a href="product.html?product=sobolo" class="product-card__title-wrap">
+                  <h3>Sobolo</h3>
+                  <p>A chilled local drink that goes well with baked treats.</p>
+                </a>
+                <div class="product-card__bottom">
+                  <strong>GH₵40 <span>/ each</span></strong>
+                  <a href="product.html?product=sobolo" class="text-link">Details</a>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <a href="index.html" class="brand brand--footer">
-              <span class="brand__eyebrow">Luxury Pastry Boutique</span>
-              <span class="brand__name">Maison Crème</span>
-            </a>
-            <p>
-              Premium pastries and fresh juices for customers who appreciate rich flavor, polished presentation, and a refined dessert experience.
-            </p>
-          </div>
+    <!-- Mobile Sticky Add to Cart -->
+    <div class="mobile-sticky-cart" id="mobileStickyCart">
+      <div class="mobile-sticky-cart__summary">
+        <span id="mobileStickyName">Chocolate Croissant</span>
+        <strong id="mobileStickyPrice">GH₵120</strong>
+      </div>
+      <button
+        class="btn btn--primary mobile-sticky-cart__btn js-product-add-to-cart"
+        type="button"
+        id="mobileStickyAddToCart"
+      >
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>Add to Cart</span>
+      </button>
+    </div>
 
+    <footer class="site-footer site-footer--full">
+      <div class="footer-main">
+        <div class="footer-branding">
+          <a href="index.html" class="brand brand--footer">
+            <span class="brand__eyebrow">Fresh bakes & treats</span>
+            <span class="brand__name">Meals by Bella</span>
+          </a>
+          <p>
+            A student-run food brand serving pastries, brownies, cake slices, drinks, and more with care.
+          </p>
+
+          <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links-wrap">
           <div class="footer-links">
-            <h3>Navigate</h3>
+            <h3>Navigation</h3>
             <a href="index.html">Home</a>
+            <a href="index.html#contact">Contact</a>
             <a href="menu.html">Menu</a>
-            <a href="product.html?product=oreo-donut">Product Page</a>
+            <a href="gallery.html">Gallery</a>
           </div>
 
           <div class="footer-links">
-            <h3>Popular</h3>
-            <a href="product.html?product=oreo-donut">Oreo Donuts</a>
-            <a href="product.html?product=artisan-croissant">Croissants</a>
-            <a href="product.html?product=brownie-duo">Brownies</a>
+            <h3>Popular Items</h3>
+            <a href="product.html?product=chocolate-croissant">Chocolate Croissant</a>
+            <a href="product.html?product=walnut-brownie">Walnut Brownie</a>
+            <a href="product.html?product=mud-cake-slice">Mud Cake Slice</a>
+            <a href="product.html?product=pineapple-juice">Pineapple Juice</a>
           </div>
 
           <div class="footer-links">
             <h3>Contact</h3>
-            <a href="#">Accra, Ghana</a>
-            <a href="#">Daily Orders Available</a>
-            <button class="footer-cart-btn js-open-cart" type="button">Open Cart</button>
+            <a href="https://wa.me/233000000000" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="#">Snapchat</a>
+            <a href="index.html#contact">UPSA, Accra</a>
           </div>
         </div>
+      </div>
 
-        <div class="footer-bottom">
-          <p>© 2026 Maison Crème. Crafted for a premium pastry experience.</p>
-        </div>
+      <div class="footer-bottom-bar">
+        <p>© 2026 Meals by Bella. All rights reserved.</p>
       </div>
     </footer>
   </div>
