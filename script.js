@@ -1,8 +1,7 @@
-
 (() => {
   "use strict";
 
-  const CART_KEY = "maison-creme-cart-v1";
+  const CART_KEY = "meals-by-bella-cart-v2";
 
   /* -------------------------------------------------------------------------- */
   /* Helpers                                                                    */
@@ -11,17 +10,9 @@
   const $ = (selector, scope = document) => scope.querySelector(selector);
   const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 
-  const formatPrice = (value) => `GH₵${Number(value || 0)}`;
-  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-
-  const titleCase = (text = "") =>
-    text
-      .replace(/[-_]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim()
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-
   const normalise = (value = "") => value.toString().trim().toLowerCase();
+  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+  const formatPrice = (value) => `GH₵${Number(value || 0)}`;
 
   function safeLoad(key, fallback) {
     try {
@@ -36,8 +27,21 @@
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch {
-      /* localStorage may be unavailable */
+      /* ignore localStorage errors */
     }
+  }
+
+  function escapeHtml(value = "") {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function scrollToTopSmooth() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   /* -------------------------------------------------------------------------- */
@@ -45,20 +49,20 @@
   /* -------------------------------------------------------------------------- */
 
   function ensureToastRoot() {
-    let root = $("#mcToastRoot");
+    let root = $("#mbbToastRoot");
     if (root) return root;
 
     root = document.createElement("div");
-    root.id = "mcToastRoot";
+    root.id = "mbbToastRoot";
     Object.assign(root.style, {
       position: "fixed",
-      top: "14px",
+      top: "16px",
       left: "50%",
       transform: "translateX(-50%)",
       width: "min(92vw, 420px)",
       display: "grid",
       gap: "10px",
-      zIndex: "200",
+      zIndex: "300",
       pointerEvents: "none",
     });
 
@@ -70,22 +74,29 @@
     const root = ensureToastRoot();
     const toast = document.createElement("div");
 
-    const borderColor =
-      type === "success"
-        ? "rgba(240, 200, 130, 0.28)"
-        : type === "danger"
-        ? "rgba(241, 154, 154, 0.26)"
-        : "rgba(255, 240, 228, 0.14)";
+    const stylesByType = {
+      success: {
+        border: "1px solid rgba(84, 139, 84, 0.22)",
+        background: "rgba(241, 248, 239, 0.98)",
+      },
+      danger: {
+        border: "1px solid rgba(190, 96, 96, 0.22)",
+        background: "rgba(255, 245, 245, 0.98)",
+      },
+      default: {
+        border: "1px solid rgba(179, 132, 91, 0.2)",
+        background: "rgba(255, 252, 247, 0.98)",
+      },
+    };
+
+    const config = stylesByType[type] || stylesByType.default;
 
     Object.assign(toast.style, {
       padding: "14px 16px",
-      borderRadius: "18px",
-      border: `1px solid ${borderColor}`,
-      background:
-        "linear-gradient(180deg, rgba(24, 17, 15, 0.96), rgba(15, 10, 8, 0.96))",
-      color: "#f8f2ec",
-      boxShadow: "0 20px 40px rgba(0, 0, 0, 0.28)",
-      backdropFilter: "blur(16px)",
+      borderRadius: "16px",
+      color: "#4b3426",
+      boxShadow: "0 18px 44px rgba(106, 73, 52, 0.14)",
+      backdropFilter: "blur(12px)",
       fontFamily: "Inter, sans-serif",
       fontSize: "0.95rem",
       lineHeight: "1.45",
@@ -93,6 +104,7 @@
       transform: "translateY(-10px)",
       transition: "opacity 220ms ease, transform 220ms ease",
       pointerEvents: "auto",
+      ...config,
     });
 
     toast.textContent = message;
@@ -107,171 +119,34 @@
       toast.style.opacity = "0";
       toast.style.transform = "translateY(-8px)";
       setTimeout(() => toast.remove(), 220);
-    }, 2400);
+    }, 2200);
   }
-
-  /* -------------------------------------------------------------------------- */
-  /* Images                                                                     */
-  /* -------------------------------------------------------------------------- */
-
-  const IMG = {
-    spread: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1400&q=80",
-    pastrySpread: "https://images.unsplash.com/photo-1747829581686-b5f0bede4a70?auto=format&fit=crop&w=1400&q=80",
-
-    donut1: "https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1400&q=80",
-    donut2: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
-
-    roll1: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=1400&q=80",
-    roll2: "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1400&q=80",
-    roll3: "https://images.unsplash.com/photo-1559620192-032c4bc4674e?auto=format&fit=crop&w=1400&q=80",
-
-    bagel: "https://images.unsplash.com/photo-1597393353415-b3730f3719ce?auto=format&fit=crop&w=1400&q=80",
-
-    croissant1: "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
-    croissant2: "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
-    croissant3: "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
-
-    cake1: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
-    cake2: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
-    cake3: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
-    redVelvet: "https://images.unsplash.com/photo-1586788680434-30d3241b7f8e?auto=format&fit=crop&w=1400&q=80",
-
-    brownie: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=80",
-    tart: "https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?auto=format&fit=crop&w=1400&q=80",
-    danish: "https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?auto=format&fit=crop&w=1400&q=80",
-    eclair: "https://images.unsplash.com/photo-1623246123320-0d663675f19c?auto=format&fit=crop&w=1400&q=80",
-    puff: "https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=1400&q=80",
-    cheesecake: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1400&q=80",
-    cookie: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1400&q=80",
-
-    juiceGeneric: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1400&q=80",
-    pineapple: "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=1400&q=80",
-    mintPineapple: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1400&q=80",
-    watermelon: "https://images.unsplash.com/photo-1525385133512-2f3bdd039054?auto=format&fit=crop&w=1400&q=80",
-    sobolo: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1400&q=80",
-    orange: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1400&q=80",
-  };
-
-  const MAIN_IMAGE_BY_ID = {
-  "oreo-donut": "https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1200&q=80",
-  "plain-croissant": "crois.webp",
-"cheese-croissant": "cc.png",
-   "chocolate-croissant": "chc.jpg",
-    "almond-croissant": "ac.jpg",
-  "mud-cake-slice": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80",
-  "fresh-juice": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1200&q=80",
-
-  "raisin-roll": "raison.jpg",
-  "cinnamon-roll": "cin.jpg",
-  "caramel-roll": "caramel.jpg",
-  "signature-bagel": "bagels.jpg",
-
-  "red-velvet-slice": "red.jpg",
-
-  "pineapple-juice": "pine.webp",
-  "mint-pineapple-juice": "pm.jpg",
-  "watermelon-juice": "wm.webp",
-  "sobolo": "sobolo.webp"
-};
-  
-  const GALLERY_BY_CATEGORY = {
-    donuts: [IMG.donut1, IMG.donut2, IMG.spread, IMG.pastrySpread],
-    rolls: [IMG.roll1, IMG.roll2, IMG.roll3, IMG.pastrySpread],
-    bagels: [IMG.bagel, IMG.pastrySpread, IMG.croissant1, IMG.spread],
-    croissants: [IMG.croissant1, IMG.croissant2, IMG.croissant3, IMG.pastrySpread],
-    "cake slices": [IMG.cake1, IMG.cake2, IMG.cake3, IMG.redVelvet],
-    brownies: [IMG.brownie, IMG.cake1, IMG.cookie, IMG.spread],
-    tarts: [IMG.tart, IMG.danish, IMG.cake2, IMG.spread],
-    danishes: [IMG.danish, IMG.croissant1, IMG.tart, IMG.spread],
-    pastries: [IMG.pastrySpread, IMG.puff, IMG.eclair, IMG.croissant1],
-    juices: [IMG.juiceGeneric, IMG.pineapple, IMG.orange, IMG.watermelon],
-  };
-
- function getGallery(product) {
-  const key =
-    normalise(product.category) === "bagels"
-      ? "bagels"
-      : GALLERY_BY_CATEGORY[normalise(product.category)]
-      ? normalise(product.category)
-      : "pastries";
-
-  const mainImage = MAIN_IMAGE_BY_ID[product.id] || product.image;
-  const combined = [mainImage, ...(GALLERY_BY_CATEGORY[key] || [])];
-
-  return [...new Set(combined)].slice(0, 4);
-}
 
   /* -------------------------------------------------------------------------- */
   /* Product Data                                                               */
   /* -------------------------------------------------------------------------- */
 
-  function defaultOptionsFor(category) {
-    const cat = normalise(category);
-
-    if (cat === "croissants") return ["Cheese", "Plain", "Chocolate"];
-    if (cat === "juices") return ["Chilled", "Bottle", "Pairing Pick"];
-    if (cat === "brownies") return ["Chocolate", "Walnut"];
-    return ["Classic", "Premium Box", "Gift Pick"];
-  }
-
-  function pairingFor(product) {
-    const cat = normalise(product.category);
-
-    if (cat === "donuts") return "orange juice or sobolo";
-    if (cat === "croissants") return "mint & pineapple juice or orange juice";
-    if (cat === "rolls") return "pineapple juice or mint & pineapple juice";
-    if (cat === "brownies") return "sobolo or orange juice";
-    if (cat === "cake slices") return "sobolo, orange juice, or watermelon juice";
-    if (cat === "tarts") return "orange juice or watermelon juice";
-    if (cat === "danishes") return "mint & pineapple juice";
-    if (cat === "bagels" || cat === "pastries") return "pineapple juice or orange juice";
-    if (cat === "juices") return "croissants, donuts, or cake slices";
-    return "a fresh juice from the Maison Crème menu";
-  }
-
   function createProduct(config) {
-    const product = {
+    return {
       id: config.id,
       name: config.name,
       category: config.category,
       price: Number(config.price),
       unit: config.unit,
-      image: MAIN_IMAGE_BY_ID[config.id] || config.image,
-      badge: config.badge || "Maison Crème Selection",
-      description:
-        config.description ||
-        `${config.name} from the Maison Crème luxury pastry collection.`,
-      pairing:
-        config.pairing ||
-        `Pairs beautifully with ${pairingFor(config)} for a complete Maison Crème order.`,
-      options: config.options || defaultOptionsFor(config.category),
+      image: config.image,
+      images: config.images && config.images.length ? config.images : [config.image],
+      options: config.options && config.options.length ? config.options : ["Standard"],
+      tagline: config.tagline,
+      availability: config.availability || "Available to order",
+      description: config.description,
+      highlights: config.highlights,
+      overview: config.overview,
+      overviewExtra: config.overviewExtra,
+      notes: config.notes,
+      pairing: config.pairing,
+      metaBestWith: config.metaBestWith,
+      sidebarPoints: config.sidebarPoints,
     };
-
-    product.images = config.images || getGallery(product);
-    product.categoryLabel =
-      normalise(product.category) === "juices"
-        ? "Fresh Juice Selection"
-        : `Luxury ${product.category}`;
-    product.serving =
-      normalise(product.unit) === "two" ? "Sold in pairs" : "Single serving";
-    product.overview =
-      config.overview ||
-      `${product.description} Every detail is designed to feel polished, rich, and worthy of a premium pastry brand in Ghana.`;
-    product.notes =
-      config.notes || [
-        "Refined presentation with a boutique pastry finish.",
-        `Designed to feel ${
-          normalise(product.category) === "juices"
-            ? "clean, fresh, and elevated"
-            : "rich, polished, and indulgent"
-        }.`,
-        normalise(product.unit) === "two"
-          ? "Sold in pairs for sharing, gifting, or curated dessert boxes."
-          : "Available as an elegant single addition to larger pastry orders.",
-        `Best enjoyed with ${pairingFor(product)}.`,
-      ];
-
-    return product;
   }
 
   const productList = [
@@ -279,326 +154,853 @@
       id: "oreo-donut",
       name: "Oreo Donuts",
       category: "Donuts",
-      price: 110,
-      unit: "two",
-      image: IMG.donut1,
-      badge: "Signature Collection",
-      description:
-        "A rich premium donut experience finished with smooth chocolate, elegant texture, and Oreo crunch.",
-      options: ["Classic", "Premium Box", "Gift Pick"],
-    }),
-    createProduct({
-      id: "vanilla-glazed-donut",
-      name: "Vanilla Glazed Donuts",
-      category: "Donuts",
-      price: 105,
-      unit: "two",
-      image: IMG.donut2,
-      badge: "Gloss Finish",
-      description:
-        "Soft luxury donuts coated in a smooth vanilla glaze with a clean polished finish.",
-    }),
-    createProduct({
-      id: "raisin-roll",
-      name: "Raisin Roll",
-      category: "Rolls",
-      price: 110,
-      unit: "two",
-      image: IMG.roll1,
-      badge: "Classic Richness",
-      description:
-        "A buttery glazed roll with warm depth, smooth texture, and a refined pastry-house feel.",
-    }),
-    createProduct({
-      id: "cinnamon-roll",
-      name: "Cinnamon Rolls",
-      category: "Rolls",
-      price: 125,
-      unit: "two",
-      image: IMG.roll2,
-      badge: "Warm & Indulgent",
-      description:
-        "Soft spirals layered with spice and finished with glossy icing for elevated comfort.",
-    }),
-    createProduct({
-      id: "caramel-roll",
-      name: "Caramel Rolls",
-      category: "Rolls",
-      price: 130,
-      unit: "two",
-      image: IMG.roll3,
-      badge: "Luxury Drizzle",
-      description:
-        "Buttery rolls dressed in rich caramel for a more decadent and polished dessert moment.",
-    }),
-    createProduct({
-      id: "signature-bagel",
-      name: "Signature Bagel",
-      category: "Bagels",
       price: 100,
       unit: "two",
-      image: IMG.bagel,
-      badge: "Brunch Favourite",
+      image: "https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1200&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A sweet pick for sharing, gifting, or enjoying with a cold drink.",
       description:
-        "Golden, glossy, and beautifully baked for a clean boutique-style brunch experience.",
-      options: ["Classic", "Toasted", "Brunch Box"],
+        "Chocolate donuts topped with Oreo crumbs, served as a pair. They are soft, sweet, and easy to enjoy when you want something simple and satisfying.",
+      highlights: {
+        love: "Customers like the soft texture and the extra crunch from the Oreo topping.",
+        time: "Works well as a snack, dessert, or something to share with a friend.",
+        serving: "Served as two donuts, so it is easy to split or enjoy both yourself.",
+      },
+      overview:
+        "Oreo Donuts are a good choice when you want something sweet, familiar, and easy to enjoy. They are simple, filling, and work well for casual cravings.",
+      overviewExtra:
+        "They are especially nice when paired with a cold drink if you want something refreshing beside them.",
+      notes: [
+        "Soft donut texture with a chocolate topping.",
+        "Crushed Oreo adds a little crunch on top.",
+        "Sweet without being too complicated.",
+        "Best enjoyed fresh for the softest bite.",
+      ],
+      pairing:
+        "Try this with pineapple juice, orange juice, or sobolo if you want something chilled beside it.",
+      metaBestWith: "Pineapple juice, orange juice, or sobolo",
+      sidebarPoints: [
+        { title: "Best enjoyed fresh", text: "The texture is softest and nicest when freshly served." },
+        { title: "Easy to share", text: "Comes as a pair, so it works well for sharing." },
+        { title: "Sweet snack", text: "A simple choice when you want something sweet and filling." },
+      ],
     }),
-  createProduct({
-  id: "plain-croissant",
-  name: "Plain Croissant",
-  category: "Croissants",
-  price: 110,
-  unit: "two",
-  image: "crois.webp",
-  badge: "Classic Layers",
-  description:
-    "Flaky plain croissants with a clean golden finish and a refined bakery texture.",
-  options: ["Classic", "Fresh Pair"],
-}),
-createProduct({
-  id: "cheese-croissant",
-  name: "Cheese Croissant",
-  category: "Croissants",
-  price: 120,
-  unit: "two",
-  image: "crois.webp",
-  badge: "Savory Favourite",
-  description:
-    "Buttery croissants with a rich cheese filling and a polished golden finish.",
-  options: ["Cheese", "Fresh Pair"],
-}),
-createProduct({
-  id: "chocolate-croissant",
-  name: "Chocolate Croissant",
-  category: "Croissants",
-  price: 120,
-  unit: "two",
-  image: IMG.croissant2,
-  badge: "Deep Cocoa",
-  description:
-    "Layered croissants with a rich chocolate center and a premium bakery finish.",
-  options: ["Chocolate Classic", "Fresh Pair"],
-}),
-createProduct({
-  id: "almond-croissant",
-  name: "Almond Croissant",
-  category: "Croissants",
-  price: 140,
-  unit: "two",
-  image: IMG.croissant3,
-  badge: "Refined Finish",
-  description:
-    "Buttery layers finished with almond richness for a more elegant croissant experience.",
-  options: ["Almond Classic", "Fresh Pair"],
-}),
+
+    createProduct({
+      id: "plain-croissant",
+      name: "Plain Croissant",
+      category: "Croissants",
+      price: 110,
+      unit: "two",
+      image: "crois.webp",
+      images: [
+        "crois.webp",
+        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A light, buttery option that is easy to enjoy at any time of day.",
+      description:
+        "Plain croissants served as a pair. They are flaky, soft inside, and have a light buttery taste that works well for breakfast or a quick snack.",
+      highlights: {
+        love: "People enjoy how light and flaky they are without being too sweet.",
+        time: "Great for breakfast, a quick snack, or something to eat with juice.",
+        serving: "Served as a pair, which makes them easy to share.",
+      },
+      overview:
+        "Plain Croissant is a good everyday choice for someone who wants something light, simple, and freshly baked. It is easy to enjoy on its own or with a drink.",
+      overviewExtra:
+        "Because it is not too sweet, it also works well if you want a pastry that feels lighter than cake or brownies.",
+      notes: [
+        "Light buttery flavour.",
+        "Flaky outside with a softer inside.",
+        "Not too sweet, so it feels easy to eat.",
+        "Best when fresh and slightly warm.",
+      ],
+      pairing:
+        "This goes well with pineapple juice, orange juice, or even on its own if you want something light.",
+      metaBestWith: "Pineapple juice or orange juice",
+      sidebarPoints: [
+        { title: "Simple and light", text: "A good option when you want something easy and not too heavy." },
+        { title: "Fresh texture", text: "Best when enjoyed while still fresh." },
+        { title: "Breakfast-friendly", text: "Works especially well earlier in the day." },
+      ],
+    }),
+
+    createProduct({
+      id: "cheese-croissant",
+      name: "Cheese Croissant",
+      category: "Croissants",
+      price: 120,
+      unit: "two",
+      image: "crois.webp",
+      images: [
+        "crois.webp",
+        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A warm pastry option with a cheesy centre and a soft bite.",
+      description:
+        "Cheese croissants served as a pair. They are buttery, flaky, and have a cheesy filling that makes them more savoury and filling.",
+      highlights: {
+        love: "Customers like the mix of flaky pastry and cheesy flavour.",
+        time: "A nice option for breakfast, brunch, or an afternoon snack.",
+        serving: "Comes as a pair, so it is easy to order for one person or two.",
+      },
+      overview:
+        "Cheese Croissant is a good option for someone who wants a pastry that feels a little more filling. It has the same flaky texture as a croissant, with a savoury centre.",
+      overviewExtra:
+        "It is a nice middle ground if you want something baked but not too sweet.",
+      notes: [
+        "Flaky pastry with a savoury cheese filling.",
+        "Soft inside and lightly crisp outside.",
+        "More filling than a plain pastry.",
+        "Best enjoyed fresh for the best texture.",
+      ],
+      pairing:
+        "This pairs well with pineapple juice, orange juice, or a simple chilled drink.",
+      metaBestWith: "Pineapple juice or orange juice",
+      sidebarPoints: [
+        { title: "Savoury choice", text: "A good option if you do not want something too sweet." },
+        { title: "Freshly baked", text: "Best enjoyed while still fresh." },
+        { title: "Easy to share", text: "Served in a simple pair." },
+      ],
+    }),
+
+    createProduct({
+      id: "chocolate-croissant",
+      name: "Chocolate Croissant",
+      category: "Croissants",
+      price: 120,
+      unit: "two",
+      image: "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1200&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
+        "crois.webp",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A warm favourite for breakfast, snacks, or sharing.",
+      description:
+        "Flaky croissants with a chocolate filling and a soft, buttery bite. A good pick when you want something warm, satisfying, and easy to enjoy with a drink.",
+      highlights: {
+        love: "It is soft, flaky, and filling without feeling too heavy.",
+        time: "Great for breakfast, a quick snack, or something to go with a chilled drink.",
+        serving: "Served as a pair, which makes it easy to share or keep both for yourself.",
+      },
+      overview:
+        "Chocolate Croissant is a simple favourite for anyone who enjoys soft pastry with a rich filling. It works well as a breakfast option, an afternoon snack, or a quick treat when you want something warm and satisfying.",
+      overviewExtra:
+        "It is easy to enjoy on its own, but it also goes well with a drink if you want something more filling.",
+      notes: [
+        "Soft, flaky layers with a buttery texture.",
+        "A chocolate filling that adds sweetness without being too much.",
+        "Best enjoyed fresh when the pastry is still soft and light.",
+        "A good choice if you want something easy to share.",
+      ],
+      pairing:
+        "This pairs nicely with pineapple juice, orange juice, or sobolo. If you want something refreshing beside a warm pastry, any of those work well.",
+      metaBestWith: "Juice, sobolo, or a light snack break",
+      sidebarPoints: [
+        { title: "Freshly prepared", text: "Best enjoyed while fresh for the best texture." },
+        { title: "Easy to pair", text: "Works well with juice or as part of a snack order." },
+        { title: "Simple serving", text: "Served in a clear, easy-to-order portion." },
+      ],
+    }),
+
+    createProduct({
+      id: "almond-croissant",
+      name: "Almond Croissant",
+      category: "Croissants",
+      price: 140,
+      unit: "two",
+      image: "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1200&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
+        "crois.webp",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A buttery pastry with almond flavour and a fuller bite.",
+      description:
+        "Almond croissants served as a pair. They have a soft buttery texture and an almond flavour that makes them a little richer and more filling.",
+      highlights: {
+        love: "Customers enjoy the richer almond taste and the soft pastry layers.",
+        time: "A good option for breakfast, brunch, or when you want something more filling.",
+        serving: "Served as two pieces, so it is easy to share.",
+      },
+      overview:
+        "Almond Croissant is a good option if you want something that feels a little richer than a plain pastry. It is still soft and flaky, but the almond flavour gives it more depth.",
+      overviewExtra:
+        "If you like pastries that feel a bit more filling, this is a great one to try.",
+      notes: [
+        "Buttery pastry layers with almond flavour.",
+        "A richer taste than a plain croissant.",
+        "Soft texture that is easy to enjoy.",
+        "Pairs nicely with cold drinks.",
+      ],
+      pairing:
+        "This goes well with orange juice, pineapple juice, or any chilled drink that balances the richer flavour.",
+      metaBestWith: "Orange juice or pineapple juice",
+      sidebarPoints: [
+        { title: "Richer flavour", text: "A good option if you want more than a plain pastry." },
+        { title: "Served in pairs", text: "Simple portion for one person or sharing." },
+        { title: "Nice with drinks", text: "Pairs well with chilled juice." },
+      ],
+    }),
+
+    createProduct({
+      id: "walnut-brownie",
+      name: "Walnut Brownie",
+      category: "Brownies",
+      price: 150,
+      unit: "two",
+      image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A rich brownie option with walnut pieces and a soft bite.",
+      description:
+        "Walnut brownies served as a pair. They are chocolatey, soft, and have walnut pieces that add a little crunch and make them more filling.",
+      highlights: {
+        love: "People like the mix of soft brownie texture and the extra crunch from the walnuts.",
+        time: "A good choice when you want something sweet and filling.",
+        serving: "Served as a pair, which makes it easy to share or save one for later.",
+      },
+      overview:
+        "Walnut Brownie is a simple option for someone who wants a richer dessert. The chocolate flavour is familiar, while the walnut pieces add a little more texture.",
+      overviewExtra:
+        "It works well as a dessert, snack, or something to enjoy alongside a cold drink.",
+      notes: [
+        "Soft brownie texture with chocolate flavour.",
+        "Walnut pieces add a little crunch.",
+        "Feels more filling than a lighter pastry.",
+        "Best if you want something rich and sweet.",
+      ],
+      pairing:
+        "This goes well with sobolo, orange juice, or pineapple juice if you want something chilled beside it.",
+      metaBestWith: "Sobolo, orange juice, or pineapple juice",
+      sidebarPoints: [
+        { title: "Rich dessert", text: "A good option when you want something more chocolatey." },
+        { title: "Nutty texture", text: "Walnuts add crunch to the soft brownie." },
+        { title: "Easy to split", text: "Served in a pair for simple sharing." },
+      ],
+    }),
+
+    createProduct({
+      id: "chocolate-brownie",
+      name: "Chocolate Brownie",
+      category: "Brownies",
+      price: 150,
+      unit: "two",
+      image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A simple chocolate dessert option that is soft and filling.",
+      description:
+        "Chocolate brownies served as a pair. They are soft, rich, and a good choice when you want a straightforward chocolate dessert.",
+      highlights: {
+        love: "Customers enjoy the soft texture and familiar chocolate taste.",
+        time: "Works as a dessert, snack, or sweet treat during the day.",
+        serving: "Comes in a pair, so it is easy to share.",
+      },
+      overview:
+        "Chocolate Brownie is a simple go-to option if you want something sweet, soft, and easy to enjoy. It is rich enough to feel satisfying without needing much else beside it.",
+      overviewExtra:
+        "It also works well if you want to add a dessert item to a larger order.",
+      notes: [
+        "Soft brownie texture.",
+        "Rich chocolate flavour.",
+        "A straightforward dessert option.",
+        "Good when you want something filling and sweet.",
+      ],
+      pairing:
+        "Pairs well with sobolo, orange juice, or pineapple juice.",
+      metaBestWith: "Sobolo or juice",
+      sidebarPoints: [
+        { title: "Simple favourite", text: "A classic dessert choice for chocolate lovers." },
+        { title: "Soft texture", text: "Easy to enjoy and filling." },
+        { title: "Served in pairs", text: "A clear and simple serving size." },
+      ],
+    }),
+
     createProduct({
       id: "mud-cake-slice",
       name: "Mud Cake Slice",
       category: "Cake Slices",
       price: 150,
       unit: "two",
-      image: IMG.cake1,
-      badge: "Rich & Elegant",
+      image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
+        "red.jpg",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A rich chocolate cake option served in slices.",
       description:
-        "Dense chocolate luxury with a smooth finish and a boutique dessert-table presence.",
-      options: ["Classic", "Premium Box", "Celebration Pick"],
+        "Mud cake slices served as a pair. It is rich, chocolatey, and a good choice when you want something more filling than a pastry.",
+      highlights: {
+        love: "Customers enjoy the rich chocolate taste and soft cake texture.",
+        time: "A nice choice for dessert, celebrations, or just when you want cake.",
+        serving: "Served as two slices, so it is easy to share.",
+      },
+      overview:
+        "Mud Cake Slice is a good option if you want cake that feels rich and satisfying. It works well for dessert and also for moments when you want something a little more special.",
+      overviewExtra:
+        "Because it is served in slices, it is easy to share or enjoy over time.",
+      notes: [
+        "Rich chocolate flavour.",
+        "Soft cake texture.",
+        "Feels fuller and heavier than lighter pastries.",
+        "A good dessert-style option.",
+      ],
+      pairing:
+        "This goes well with sobolo, orange juice, or pineapple juice.",
+      metaBestWith: "Sobolo, orange juice, or pineapple juice",
+      sidebarPoints: [
+        { title: "Rich cake option", text: "A strong pick if you want dessert instead of pastry." },
+        { title: "Served in slices", text: "Easy to share between two people." },
+        { title: "Works for occasions", text: "Also nice for birthdays or special orders." },
+      ],
     }),
+
     createProduct({
       id: "swirl-cake",
       name: "Swirl Cake",
       category: "Cake Slices",
       price: 135,
       unit: "two",
-      image: IMG.cake2,
-      badge: "Smooth Marble Finish",
+      image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
+        "red.jpg",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A soft cake slice option that is easy to enjoy.",
       description:
-        "A light, elegant swirl cake with a polished marbled look and premium feel.",
-      options: ["Classic", "Marble Box", "Gift Pick"],
+        "Swirl cake served as a pair of slices. It has a soft texture and is a good pick if you want cake that feels simple, familiar, and easy to enjoy.",
+      highlights: {
+        love: "Customers like that it feels soft, light, and easy to eat.",
+        time: "Works well as a dessert or something to have with a drink.",
+        serving: "Served as two slices for simple sharing.",
+      },
+      overview:
+        "Swirl Cake is a nice option if you want cake without going for something too heavy. It is soft, straightforward, and works well for everyday orders.",
+      overviewExtra:
+        "It is also a good choice if you want to add a cake item to a mixed order.",
+      notes: [
+        "Soft cake texture.",
+        "Easy-to-enjoy flavour.",
+        "Lighter feel than a rich chocolate cake.",
+        "Works well as an everyday dessert option.",
+      ],
+      pairing:
+        "Pairs well with orange juice, pineapple juice, or sobolo.",
+      metaBestWith: "Orange juice, pineapple juice, or sobolo",
+      sidebarPoints: [
+        { title: "Soft cake", text: "Easy to enjoy and not too heavy." },
+        { title: "Served as slices", text: "A simple portion for sharing." },
+        { title: "Everyday option", text: "A good choice for regular orders." },
+      ],
     }),
+
     createProduct({
       id: "lemon-raspberry-slice",
       name: "Lemon Raspberry Slice",
       category: "Cake Slices",
       price: 90,
       unit: "each",
-      image: IMG.cake3,
-      badge: "Bright & Refined",
+      image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1200&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+        "red.jpg",
+      ],
+      options: ["Single Slice", "Fresh Slice"],
+      tagline: "A lighter cake choice with a fruity flavour.",
       description:
-        "A fresh citrus-and-berry slice with a clean luxurious finish and balanced sweetness.",
-      options: ["Single Slice", "Fresh Pick", "Dessert Pair"],
+        "A single slice with lemon and raspberry flavour. It is a nice choice if you want something a little lighter and fruitier than a chocolate dessert.",
+      highlights: {
+        love: "Customers like the lighter feel and the fruity flavour.",
+        time: "A nice choice for a light dessert or sweet snack.",
+        serving: "Sold as a single slice, so it is easy to add to any order.",
+      },
+      overview:
+        "Lemon Raspberry Slice is a good option if you want something different from chocolate-based desserts. It feels lighter and works well when you want a smaller sweet option.",
+      overviewExtra:
+        "Because it comes as a single slice, it is also easy to include alongside other items.",
+      notes: [
+        "Fruity and lighter than most chocolate-based desserts.",
+        "Easy single-slice serving.",
+        "A nice option for smaller orders.",
+        "Good if you want something sweet without it feeling too heavy.",
+      ],
+      pairing:
+        "Pairs nicely with orange juice or pineapple juice.",
+      metaBestWith: "Orange juice or pineapple juice",
+      sidebarPoints: [
+        { title: "Single serving", text: "Easy to add to any order." },
+        { title: "Lighter option", text: "Good if you want cake without something too rich." },
+        { title: "Fruit flavour", text: "A refreshing change from chocolate desserts." },
+      ],
     }),
+
     createProduct({
       id: "red-velvet-slice",
       name: "Red Velvet Slice",
       category: "Cake Slices",
       price: 145,
       unit: "two",
-      image: IMG.redVelvet,
-      badge: "Velvet Luxury",
+      image: "red.jpg",
+      images: [
+        "red.jpg",
+        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
+        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A soft cake option with a smooth finish.",
       description:
-        "Soft red velvet layers with a polished cream finish for a rich celebration-ready feel.",
-      options: ["Classic", "Premium Box", "Celebration Pick"],
+        "Red velvet cake slices served as a pair. They are soft, smooth, and a good pick when you want cake that feels balanced and easy to enjoy.",
+      highlights: {
+        love: "Customers enjoy the soft cake texture and smooth finish.",
+        time: "Works well for dessert, celebrations, or casual orders.",
+        serving: "Served as a pair of slices for easy sharing.",
+      },
+      overview:
+        "Red Velvet Slice is a good option if you want cake that feels soft and familiar. It is a nice middle ground between something very rich and something very light.",
+      overviewExtra:
+        "It also works well when you want cake for sharing without ordering a full cake.",
+      notes: [
+        "Soft cake texture.",
+        "Smooth finish and balanced flavour.",
+        "Easy to enjoy for different occasions.",
+        "A good sharing option.",
+      ],
+      pairing:
+        "Pairs well with pineapple juice, orange juice, or sobolo.",
+      metaBestWith: "Pineapple juice, orange juice, or sobolo",
+      sidebarPoints: [
+        { title: "Soft cake", text: "Easy to enjoy and share." },
+        { title: "Balanced option", text: "Not as heavy as some richer cakes." },
+        { title: "Good for occasions", text: "Works for everyday orders and small celebrations." },
+      ],
     }),
+
     createProduct({
-      id: "brownie-duo",
-      name: "Brownie Duo",
-      category: "Brownies",
-      price: 150,
+      id: "raisin-roll",
+      name: "Raisin Roll",
+      category: "Pastries",
+      price: 110,
       unit: "two",
-      image: IMG.brownie,
-      badge: "Chocolate • Walnut",
+      image: "raison.jpg",
+      images: [
+        "raison.jpg",
+        "cin.jpg",
+        "caramel.jpg",
+        "bagels.jpg",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A soft roll with raisin flavour and a buttery finish.",
       description:
-        "Fudgy premium brownies with deep flavor and a rich boutique-style finish.",
-      options: ["Chocolate", "Walnut"],
+        "Raisin rolls served as a pair. They are soft, slightly sweet, and a good option if you want something baked that feels familiar and filling.",
+      highlights: {
+        love: "Customers like the soft texture and the raisin flavour.",
+        time: "Good for breakfast, a snack, or something light to go with a drink.",
+        serving: "Served as a pair for easy sharing.",
+      },
+      overview:
+        "Raisin Roll is a simple baked option that works well for everyday orders. It is soft, filling, and easy to enjoy at almost any time of day.",
+      overviewExtra:
+        "It is especially good if you want something not too sweet but still satisfying.",
+      notes: [
+        "Soft roll texture.",
+        "Slightly sweet with raisin flavour.",
+        "Easy to enjoy for breakfast or snack time.",
+        "Best when fresh.",
+      ],
+      pairing:
+        "Pairs well with pineapple juice or orange juice.",
+      metaBestWith: "Pineapple juice or orange juice",
+      sidebarPoints: [
+        { title: "Simple favourite", text: "A familiar baked option that is easy to enjoy." },
+        { title: "Served in pairs", text: "Good for one person or sharing." },
+        { title: "Nice for mornings", text: "Works well for breakfast." },
+      ],
     }),
+
     createProduct({
-      id: "strawberry-tart",
-      name: "Strawberry Tart",
-      category: "Tarts",
-      price: 140,
+      id: "cinnamon-roll",
+      name: "Cinnamon Roll",
+      category: "Pastries",
+      price: 125,
       unit: "two",
-      image: IMG.tart,
-      badge: "Fruit-Luxe",
+      image: "cin.jpg",
+      images: [
+        "cin.jpg",
+        "raison.jpg",
+        "caramel.jpg",
+        "bagels.jpg",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A soft pastry with cinnamon flavour and a comforting bite.",
       description:
-        "Glossy strawberry tarts with a delicate base and an elevated pastry-boutique look.",
-      options: ["Classic", "Fruit Luxe", "Gift Pick"],
+        "Cinnamon rolls served as a pair. They are soft, sweet, and a good option if you want something baked that feels warm and comforting.",
+      highlights: {
+        love: "Customers enjoy the soft texture and cinnamon flavour.",
+        time: "Great for breakfast, snack time, or something sweet during the day.",
+        serving: "Comes as a pair, so it is easy to share.",
+      },
+      overview:
+        "Cinnamon Roll is a good choice if you want a pastry that feels soft, sweet, and familiar. It works well for mornings and also as a casual dessert option.",
+      overviewExtra:
+        "It is especially nice when you want something baked that feels comforting and filling.",
+      notes: [
+        "Soft pastry texture.",
+        "Cinnamon flavour throughout.",
+        "Sweet and easy to enjoy.",
+        "A nice baked snack choice.",
+      ],
+      pairing:
+        "Pairs well with pineapple juice, orange juice, or sobolo.",
+      metaBestWith: "Pineapple juice, orange juice, or sobolo",
+      sidebarPoints: [
+        { title: "Comforting flavour", text: "A soft pastry with cinnamon taste." },
+        { title: "Good any time", text: "Works for breakfast or a sweet snack." },
+        { title: "Easy serving", text: "Served in a pair." },
+      ],
     }),
+
     createProduct({
-      id: "fruit-danish",
-      name: "Fruit Danish",
-      category: "Danishes",
+      id: "caramel-roll",
+      name: "Caramel Roll",
+      category: "Pastries",
       price: 130,
       unit: "two",
-      image: IMG.danish,
-      badge: "Delicate Layers",
+      image: "caramel.jpg",
+      images: [
+        "caramel.jpg",
+        "cin.jpg",
+        "raison.jpg",
+        "bagels.jpg",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A soft roll with caramel flavour and a slightly richer finish.",
       description:
-        "Light pastry layers finished with fruit notes and a beautifully refined appearance.",
-      options: ["Fruit Classic", "Berry Finish", "Gift Box"],
+        "Caramel rolls served as a pair. They are soft and sweet, with a caramel flavour that makes them feel a little richer than a plain pastry.",
+      highlights: {
+        love: "Customers like the sweeter caramel taste and soft texture.",
+        time: "A nice option when you want something baked and a little richer.",
+        serving: "Served as a pair for easy sharing.",
+      },
+      overview:
+        "Caramel Roll is a good choice if you want something soft and sweet with a slightly richer taste. It works well as a snack or dessert-style pastry.",
+      overviewExtra:
+        "It is a nice alternative if you want something a little sweeter than a plain roll.",
+      notes: [
+        "Soft roll texture.",
+        "Sweeter caramel flavour.",
+        "Feels a little richer than a plain pastry.",
+        "Easy to enjoy with chilled drinks.",
+      ],
+      pairing:
+        "Pairs well with pineapple juice, orange juice, or sobolo.",
+      metaBestWith: "Pineapple juice, orange juice, or sobolo",
+      sidebarPoints: [
+        { title: "Sweeter option", text: "A good pick if you want more sweetness." },
+        { title: "Soft pastry", text: "Easy to enjoy and filling." },
+        { title: "Served in pairs", text: "Simple and shareable serving." },
+      ],
     }),
+
     createProduct({
-      id: "eclair-selection",
-      name: "Éclairs",
+      id: "signature-bagel",
+      name: "Bagel",
       category: "Pastries",
-      price: 145,
+      price: 100,
       unit: "two",
-      image: IMG.eclair,
-      badge: "French-Inspired",
+      image: "bagels.jpg",
+      images: [
+        "bagels.jpg",
+        "raison.jpg",
+        "cin.jpg",
+        "caramel.jpg",
+      ],
+      options: ["Standard", "Fresh Batch"],
+      tagline: "A simple baked option that works well for breakfast or a quick bite.",
       description:
-        "Elegant pastry shells with smooth filling and a polished luxury dessert finish.",
-      options: ["Classic", "Chocolate Finish", "Gift Pick"],
+        "Bagels served as a pair. They are a good option if you want something baked, easy to enjoy, and not too sweet.",
+      highlights: {
+        love: "Customers like that it feels simple, filling, and easy to eat.",
+        time: "Works well for breakfast or a light snack.",
+        serving: "Comes as a pair for easy sharing.",
+      },
+      overview:
+        "Bagel is a simple menu option for people who want something baked that feels light and straightforward. It is easy to enjoy and fits well into breakfast or snack orders.",
+      overviewExtra:
+        "It also works if you want to add something mild to a bigger order.",
+      notes: [
+        "Simple baked texture.",
+        "Not too sweet.",
+        "Good for breakfast or quick bites.",
+        "Easy to pair with drinks.",
+      ],
+      pairing:
+        "Pairs well with pineapple juice or orange juice.",
+      metaBestWith: "Pineapple juice or orange juice",
+      sidebarPoints: [
+        { title: "Simple option", text: "Good if you want something plain and easy." },
+        { title: "Light choice", text: "Feels lighter than richer desserts." },
+        { title: "Good with drinks", text: "Nice with chilled juice." },
+      ],
     }),
-    createProduct({
-      id: "puff-pastries",
-      name: "Puff Pastries",
-      category: "Pastries",
-      price: 115,
-      unit: "two",
-      image: IMG.puff,
-      badge: "Crisp Layers",
-      description:
-        "Light, crisp, and beautifully layered for a polished premium pastry moment.",
-      options: ["Classic", "Savory Style", "Gift Box"],
-    }),
-    createProduct({
-      id: "mini-cheesecake",
-      name: "Mini Cheesecakes",
-      category: "Cake Slices",
-      price: 155,
-      unit: "two",
-      image: IMG.cheesecake,
-      badge: "Creamy Luxury",
-      description:
-        "Rich mini cheesecakes with a smooth premium finish perfect for gifting or indulgence.",
-      options: ["Classic", "Berry Finish", "Gift Box"],
-    }),
-    createProduct({
-      id: "cookie-selection",
-      name: "Cookie Selection",
-      category: "Pastries",
-      price: 95,
-      unit: "two",
-      image: IMG.cookie,
-      badge: "Elegant Everyday",
-      description:
-        "Luxury cookies with a rich bakery feel, ideal for light indulgence or curated gifting.",
-      options: ["Classic", "Crunch Mix", "Gift Pick"],
-    }),
-    createProduct({
-      id: "fresh-juice",
-      name: "Fresh Juices",
-      category: "Juices",
-      price: 40,
-      unit: "each",
-      image: IMG.juiceGeneric,
-      badge: "Juice Bar",
-      description:
-        "A fresh handcrafted juice selection that completes the full Maison Crème pastry experience.",
-      options: ["Pineapple", "Mint & Pineapple", "Watermelon", "Sobolo", "Orange"],
-      pairing: "Pairs beautifully with croissants, donuts, brownies, and premium cake slices.",
-    }),
+
     createProduct({
       id: "pineapple-juice",
       name: "Pineapple Juice",
       category: "Juices",
       price: 40,
       unit: "each",
-      image: IMG.pineapple,
-      badge: "Fresh Juice",
+      image: "pine.webp",
+      images: [
+        "pine.webp",
+        "pm.jpg",
+        "wm.webp",
+        "sobolo.webp",
+      ],
+      options: ["Chilled", "Bottle"],
+      tagline: "Fresh and easy to pair with pastries, brownies, and cake.",
       description:
-        "Bright tropical pineapple juice served cold with a clean premium finish.",
-      options: ["Chilled", "Bottle", "Pairing Pick"],
+        "Fresh pineapple juice served chilled. It is a refreshing drink option that pairs well with pastries, brownies, cake slices, and more.",
+      highlights: {
+        love: "Customers like how fresh and easy it is to pair with different food items.",
+        time: "Good at any time of day, especially with baked items.",
+        serving: "Sold individually, so it is easy to add to any order.",
+      },
+      overview:
+        "Pineapple Juice is a simple drink option that works with almost everything on the menu. If you want something cold and refreshing beside a baked item, this is a good pick.",
+      overviewExtra:
+        "It is especially useful if you want a drink that balances sweeter pastries and desserts.",
+      notes: [
+        "Served chilled.",
+        "Fresh and refreshing.",
+        "Easy to pair with most menu items.",
+        "Good as part of a larger order or on its own.",
+      ],
+      pairing:
+        "Pairs well with croissants, brownies, cake slices, donuts, and rolls.",
+      metaBestWith: "Croissants, brownies, cake, and donuts",
+      sidebarPoints: [
+        { title: "Refreshing", text: "A simple chilled drink option." },
+        { title: "Easy to pair", text: "Works with many items on the menu." },
+        { title: "Single serving", text: "Easy to add to any order." },
+      ],
     }),
+
     createProduct({
       id: "mint-pineapple-juice",
       name: "Mint & Pineapple Juice",
       category: "Juices",
       price: 40,
       unit: "each",
-      image: IMG.mintPineapple,
-      badge: "Refreshing Pairing",
+      image: "pm.jpg",
+      images: [
+        "pm.jpg",
+        "pine.webp",
+        "wm.webp",
+        "sobolo.webp",
+      ],
+      options: ["Chilled", "Bottle"],
+      tagline: "A refreshing juice blend with a cool finish.",
       description:
-        "Fresh pineapple lifted with mint for a cool, elegant, and refined drink pairing.",
-      options: ["Chilled", "Bottle", "Pairing Pick"],
+        "Mint and pineapple juice served chilled. It is refreshing, easy to drink, and a good choice if you want something cooler and lighter beside pastries or cake.",
+      highlights: {
+        love: "Customers like the refreshing feel and the cool mint finish.",
+        time: "Great for hot days or whenever you want something refreshing.",
+        serving: "Sold individually, so it is easy to add to your order.",
+      },
+      overview:
+        "Mint & Pineapple Juice is a nice option if you want something a little more refreshing than a regular fruit juice. It feels lighter and works well with pastries and cakes.",
+      overviewExtra:
+        "It is especially good when you want a drink that helps balance sweeter items.",
+      notes: [
+        "Served chilled.",
+        "Refreshing pineapple flavour with mint.",
+        "Feels lighter and cooling.",
+        "Works well with baked items.",
+      ],
+      pairing:
+        "Pairs well with croissants, cake slices, and rolls.",
+      metaBestWith: "Croissants, cake slices, and rolls",
+      sidebarPoints: [
+        { title: "Cooling drink", text: "A refreshing option for warm days." },
+        { title: "Easy to match", text: "Works well with pastries and cakes." },
+        { title: "Single serving", text: "Simple to add to any order." },
+      ],
     }),
+
     createProduct({
       id: "watermelon-juice",
       name: "Watermelon Juice",
       category: "Juices",
       price: 40,
       unit: "each",
-      image: IMG.watermelon,
-      badge: "Cold & Smooth",
+      image: "wm.webp",
+      images: [
+        "wm.webp",
+        "pine.webp",
+        "pm.jpg",
+        "sobolo.webp",
+      ],
+      options: ["Chilled", "Bottle"],
+      tagline: "A light and refreshing drink that is easy to enjoy.",
       description:
-        "A fresh, juicy, and beautifully light drink that balances rich pastries with ease.",
-      options: ["Chilled", "Bottle", "Pairing Pick"],
+        "Watermelon juice served chilled. It is light, refreshing, and a good option if you want something simple beside pastries or cake.",
+      highlights: {
+        love: "Customers like how light and refreshing it feels.",
+        time: "Good for hot days, quick refreshment, or a light drink with snacks.",
+        serving: "Sold individually for easy ordering.",
+      },
+      overview:
+        "Watermelon Juice is a simple drink choice if you want something cold and refreshing without it feeling too heavy or too sweet.",
+      overviewExtra:
+        "It works especially well if you want a lighter drink next to a pastry or dessert.",
+      notes: [
+        "Served chilled.",
+        "Light and refreshing.",
+        "Easy to pair with sweet items.",
+        "A simple drink option for any time of day.",
+      ],
+      pairing:
+        "Pairs well with croissants, cake slices, and donuts.",
+      metaBestWith: "Croissants, cake slices, and donuts",
+      sidebarPoints: [
+        { title: "Light drink", text: "A good option if you want something not too heavy." },
+        { title: "Refreshing", text: "Works especially well chilled." },
+        { title: "Easy add-on", text: "Simple drink to include with food." },
+      ],
     }),
+
     createProduct({
       id: "sobolo",
       name: "Sobolo",
       category: "Juices",
       price: 40,
       unit: "each",
-      image: IMG.sobolo,
-      badge: "Local Classic",
+      image: "sobolo.webp",
+      images: [
+        "sobolo.webp",
+        "pine.webp",
+        "pm.jpg",
+        "wm.webp",
+      ],
+      options: ["Chilled", "Bottle"],
+      tagline: "A chilled local drink that goes well with many items on the menu.",
       description:
-        "A premium take on a beloved favourite, served cold and beautifully presented.",
-      options: ["Chilled", "Bottle", "Pairing Pick"],
+        "Sobolo served chilled. It is a refreshing local drink and a great option to enjoy with pastries, brownies, cake slices, and donuts.",
+      highlights: {
+        love: "Customers like that it feels familiar, refreshing, and easy to enjoy with different foods.",
+        time: "Good at any time of day, especially with baked snacks or dessert.",
+        serving: "Sold individually, so it is easy to add to any order.",
+      },
+      overview:
+        "Sobolo is one of the easiest drinks to pair with items on the menu. It is refreshing and works especially well beside baked goods and sweeter desserts.",
+      overviewExtra:
+        "If you want a chilled local drink that fits naturally into your order, this is a good option.",
+      notes: [
+        "Served chilled.",
+        "A familiar local drink option.",
+        "Easy to pair with pastries and desserts.",
+        "Refreshing without feeling too heavy.",
+      ],
+      pairing:
+        "Pairs well with brownies, croissants, mud cake slice, and donuts.",
+      metaBestWith: "Brownies, croissants, cake, and donuts",
+      sidebarPoints: [
+        { title: "Local favourite", text: "A familiar chilled drink option." },
+        { title: "Easy pairing", text: "Works well with many sweet and baked items." },
+        { title: "Simple serving", text: "Easy to add to any order." },
+      ],
     }),
+
     createProduct({
       id: "orange-juice",
       name: "Orange Juice",
       category: "Juices",
       price: 40,
       unit: "each",
-      image: IMG.orange,
-      badge: "Clean Citrus",
+      image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1200&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1400&q=80",
+        "pine.webp",
+        "pm.jpg",
+        "wm.webp",
+      ],
+      options: ["Chilled", "Bottle"],
+      tagline: "A chilled drink that works well with pastries and desserts.",
       description:
-        "Bright citrus freshness that balances rich cakes, donuts, and layered pastries beautifully.",
-      options: ["Chilled", "Bottle", "Pairing Pick"],
+        "Orange juice served chilled. It is fresh, simple, and a good choice when you want a drink that pairs easily with pastries, cake slices, or brownies.",
+      highlights: {
+        love: "Customers enjoy how easy it is to pair with different items.",
+        time: "Works well with breakfast items, snacks, and desserts.",
+        serving: "Sold individually, so it is easy to include in any order.",
+      },
+      overview:
+        "Orange Juice is a simple drink option that works with many items on the menu. It is easy to enjoy and especially useful if you want something fresh beside baked food.",
+      overviewExtra:
+        "It is one of the easiest drinks to add if you are not sure what to pair with your order.",
+      notes: [
+        "Served chilled.",
+        "Fresh and simple.",
+        "Easy to pair with pastries and desserts.",
+        "A good all-round drink option.",
+      ],
+      pairing:
+        "Pairs well with croissants, brownies, cake slices, rolls, and donuts.",
+      metaBestWith: "Croissants, brownies, cake, rolls, and donuts",
+      sidebarPoints: [
+        { title: "Simple choice", text: "A good all-round juice option." },
+        { title: "Very easy to pair", text: "Works with most menu items." },
+        { title: "Single serving", text: "Easy to add to your order." },
+      ],
     }),
   ];
 
   const PRODUCTS = Object.fromEntries(productList.map((product) => [product.id, product]));
+
+  const POPULAR_PRODUCT_IDS = [
+    "chocolate-croissant",
+    "walnut-brownie",
+    "mud-cake-slice",
+    "pineapple-juice",
+    "oreo-donut",
+    "sobolo",
+  ];
 
   /* -------------------------------------------------------------------------- */
   /* Cart                                                                       */
@@ -606,7 +1008,7 @@ createProduct({
 
   let cart = safeLoad(CART_KEY, []);
   let currentProduct = null;
-  let currentOption = "";
+  let currentOption = "Standard";
 
   function getCartCount() {
     return cart.reduce((sum, item) => sum + item.qty, 0);
@@ -637,6 +1039,24 @@ createProduct({
     });
   }
 
+  function openCart() {
+    const drawer = $("#cartDrawer");
+    if (!drawer) return;
+
+    drawer.classList.add("is-open");
+    drawer.setAttribute("aria-hidden", "false");
+    document.body.classList.add("cart-open");
+  }
+
+  function closeCart() {
+    const drawer = $("#cartDrawer");
+    if (!drawer) return;
+
+    drawer.classList.remove("is-open");
+    drawer.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("cart-open");
+  }
+
   function renderCart() {
     const itemsHost = $("#cartItems");
     const emptyState = $("#cartEmptyState");
@@ -656,61 +1076,47 @@ createProduct({
     itemsHost.innerHTML = cart
       .map(
         (item) => `
-          <article class="cart-item">
+          <article class="cart-item" data-cart-product-id="${escapeHtml(item.id)}" tabindex="0" role="button" aria-label="Open ${escapeHtml(item.name)} details">
             <div class="cart-item__image">
-              <img src="${item.image}" alt="${item.name}" />
+              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
             </div>
 
             <div class="cart-item__content">
-              <h3>${item.name}</h3>
+              <h3>${escapeHtml(item.name)}</h3>
               <div class="cart-item__meta">
-                ${item.category}${item.variant ? ` • ${item.variant}` : ""}
+                ${escapeHtml(item.category)}${item.variant ? ` • ${escapeHtml(item.variant)}` : ""}
               </div>
-              <div class="cart-item__price">${formatPrice(item.price)} <span style="color:#a89283;font-weight:500;">/ ${item.unit}</span></div>
+              <div class="cart-item__price">
+                ${formatPrice(item.price)} <span>/ ${escapeHtml(item.unit)}</span>
+              </div>
 
               <div class="cart-item__actions">
-                <button class="cart-item__qty-btn" type="button" data-cart-action="decrease" data-key="${item.key}" aria-label="Decrease quantity">−</button>
+                <button class="cart-item__qty-btn" type="button" data-cart-action="decrease" data-key="${escapeHtml(item.key)}" aria-label="Decrease quantity">−</button>
                 <span class="cart-item__qty">${item.qty}</span>
-                <button class="cart-item__qty-btn" type="button" data-cart-action="increase" data-key="${item.key}" aria-label="Increase quantity">+</button>
-                <button class="cart-item__remove" type="button" data-cart-action="remove" data-key="${item.key}" aria-label="Remove item">
+                <button class="cart-item__qty-btn" type="button" data-cart-action="increase" data-key="${escapeHtml(item.key)}" aria-label="Increase quantity">+</button>
+                <button class="cart-item__remove" type="button" data-cart-action="remove" data-key="${escapeHtml(item.key)}" aria-label="Remove item">
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </div>
             </div>
 
-            <div style="font-weight:700; align-self:start;">${formatPrice(item.qty * item.price)}</div>
+            <div class="cart-item__total">${formatPrice(item.qty * item.price)}</div>
           </article>
         `
       )
       .join("");
   }
 
-  function openCart() {
-    const drawer = $("#cartDrawer");
-    if (!drawer) return;
-
-    drawer.classList.add("is-open");
-    drawer.setAttribute("aria-hidden", "false");
-    document.body.classList.add("cart-open");
-  }
-
-  function closeCart() {
-    const drawer = $("#cartDrawer");
-    if (!drawer) return;
-
-    drawer.classList.remove("is-open");
-    drawer.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("cart-open");
-  }
-
   function addToCart(product, qty = 1, variant = "") {
     if (!product) return;
 
+    const safeQty = clamp(Number(qty) || 1, 1, 20);
     const key = variant ? `${product.id}::${variant}` : product.id;
+
     const existing = cart.find((item) => item.key === key);
 
     if (existing) {
-      existing.qty += qty;
+      existing.qty += safeQty;
     } else {
       cart.push({
         key,
@@ -721,22 +1127,23 @@ createProduct({
         unit: product.unit,
         image: product.image,
         variant,
-        qty,
+        qty: safeQty,
       });
     }
 
     saveCart();
     renderCart();
+    showToast(`${product.name} added to cart`, "success");
   }
 
   function updateCartItemQuantity(key, delta) {
-    const target = cart.find((item) => item.key === key);
-    if (!target) return;
+    const item = cart.find((entry) => entry.key === key);
+    if (!item) return;
 
-    target.qty += delta;
+    item.qty += delta;
 
-    if (target.qty <= 0) {
-      cart = cart.filter((item) => item.key !== key);
+    if (item.qty <= 0) {
+      cart = cart.filter((entry) => entry.key !== key);
     }
 
     saveCart();
@@ -753,257 +1160,448 @@ createProduct({
     cart = [];
     saveCart();
     renderCart();
+    showToast("Cart cleared");
+  }
+
+  function goToProductPage(productId) {
+    if (!productId || !PRODUCTS[productId]) return;
+    window.location.href = `product.html?product=${encodeURIComponent(productId)}`;
   }
 
   /* -------------------------------------------------------------------------- */
-  /* Product Extraction                                                         */
+  /* Product Helpers                                                            */
   /* -------------------------------------------------------------------------- */
-
-  function fallbackProductFromCard(card) {
-    if (!card) return null;
-
-    const { id, name, category, price, unit, image } = card.dataset;
-
-    if (!id) return null;
-
-    return createProduct({
-      id,
-      name: name || titleCase(id),
-      category: category || "Pastries",
-      price: Number(price || 0),
-      unit: unit || "two",
-      image: image || IMG.pastrySpread,
-      description: `${name || titleCase(id)} from the Maison Crème luxury pastry collection.`,
-    });
-  }
 
   function getProductById(id) {
     return PRODUCTS[id] || null;
   }
 
   function getProductFromCard(card) {
-    const id = card?.dataset?.id;
-    return getProductById(id) || fallbackProductFromCard(card);
+    if (!card) return null;
+
+    const id = card.dataset.id;
+    if (id && PRODUCTS[id]) return PRODUCTS[id];
+
+    const { name, price, unit, image, category } = card.dataset;
+    if (!id || !name) return null;
+
+    return createProduct({
+      id,
+      name,
+      category: category || "Menu Item",
+      price: Number(price || 0),
+      unit: unit || "each",
+      image: image || "",
+      images: image ? [image] : [],
+      options: ["Standard"],
+      tagline: "Available to order.",
+      description: `${name} is available to order from Meals by Bella.`,
+      highlights: {
+        love: "A simple menu choice.",
+        time: "Works for different times of day.",
+        serving: `Served / sold per ${unit || "item"}.`,
+      },
+      overview: `${name} is available on the Meals by Bella menu.`,
+      overviewExtra: "Tap add to cart to include it in your order.",
+      notes: ["Available to order."],
+      pairing: "Can be paired with other menu items.",
+      metaBestWith: "Other menu items",
+      sidebarPoints: [
+        { title: "Available", text: "This item is available to order." },
+      ],
+    });
+  }
+
+  function productServingText(product) {
+    return normalise(product.unit) === "two" ? "Sold in pairs" : "Single serving";
+  }
+
+  function getRelatedProducts(product, count = 4) {
+    const sameCategory = productList.filter(
+      (item) => item.id !== product.id && normalise(item.category) === normalise(product.category)
+    );
+
+    const popular = POPULAR_PRODUCT_IDS
+      .map((id) => PRODUCTS[id])
+      .filter(Boolean)
+      .filter((item) => item.id !== product.id && !sameCategory.some((same) => same.id === item.id));
+
+    return [...sameCategory, ...popular].slice(0, count);
   }
 
   /* -------------------------------------------------------------------------- */
-  /* Menu Filters                                                               */
+  /* UI Init                                                                    */
   /* -------------------------------------------------------------------------- */
 
-function initMenuFiltering() {
-  const searchInput = $("#productSearch");
-  const filterButtons = $$(".filter-chip");
-  const sections = $$(".menu-category-section");
+  function initMobileMenu() {
+    const menu = $("#mobileMenu");
+    if (!menu) return;
 
-  if (!searchInput || !filterButtons.length || !sections.length) return;
+    const openButtons = $$(".js-open-mobile-menu");
+    const closeButtons = $$(".js-close-mobile-menu");
 
-  let activeFilter = "all";
-
-  function getAllCards() {
-    return $$(".product-card");
-  }
-
-  function getOrCreateEmptyState() {
-    let message = $("#menuEmptyState");
-
-    if (!message) {
-      message = document.createElement("div");
-      message.id = "menuEmptyState";
-      message.className = "empty-state-message is-hidden";
-      message.innerHTML =
-        "<strong style='display:block;margin-bottom:0.4rem;'>No products matched your search.</strong>Try another keyword or category.";
-
-      const toolbar = $(".menu-toolbar .container");
-      if (toolbar) {
-        toolbar.insertAdjacentElement("afterend", message);
-      }
+    function openMenu() {
+      menu.classList.add("is-open");
+      menu.setAttribute("aria-hidden", "false");
+      document.body.classList.add("menu-open");
     }
 
-    return message;
-  }
-
-  function applyFilters() {
-    const searchTerm = normalise(searchInput.value);
-    const cards = getAllCards();
-    let visibleCount = 0;
-
-    cards.forEach((card) => {
-      const name = normalise(card.dataset.name || "");
-      const category = normalise(card.dataset.category || "");
-      const id = normalise(card.dataset.id || "");
-
-      const matchesFilter =
-        activeFilter === "all" || category === normalise(activeFilter);
-
-      const matchesSearch =
-        !searchTerm ||
-        name.includes(searchTerm) ||
-        category.includes(searchTerm) ||
-        id.includes(searchTerm);
-
-      const shouldShow = matchesFilter && matchesSearch;
-
-      card.classList.toggle("is-hidden", !shouldShow);
-
-      if (shouldShow) visibleCount += 1;
-    });
-
-    sections.forEach((section) => {
-      const visibleCards = $$(".product-card:not(.is-hidden)", section);
-      section.classList.toggle("is-hidden", visibleCards.length === 0);
-    });
-
-    const emptyState = getOrCreateEmptyState();
-    emptyState.classList.toggle("is-hidden", visibleCount > 0);
-  }
-
-  filterButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const filter = button.dataset.filter || "all";
-
-      if (filter !== "all") {
-        event.preventDefault();
-      }
-
-      activeFilter = filter;
-      filterButtons.forEach((btn) => btn.classList.remove("is-active"));
-      button.classList.add("is-active");
-      applyFilters();
-
-      if (filter === "all") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        const targetSection = document.querySelector(button.getAttribute("href"));
-        targetSection?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
-  });
-
-  searchInput.addEventListener("input", () => {
-    if (searchInput.value.trim()) {
-      activeFilter = "all";
-      filterButtons.forEach((btn) => btn.classList.remove("is-active"));
-      filterButtons[0]?.classList.add("is-active");
+    function closeMenu() {
+      menu.classList.remove("is-open");
+      menu.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("menu-open");
     }
 
+    openButtons.forEach((button) => button.addEventListener("click", openMenu));
+    closeButtons.forEach((button) => button.addEventListener("click", closeMenu));
+
+    menu.addEventListener("click", (event) => {
+      if (event.target === menu) closeMenu();
+    });
+
+    $$(".mobile-menu a", menu).forEach((link) =>
+      link.addEventListener("click", () => closeMenu())
+    );
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menu.classList.contains("is-open")) {
+        closeMenu();
+      }
+    });
+  }
+
+  function initCartEvents() {
+    $$(".js-open-cart").forEach((button) => {
+      button.addEventListener("click", openCart);
+    });
+
+    $$(".js-close-cart").forEach((button) => {
+      button.addEventListener("click", closeCart);
+    });
+
+    $$(".js-clear-cart").forEach((button) => {
+      button.addEventListener("click", clearCart);
+    });
+
+    const drawer = $("#cartDrawer");
+    if (drawer) {
+      drawer.addEventListener("click", (event) => {
+        const actionButton = event.target.closest("[data-cart-action]");
+        if (actionButton) {
+          event.stopPropagation();
+
+          const { cartAction, key } = actionButton.dataset;
+
+          if (cartAction === "increase") updateCartItemQuantity(key, 1);
+          if (cartAction === "decrease") updateCartItemQuantity(key, -1);
+          if (cartAction === "remove") removeCartItem(key);
+
+          return;
+        }
+
+        const cartItem = event.target.closest(".cart-item");
+        if (cartItem) {
+          const clickedControl = event.target.closest("button");
+          if (clickedControl) return;
+
+          const productId = cartItem.dataset.cartProductId;
+          if (productId) {
+            goToProductPage(productId);
+          }
+        }
+      });
+
+      drawer.addEventListener("keydown", (event) => {
+        const cartItem = event.target.closest(".cart-item");
+        if (!cartItem) return;
+
+        if (event.key === "Enter" || event.key === " ") {
+          const productId = cartItem.dataset.cartProductId;
+          if (productId) {
+            event.preventDefault();
+            goToProductPage(productId);
+          }
+        }
+      });
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeCart();
+      }
+    });
+  }
+
+  function initCardAddToCart() {
+    document.addEventListener("click", (event) => {
+      const addButton = event.target.closest(".js-add-to-cart");
+      if (!addButton) return;
+
+      const card = addButton.closest(".product-card");
+      const product = getProductFromCard(card);
+      if (!product) return;
+
+      addToCart(product, 1);
+    });
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Menu Filtering                                                             */
+  /* -------------------------------------------------------------------------- */
+
+  function initMenuFiltering() {
+    const menuGrid = $("#menuGrid");
+    const searchInput = $("#productSearch");
+    const filterButtons = $$(".filter-chip");
+
+    if (!menuGrid || !searchInput || !filterButtons.length) return;
+
+    let activeFilter = "all";
+
+    function getCards() {
+      return $$(".product-card", menuGrid);
+    }
+
+    function getOrCreateEmptyState() {
+      let message = $("#menuEmptyState");
+
+      if (!message) {
+        message = document.createElement("div");
+        message.id = "menuEmptyState";
+        message.className = "empty-state-message is-hidden";
+        message.innerHTML =
+          "<strong style='display:block;margin-bottom:0.4rem;'>No items matched your search.</strong>Try another keyword or choose a different filter.";
+        menuGrid.insertAdjacentElement("afterend", message);
+      }
+
+      return message;
+    }
+
+    function applyFilters() {
+      const searchTerm = normalise(searchInput.value);
+      const cards = getCards();
+
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const name = normalise(card.dataset.name || "");
+        const category = normalise(card.dataset.category || "");
+        const id = normalise(card.dataset.id || "");
+
+        const matchesFilter =
+          activeFilter === "all" || category === normalise(activeFilter);
+
+        const matchesSearch =
+          !searchTerm ||
+          name.includes(searchTerm) ||
+          category.includes(searchTerm) ||
+          id.includes(searchTerm);
+
+        const shouldShow = matchesFilter && matchesSearch;
+
+        card.classList.toggle("is-hidden", !shouldShow);
+        if (shouldShow) visibleCount += 1;
+      });
+
+      const emptyState = getOrCreateEmptyState();
+      emptyState.classList.toggle("is-hidden", visibleCount > 0);
+    }
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter || "all";
+        filterButtons.forEach((btn) => btn.classList.remove("is-active"));
+        button.classList.add("is-active");
+        applyFilters();
+      });
+    });
+
+    searchInput.addEventListener("input", applyFilters);
     applyFilters();
-  });
-
-  applyFilters();
-}
+  }
 
   /* -------------------------------------------------------------------------- */
   /* Product Page                                                               */
   /* -------------------------------------------------------------------------- */
 
-  function setGalleryImages(images, productName) {
-    const mainImage = $("#productMainImage");
-    const thumbsHost = $(".product-gallery__thumbs");
-
-    if (!mainImage || !thumbsHost || !images.length) return;
-
-    mainImage.src = images[0];
-    mainImage.alt = `${productName} by Maison Crème`;
-
-    thumbsHost.innerHTML = images
-      .map(
-        (image, index) => `
-          <button
-            class="product-thumb ${index === 0 ? "is-active" : ""}"
-            type="button"
-            data-image="${image}"
-            aria-label="View ${productName} image ${index + 1}"
-          >
-            <img src="${image}" alt="${productName} thumbnail ${index + 1}" />
-          </button>
-        `
-      )
-      .join("");
+  function setText(id, value) {
+    const node = document.getElementById(id);
+    if (node) node.textContent = value;
   }
 
-  function setProductOptions(product) {
-    const optionsHost = $("#productOptions");
-    if (!optionsHost) return;
+  function setHTML(id, value) {
+    const node = document.getElementById(id);
+    if (node) node.innerHTML = value;
+  }
 
-    const options = product.options?.length
-      ? product.options
-      : defaultOptionsFor(product.category);
+  function renderProductOptions(product) {
+    const host = $("#productOptions");
+    if (!host) return;
 
-    currentOption = options[0] || "";
+    const options = product.options && product.options.length ? product.options : ["Standard"];
+    currentOption = options[0];
 
-    optionsHost.innerHTML = options
+    host.innerHTML = options
       .map(
         (option, index) => `
           <button
             class="option-chip ${index === 0 ? "is-active" : ""}"
             type="button"
-            data-option="${option}"
+            data-option="${escapeHtml(option)}"
           >
-            ${option}
+            ${escapeHtml(option)}
           </button>
         `
       )
       .join("");
   }
 
-  function updateProductMeta(product) {
-    const mapping = {
-      breadcrumbProductName: product.name,
-      productBadge: product.badge,
-      productCategory: product.categoryLabel,
-      productName: product.name,
-      productPrice: formatPrice(product.price),
-      productUnit: `/ ${product.unit}`,
-      productDescription: product.description,
-      productMetaCategory: product.category,
-      productMetaServing: product.serving,
-      sidebarPrice: formatPrice(product.price),
-      sidebarUnit: product.unit,
-      productOverviewText: product.overview,
-      productPairingText: product.pairing,
-    };
-
-    Object.entries(mapping).forEach(([id, value]) => {
-      const node = document.getElementById(id);
-      if (node) node.textContent = value;
-    });
-
-    const notesList = $("#productNotesList");
-    if (notesList) {
-      notesList.innerHTML = product.notes.map((note) => `<li>${note}</li>`).join("");
-    }
-
-    const statusText = $(".product-status span");
-    if (statusText) statusText.textContent = "Freshly available today";
-
+  function renderProductGallery(product) {
     const mainImage = $("#productMainImage");
-    if (mainImage) {
-      mainImage.src = product.images[0];
-      mainImage.alt = `${product.name} by Maison Crème`;
-    }
+    const thumbsHost = $(".product-gallery__thumbs");
 
-    document.title = `${product.name} | Maison Crème`;
+    if (!mainImage || !thumbsHost || !product.images?.length) return;
 
-    const descriptionMeta = document.querySelector('meta[name="description"]');
-    if (descriptionMeta) {
-      descriptionMeta.setAttribute(
-        "content",
-        `${product.name} from Maison Crème — ${product.description}`
-      );
-    }
+    mainImage.src = product.images[0];
+    mainImage.alt = product.name;
+
+    thumbsHost.innerHTML = product.images
+      .map(
+        (image, index) => `
+          <button
+            class="product-thumb ${index === 0 ? "is-active" : ""}"
+            type="button"
+            data-image="${escapeHtml(image)}"
+            aria-label="View ${escapeHtml(product.name)} image ${index + 1}"
+          >
+            <img src="${escapeHtml(image)}" alt="${escapeHtml(product.name)} thumbnail ${index + 1}" />
+          </button>
+        `
+      )
+      .join("");
   }
 
-  function renderProductPage(product) {
-    if (!product) return;
-
+  function renderProductMeta(product) {
     currentProduct = product;
 
-    updateProductMeta(product);
-    setGalleryImages(product.images, product.name);
-    setProductOptions(product);
+    document.title = `${product.name} | Meals by Bella`;
+
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute(
+        "content",
+        `${product.name} from Meals by Bella. ${product.description}`
+      );
+    }
+
+    setText("breadcrumbProductName", product.name);
+    setText("productCategory", product.category);
+    setText("productName", product.name);
+    setText("productPrice", formatPrice(product.price));
+    setText("productUnit", `/ ${product.unit}`);
+    setText("productTagline", product.tagline);
+    setText("productAvailability", product.availability);
+    setText("productDescription", product.description);
+
+    setText("highlightLove", product.highlights.love);
+    setText("highlightTime", product.highlights.time);
+    setText("highlightServing", product.highlights.serving);
+
+    setText("productOverviewText", product.overview);
+    setText("productOverviewExtra", product.overviewExtra);
+    setHTML(
+      "productNotesList",
+      product.notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")
+    );
+    setText("productPairingText", product.pairing);
+
+    setText("productMetaCategory", product.category);
+    setText("productMetaServing", productServingText(product));
+    setText("productMetaBestWith", product.metaBestWith);
+
+    setText("sidebarPrice", formatPrice(product.price));
+    setText("sidebarUnit", product.unit);
+    setText("sidebarCategory", product.category);
+
+    const sidebarPoints = $("#productSidebarPoints");
+    if (sidebarPoints) {
+      sidebarPoints.innerHTML = product.sidebarPoints
+        .map(
+          (point) => `
+            <article>
+              <strong>${escapeHtml(point.title)}</strong>
+              <span>${escapeHtml(point.text)}</span>
+            </article>
+          `
+        )
+        .join("");
+    }
+
+    setText("mobileStickyName", product.name);
+    setText("mobileStickyPrice", formatPrice(product.price));
 
     const quantityInput = $("#productQuantity");
     if (quantityInput) quantityInput.value = "1";
+  }
+
+  function renderRelatedProducts(product) {
+    const host = $(".products-grid--related");
+    if (!host) return;
+
+    const related = getRelatedProducts(product, 4);
+
+    host.innerHTML = related
+      .map(
+        (item) => `
+          <article
+            class="product-card"
+            data-id="${escapeHtml(item.id)}"
+            data-name="${escapeHtml(item.name)}"
+            data-price="${item.price}"
+            data-unit="${escapeHtml(item.unit)}"
+            data-image="${escapeHtml(item.image)}"
+            data-category="${escapeHtml(item.category)}"
+          >
+            <a href="product.html?product=${encodeURIComponent(item.id)}" class="product-card__media">
+              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
+            </a>
+            <div class="product-card__content">
+              <div class="product-card__top">
+                <span class="pill">${escapeHtml(item.category)}</span>
+                <button class="product-card__icon js-add-to-cart" type="button" aria-label="Add ${escapeHtml(item.name)} to cart">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+              <a href="product.html?product=${encodeURIComponent(item.id)}" class="product-card__title-wrap">
+                <h3>${escapeHtml(item.name)}</h3>
+                <p>${escapeHtml(item.description)}</p>
+              </a>
+              <div class="product-card__bottom">
+                <strong>${formatPrice(item.price)} <span>/ ${escapeHtml(item.unit)}</span></strong>
+                <a href="product.html?product=${encodeURIComponent(item.id)}" class="text-link">Details</a>
+              </div>
+            </div>
+          </article>
+        `
+      )
+      .join("");
+  }
+
+  function initProductGalleryClicks() {
+    document.addEventListener("click", (event) => {
+      const thumb = event.target.closest(".product-thumb");
+      if (!thumb) return;
+
+      const image = thumb.dataset.image;
+      const mainImage = $("#productMainImage");
+      if (!mainImage || !image) return;
+
+      mainImage.src = image;
+      mainImage.alt = currentProduct ? currentProduct.name : "Product image";
+
+      $$(".product-thumb").forEach((node) => node.classList.remove("is-active"));
+      thumb.classList.add("is-active");
+    });
   }
 
   function initProductTabs() {
@@ -1013,7 +1611,6 @@ function initMenuFiltering() {
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
         const target = tab.dataset.tab;
-
         tabs.forEach((btn) => btn.classList.remove("is-active"));
         tab.classList.add("is-active");
 
@@ -1024,210 +1621,181 @@ function initMenuFiltering() {
     });
   }
 
-  function initProductPage() {
-    const page = document.body.dataset.page;
-    if (page !== "product") return;
+  function initProductQuantityControls() {
+    const input = $("#productQuantity");
+    if (!input) return;
 
-    const info = $("#productInfo");
-    if (!info) return;
+    const decrease = $(".js-qty-decrease");
+    const increase = $(".js-qty-increase");
+
+    function syncValue(nextValue) {
+      input.value = String(clamp(Number(nextValue) || 1, 1, 20));
+    }
+
+    decrease?.addEventListener("click", () => {
+      syncValue((Number(input.value) || 1) - 1);
+    });
+
+    increase?.addEventListener("click", () => {
+      syncValue((Number(input.value) || 1) + 1);
+    });
+
+    input.addEventListener("input", () => {
+      syncValue(input.value);
+    });
+
+    input.addEventListener("blur", () => {
+      syncValue(input.value);
+    });
+  }
+
+  function initProductOptionClicks() {
+    document.addEventListener("click", (event) => {
+      const option = event.target.closest(".option-chip");
+      if (!option || !$("#productOptions")) return;
+
+      currentOption = option.dataset.option || "Standard";
+      $$(".option-chip", $("#productOptions")).forEach((node) =>
+        node.classList.remove("is-active")
+      );
+      option.classList.add("is-active");
+    });
+  }
+
+  function initProductAddToCart() {
+    const mainButton = $("#addCurrentProductToCart");
+    const stickyButton = $("#mobileStickyAddToCart");
+
+    function handleAdd() {
+      if (!currentProduct) return;
+      const quantityInput = $("#productQuantity");
+      const qty = clamp(Number(quantityInput?.value || 1), 1, 20);
+      addToCart(currentProduct, qty, currentOption);
+    }
+
+    mainButton?.addEventListener("click", handleAdd);
+    stickyButton?.addEventListener("click", handleAdd);
+  }
+
+  function initMobileStickyCartVisibility() {
+    const stickyBar = $("#mobileStickyCart");
+    const relatedSection = $("#relatedProductsSection");
+    const mediaQuery = window.matchMedia("(max-width: 820px)");
+
+    if (!stickyBar || !relatedSection) return;
+
+    let observer = null;
+
+    function applyVisibility(isRelatedVisible) {
+      if (!mediaQuery.matches) {
+        stickyBar.classList.remove("is-visible");
+        return;
+      }
+
+      stickyBar.classList.toggle("is-visible", !isRelatedVisible);
+    }
+
+    function setupObserver() {
+      if (observer) observer.disconnect();
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          applyVisibility(entry.isIntersecting);
+        },
+        {
+          root: null,
+          threshold: 0.08,
+        }
+      );
+
+      observer.observe(relatedSection);
+      applyVisibility(false);
+    }
+
+    setupObserver();
+    mediaQuery.addEventListener("change", setupObserver);
+  }
+
+  function initProductPage() {
+    if (document.body.dataset.page !== "product") return;
 
     const params = new URLSearchParams(window.location.search);
-    const productId = params.get("product") || info.dataset.defaultId || "oreo-donut";
-    const product =
-      getProductById(productId) ||
-      createProduct({
-        id: info.dataset.defaultId || "oreo-donut",
-        name: info.dataset.defaultName || "Oreo Donuts",
-        category: info.dataset.defaultCategory || "Donuts",
-        price: Number(info.dataset.defaultPrice || 110),
-        unit: info.dataset.defaultUnit || "two",
-        image: info.dataset.defaultImage || IMG.donut1,
-        description:
-          "A rich premium donut experience finished with smooth chocolate and a polished bakery finish.",
-      });
+    const productId = params.get("product") || "chocolate-croissant";
+    const product = getProductById(productId) || getProductById("chocolate-croissant");
 
-    renderProductPage(product);
+    renderProductMeta(product);
+    renderProductGallery(product);
+    renderProductOptions(product);
+    renderRelatedProducts(product);
+
     initProductTabs();
+    initProductQuantityControls();
+    initProductOptionClicks();
+    initProductAddToCart();
+    initMobileStickyCartVisibility();
+  }
 
-    const quantityInput = $("#productQuantity");
-    const decreaseBtn = $(".js-qty-decrease");
-    const increaseBtn = $(".js-qty-increase");
-    const addCurrentBtn = $("#addCurrentProductToCart");
-    const optionsHost = $("#productOptions");
-    const thumbsHost = $(".product-gallery__thumbs");
+  /* -------------------------------------------------------------------------- */
+  /* Gallery                                                                    */
+  /* -------------------------------------------------------------------------- */
 
-    function getQuantity() {
-      const raw = Number(quantityInput?.value || 1);
-      return clamp(Number.isFinite(raw) ? raw : 1, 1, 20);
+  function initGalleryLightbox() {
+    if (document.body.dataset.page !== "gallery") return;
+
+    const lightbox = $("#galleryLightbox");
+    const lightboxContent = $("#galleryLightboxContent");
+    const closeBtn = $("#galleryLightboxClose");
+    const backdrop = $("#galleryLightboxBackdrop");
+
+    if (!lightbox || !lightboxContent || !closeBtn || !backdrop) return;
+
+    function closeLightbox() {
+      lightbox.classList.remove("is-open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxContent.innerHTML = "";
+      document.body.classList.remove("lightbox-open");
     }
 
-    function syncQuantityInput() {
-      if (!quantityInput) return;
-      quantityInput.value = String(getQuantity());
+    function openLightbox(type, src, label) {
+      lightboxContent.innerHTML = "";
+
+      if (type === "video") {
+        const video = document.createElement("video");
+        video.src = src;
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.setAttribute("aria-label", label);
+        lightboxContent.appendChild(video);
+      } else {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = label;
+        lightboxContent.appendChild(img);
+      }
+
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.classList.add("lightbox-open");
     }
 
-    decreaseBtn?.addEventListener("click", () => {
-      if (!quantityInput) return;
-      quantityInput.value = String(clamp(getQuantity() - 1, 1, 20));
-    });
-
-    increaseBtn?.addEventListener("click", () => {
-      if (!quantityInput) return;
-      quantityInput.value = String(clamp(getQuantity() + 1, 1, 20));
-    });
-
-    quantityInput?.addEventListener("input", syncQuantityInput);
-    quantityInput?.addEventListener("blur", syncQuantityInput);
-
-    optionsHost?.addEventListener("click", (event) => {
-      const button = event.target.closest(".option-chip");
-      if (!button) return;
-
-      currentOption = button.dataset.option || "";
-      $$(".option-chip", optionsHost).forEach((chip) => chip.classList.remove("is-active"));
-      button.classList.add("is-active");
-    });
-
-    thumbsHost?.addEventListener("click", (event) => {
-      const thumb = event.target.closest(".product-thumb");
-      const mainImage = $("#productMainImage");
-      if (!thumb || !mainImage) return;
-
-      mainImage.src = thumb.dataset.image || mainImage.src;
-      mainImage.alt = `${currentProduct?.name || "Maison Crème product"} by Maison Crème`;
-
-      $$(".product-thumb", thumbsHost).forEach((node) => node.classList.remove("is-active"));
-      thumb.classList.add("is-active");
-    });
-
-    addCurrentBtn?.addEventListener("click", () => {
-      if (!currentProduct) return;
-
-      const qty = getQuantity();
-      addToCart(currentProduct, qty, currentOption);
-      openCart();
-      showToast(
-        `${currentProduct.name}${currentOption ? ` • ${currentOption}` : ""} added to cart.`,
-        "success"
-      );
-    });
-  }
-
-  /* -------------------------------------------------------------------------- */
-  /* Mobile Menu                                                                */
-  /* -------------------------------------------------------------------------- */
-
-  function openMobileMenu() {
-    const menu = $("#mobileMenu");
-    if (!menu) return;
-
-    menu.classList.add("is-open");
-    menu.setAttribute("aria-hidden", "false");
-    document.body.classList.add("menu-open");
-  }
-
-  function closeMobileMenu() {
-    const menu = $("#mobileMenu");
-    if (!menu) return;
-
-    menu.classList.remove("is-open");
-    menu.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("menu-open");
-  }
-
-  function initMobileMenu() {
-    $$(".js-open-mobile-menu").forEach((button) =>
-      button.addEventListener("click", openMobileMenu)
-    );
-
-    $$(".js-close-mobile-menu").forEach((button) =>
-      button.addEventListener("click", closeMobileMenu)
-    );
-
-    const menu = $("#mobileMenu");
-    menu?.addEventListener("click", (event) => {
-      if (event.target === menu) closeMobileMenu();
-    });
-  }
-
-  /* -------------------------------------------------------------------------- */
-  /* Global Event Binding                                                       */
-  /* -------------------------------------------------------------------------- */
-
-  function bindCartControls() {
-    $$(".js-open-cart").forEach((button) => {
-      button.addEventListener("click", openCart);
-    });
-
-    $$(".js-close-cart").forEach((button) => {
-      button.addEventListener("click", closeCart);
-    });
-
-    $$(".js-clear-cart").forEach((button) => {
-      button.addEventListener("click", () => {
-        if (!cart.length) {
-          showToast("Your cart is already empty.");
-          return;
-        }
-
-        clearCart();
-        showToast("Cart cleared.", "danger");
+    $$(".gallery-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const type = item.dataset.type;
+        const src = item.dataset.src;
+        const label = item.getAttribute("aria-label") || "Gallery item";
+        openLightbox(type, src, label);
       });
     });
 
-    const itemsHost = $("#cartItems");
-    itemsHost?.addEventListener("click", (event) => {
-      const actionBtn = event.target.closest("[data-cart-action]");
-      if (!actionBtn) return;
+    closeBtn.addEventListener("click", closeLightbox);
+    backdrop.addEventListener("click", closeLightbox);
 
-      const action = actionBtn.dataset.cartAction;
-      const key = actionBtn.dataset.key;
-      if (!key) return;
-
-      if (action === "increase") updateCartItemQuantity(key, 1);
-      if (action === "decrease") updateCartItemQuantity(key, -1);
-      if (action === "remove") removeCartItem(key);
-
-      renderCart();
-    });
-
-    $$(".cart-drawer__actions .btn--primary").forEach((button) => {
-      button.addEventListener("click", () => {
-        if (!cart.length) {
-          showToast("Your cart is empty. Add pastries or juices first.");
-          return;
-        }
-
-        showToast(
-          `Order summary ready • ${getCartCount()} item${getCartCount() > 1 ? "s" : ""} • ${formatPrice(
-            getCartSubtotal()
-          )}`,
-          "success"
-        );
-      });
-    });
-  }
-
-  function bindProductCardActions() {
-    $$(".js-add-to-cart").forEach((button) => {
-      button.addEventListener("click", (event) => {
-        const card = event.currentTarget.closest(".product-card");
-        const product = getProductFromCard(card);
-
-        if (!product) return;
-
-        addToCart(product, 1, "");
-        openCart();
-        showToast(`${product.name} added to cart.`, "success");
-      });
-    });
-  }
-
-  function bindEscapeKey() {
     document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape") return;
-      closeCart();
-      closeMobileMenu();
+      if (event.key === "Escape" && lightbox.classList.contains("is-open")) {
+        closeLightbox();
+      }
     });
   }
 
@@ -1235,19 +1803,16 @@ function initMenuFiltering() {
   /* Init                                                                       */
   /* -------------------------------------------------------------------------- */
 
-  function initStore() {
+  function init() {
     renderCart();
     initMobileMenu();
-    bindCartControls();
-    bindProductCardActions();
-    bindEscapeKey();
+    initCartEvents();
+    initCardAddToCart();
     initMenuFiltering();
+    initProductGalleryClicks();
     initProductPage();
+    initGalleryLightbox();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initStore);
-  } else {
-    initStore();
-  }
+  document.addEventListener("DOMContentLoaded", init);
 })();
