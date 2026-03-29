@@ -2409,16 +2409,13 @@ callback: function (response) {
   invoiceData.reference = response.reference;
   invoiceData.paymentStatus = "paid";
 
-  // Save first so the confirmation page can restore immediately
   sessionStorage.setItem(
     CHECKOUT_CONFIRMATION_KEY,
     JSON.stringify(invoiceData)
   );
 
-  // Redirect immediately after successful payment
-  location.replace("checkout.html?paid=1");
+  showCheckoutConfirmation(invoiceData);
 
-  // Try saving to Formspree in the background
   submitCheckoutToFormspree(invoiceData).catch((error) => {
     console.error("Post-payment save error:", error);
   });
