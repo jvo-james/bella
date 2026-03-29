@@ -1807,12 +1807,12 @@ function renderCart() {
     });
   }
 
+
   /* -------------------------------------------------------------------------- */
 /* Checkout                                                                   */
 /* -------------------------------------------------------------------------- */
 
 const PAYSTACK_PUBLIC_KEY = "pk_test_297586e51710e83d3c159bfe71ff45c7e23411fa";
-const CHECKOUT_CONFIRMATION_KEY = "mbb-last-order-confirmation";
 
 function calculateProcessingFee(subtotal) {
   return Number((subtotal * 0.0295).toFixed(2));
@@ -2256,7 +2256,13 @@ function showCheckoutConfirmation(invoiceData) {
     confirmationReference,
     confirmationTotalPaid,
     confirmationMessage,
+    payNowButton,
   } = getCheckoutElements();
+
+  if (payNowButton) {
+    payNowButton.disabled = false;
+    payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+  }
 
   if (form) {
     const main = form.closest(".checkout-main");
@@ -2267,6 +2273,7 @@ function showCheckoutConfirmation(invoiceData) {
   if (sidebar) sidebar.classList.add("is-hidden");
 
   if (confirmationSection) {
+    confirmationSection.hidden = false;
     confirmationSection.classList.remove("is-hidden");
   }
 
@@ -2279,30 +2286,17 @@ function showCheckoutConfirmation(invoiceData) {
 
   renderInvoicePreview(invoiceData);
   enableInvoiceButtons(invoiceData);
-  generateInvoicePdf(invoiceData);
+
+  setTimeout(() => {
+    generateInvoicePdf(invoiceData);
+  }, 250);
+
+  scrollToTopSmooth();
 
   setTimeout(() => {
     clearCart();
-    sessionStorage.removeItem(CHECKOUT_CONFIRMATION_KEY);
     location.replace("index.html");
   }, 9000);
-}
-
-function restoreCheckoutConfirmationIfNeeded() {
-  if (document.body.dataset.page !== "checkout") return;
-
-  const params = new URLSearchParams(window.location.search);
-  const paid = params.get("paid");
-  const saved = sessionStorage.getItem(CHECKOUT_CONFIRMATION_KEY);
-
-  if (!paid || !saved) return;
-
-  try {
-    const invoiceData = JSON.parse(saved);
-    showCheckoutConfirmation(invoiceData);
-  } catch {
-    sessionStorage.removeItem(CHECKOUT_CONFIRMATION_KEY);
-  }
 }
 
 function validateCheckoutForm() {
@@ -2351,9 +2345,20 @@ function validateCheckoutForm() {
   return true;
 }
 
-function payWithPaystackCheckout() {
+function setPayButtonLoading(isLoading) {
   const { payNowButton } = getCheckoutElements();
+  if (!payNowButton) return;
 
+  if (isLoading) {
+    payNowButton.disabled = true;
+    payNowButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Processing...</span>`;
+  } else {
+    payNowButton.disabled = false;
+    payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+  }
+}
+
+function payWithPaystackCheckout() {
   const subtotal = getCartSubtotal();
   const total = calculateCheckoutTotal(subtotal);
 
@@ -2368,9 +2373,9 @@ function payWithPaystackCheckout() {
       throw new Error("PaystackPop is not available.");
     }
 
-    const handler = PaystackPop.setup({
+    const handler = window.PaystackPop.setup({
       key: PAYSTACK_PUBLIC_KEY,
-      email: email,
+      email,
       amount: Math.round(total * 100),
       currency: "GHS",
       ref: `MBB-${Date.now()}`,
@@ -2398,33 +2403,28 @@ function payWithPaystackCheckout() {
           },
         ],
       },
-callback: function (response) {
-  const paymentRefInput = $("#formPaymentReference");
-  const paymentStatusInput = $("#formPaymentStatus");
+      callback: function (response) {
+        const paymentRefInput = $("#formPaymentReference");
+        const paymentStatusInput = $("#formPaymentStatus");
 
-  if (paymentRefInput) paymentRefInput.value = response.reference;
-  if (paymentStatusInput) paymentStatusInput.value = "paid";
+        if (paymentRefInput) paymentRefInput.value = response.reference;
+        if (paymentStatusInput) paymentStatusInput.value = "paid";
 
-  const invoiceData = buildInvoiceData();
-  invoiceData.reference = response.reference;
-  invoiceData.paymentStatus = "paid";
+        const invoiceData = buildInvoiceData();
+        invoiceData.reference = response.reference;
+        invoiceData.paymentStatus = "paid";
 
-  sessionStorage.setItem(
-    CHECKOUT_CONFIRMATION_KEY,
-    JSON.stringify(invoiceData)
-  );
-
-  showCheckoutConfirmation(invoiceData);
-
-  submitCheckoutToFormspree(invoiceData).catch((error) => {
-    console.error("Post-payment save error:", error);
-  });
-},
+        submitCheckoutToFormspree(invoiceData)
+          .catch((error) => {
+            console.error("Formspree submission error:", error);
+            showToast("Payment succeeded, but order email may not have been saved.", "danger");
+          })
+          .finally(() => {
+            showCheckoutConfirmation(invoiceData);
+          });
+      },
       onClose: function () {
-        if (payNowButton) {
-          payNowButton.disabled = false;
-          payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-        }
+        setPayButtonLoading(false);
         showToast("Payment window closed.");
       },
     });
@@ -2433,11 +2433,7 @@ callback: function (response) {
   } catch (error) {
     console.error("Paystack setup error:", error);
     showToast(`Paystack could not open: ${error.message}`, "danger");
-
-    if (payNowButton) {
-      payNowButton.disabled = false;
-      payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-    }
+    setPayButtonLoading(false);
   }
 }
 
@@ -2451,11 +2447,9 @@ function initCheckoutPage() {
     termsOverlay,
     invoiceOverlay,
     closeInvoiceModalBtn,
-    payNowButton,
   } = getCheckoutElements();
 
   renderCheckoutSummary();
-  restoreCheckoutConfirmationIfNeeded();
 
   openTermsBtn?.addEventListener("click", openTermsDrawer);
   closeTermsBtn?.addEventListener("click", closeTermsDrawer);
@@ -2478,11 +2472,7 @@ function initCheckoutPage() {
 
     if (!validateCheckoutForm()) return;
 
-    if (payNowButton) {
-      payNowButton.disabled = true;
-      payNowButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Processing...</span>`;
-    }
-
+    setPayButtonLoading(true);
     payWithPaystackCheckout();
   });
 }
@@ -2498,19 +2488,6 @@ function initCheckoutNavigation() {
       window.location.href = "checkout.html";
     });
   });
-}
-
-  function init() {
-  renderCart();
-  initMobileMenu();
-  initCartEvents();
-  initCheckoutNavigation();
-  initCardAddToCart();
-  initMenuFiltering();
-  initProductGalleryClicks();
-  initProductPage();
-  initGalleryLightbox();
-  initCheckoutPage();
 }
   
   document.addEventListener("DOMContentLoaded", init);
