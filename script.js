@@ -1,7 +1,8 @@
 (() => {
   "use strict";
 
-  const CART_KEY = "meals-by-bella-cart-v2";
+  const CART_KEY = "meals-by-bella-cart-v3";
+  const PAYSTACK_PUBLIC_KEY = "pk_test_297586e51710e83d3c159bfe71ff45c7e23411fa";
 
   /* -------------------------------------------------------------------------- */
   /* Helpers                                                                    */
@@ -10,7 +11,7 @@
   const $ = (selector, scope = document) => scope.querySelector(selector);
   const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 
-  const normalise = (value = "") => value.toString().trim().toLowerCase();
+  const normalise = (value = "") => String(value).trim().toLowerCase();
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
   const formatPrice = (value) => `GH₵${Number(value || 0)}`;
 
@@ -27,7 +28,7 @@
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch {
-      /* ignore localStorage errors */
+      /* ignore */
     }
   }
 
@@ -62,7 +63,7 @@
       width: "min(92vw, 420px)",
       display: "grid",
       gap: "10px",
-      zIndex: "300",
+      zIndex: "9999",
       pointerEvents: "none",
     });
 
@@ -136,16 +137,20 @@
       image: config.image,
       images: config.images && config.images.length ? config.images : [config.image],
       options: config.options && config.options.length ? config.options : ["Standard"],
-      tagline: config.tagline,
+      tagline: config.tagline || "Freshly prepared and available to order.",
       availability: config.availability || "Available to order",
-      description: config.description,
-      highlights: config.highlights,
-      overview: config.overview,
-      overviewExtra: config.overviewExtra,
-      notes: config.notes,
-      pairing: config.pairing,
-      metaBestWith: config.metaBestWith,
-      sidebarPoints: config.sidebarPoints,
+      description: config.description || `${config.name} is available to order.`,
+      highlights: config.highlights || {
+        love: "A customer favourite.",
+        time: "Great any time of day.",
+        serving: `Served / sold per ${config.unit || "item"}.`,
+      },
+      overview: config.overview || `${config.name} is available on the Meals by Bella menu.`,
+      overviewExtra: config.overviewExtra || "",
+      notes: config.notes || ["Available to order."],
+      pairing: config.pairing || "Pairs well with other menu items.",
+      metaBestWith: config.metaBestWith || "Other menu items",
+      sidebarPoints: config.sidebarPoints || [{ title: "Available", text: "Ready to order." }],
     };
   }
 
@@ -161,35 +166,12 @@
         "https://images.unsplash.com/photo-1526865999163-6676ef0a1519?auto=format&fit=crop&w=1400&q=80",
         "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
         "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
       ],
       options: ["Standard", "Fresh Batch"],
-      tagline: "A sweet pick for sharing, gifting, or enjoying with a cold drink.",
-      description:
-        "Chocolate donuts topped with Oreo crumbs, served as a pair. They are soft, sweet, and easy to enjoy when you want something simple and satisfying.",
-      highlights: {
-        love: "Customers like the soft texture and the extra crunch from the Oreo topping.",
-        time: "Works well as a snack, dessert, or something to share with a friend.",
-        serving: "Served as two donuts, so it is easy to split or enjoy both yourself.",
-      },
-      overview:
-        "Oreo Donuts are a good choice when you want something sweet, familiar, and easy to enjoy. They are simple, filling, and work well for casual cravings.",
-      overviewExtra:
-        "They are especially nice when paired with a cold drink if you want something refreshing beside them.",
-      notes: [
-        "Soft donut texture with a chocolate topping.",
-        "Crushed Oreo adds a little crunch on top.",
-        "Sweet without being too complicated.",
-        "Best enjoyed fresh for the softest bite.",
-      ],
-      pairing:
-        "Try this with pineapple juice, orange juice, or sobolo if you want something chilled beside it.",
+      tagline: "A sweet pick for sharing or enjoying with a cold drink.",
+      description: "Chocolate donuts topped with Oreo crumbs, served as a pair.",
+      pairing: "Try this with pineapple juice, orange juice, or sobolo.",
       metaBestWith: "Pineapple juice, orange juice, or sobolo",
-      sidebarPoints: [
-        { title: "Best enjoyed fresh", text: "The texture is softest and nicest when freshly served." },
-        { title: "Easy to share", text: "Comes as a pair, so it works well for sharing." },
-        { title: "Sweet snack", text: "A simple choice when you want something sweet and filling." },
-      ],
     }),
 
     createProduct({
@@ -199,39 +181,12 @@
       price: 110,
       unit: "two",
       image: "crois.webp",
-      images: [
-        "crois.webp",
-        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
-      ],
+      images: ["crois.webp"],
       options: ["Standard", "Fresh Batch"],
-      tagline: "A light, buttery option that is easy to enjoy at any time of day.",
-      description:
-        "Plain croissants served as a pair. They are flaky, soft inside, and have a light buttery taste that works well for breakfast or a quick snack.",
-      highlights: {
-        love: "People enjoy how light and flaky they are without being too sweet.",
-        time: "Great for breakfast, a quick snack, or something to eat with juice.",
-        serving: "Served as a pair, which makes them easy to share.",
-      },
-      overview:
-        "Plain Croissant is a good everyday choice for someone who wants something light, simple, and freshly baked. It is easy to enjoy on its own or with a drink.",
-      overviewExtra:
-        "Because it is not too sweet, it also works well if you want a pastry that feels lighter than cake or brownies.",
-      notes: [
-        "Light buttery flavour.",
-        "Flaky outside with a softer inside.",
-        "Not too sweet, so it feels easy to eat.",
-        "Best when fresh and slightly warm.",
-      ],
-      pairing:
-        "This goes well with pineapple juice, orange juice, or even on its own if you want something light.",
+      tagline: "A light, buttery option for any time of day.",
+      description: "Plain croissants served as a pair.",
+      pairing: "Pairs well with pineapple juice or orange juice.",
       metaBestWith: "Pineapple juice or orange juice",
-      sidebarPoints: [
-        { title: "Simple and light", text: "A good option when you want something easy and not too heavy." },
-        { title: "Fresh texture", text: "Best when enjoyed while still fresh." },
-        { title: "Breakfast-friendly", text: "Works especially well earlier in the day." },
-      ],
     }),
 
     createProduct({
@@ -241,39 +196,12 @@
       price: 120,
       unit: "two",
       image: "crois.webp",
-      images: [
-        "crois.webp",
-        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
-      ],
+      images: ["crois.webp"],
       options: ["Standard", "Fresh Batch"],
-      tagline: "A warm pastry option with a cheesy centre and a soft bite.",
-      description:
-        "Cheese croissants served as a pair. They are buttery, flaky, and have a cheesy filling that makes them more savoury and filling.",
-      highlights: {
-        love: "Customers like the mix of flaky pastry and cheesy flavour.",
-        time: "A nice option for breakfast, brunch, or an afternoon snack.",
-        serving: "Comes as a pair, so it is easy to order for one person or two.",
-      },
-      overview:
-        "Cheese Croissant is a good option for someone who wants a pastry that feels a little more filling. It has the same flaky texture as a croissant, with a savoury centre.",
-      overviewExtra:
-        "It is a nice middle ground if you want something baked but not too sweet.",
-      notes: [
-        "Flaky pastry with a savoury cheese filling.",
-        "Soft inside and lightly crisp outside.",
-        "More filling than a plain pastry.",
-        "Best enjoyed fresh for the best texture.",
-      ],
-      pairing:
-        "This pairs well with pineapple juice, orange juice, or a simple chilled drink.",
+      tagline: "A warm pastry with a cheesy centre.",
+      description: "Cheese croissants served as a pair.",
+      pairing: "Pairs well with pineapple juice or orange juice.",
       metaBestWith: "Pineapple juice or orange juice",
-      sidebarPoints: [
-        { title: "Savoury choice", text: "A good option if you do not want something too sweet." },
-        { title: "Freshly baked", text: "Best enjoyed while still fresh." },
-        { title: "Easy to share", text: "Served in a simple pair." },
-      ],
     }),
 
     createProduct({
@@ -285,37 +213,13 @@
       image: "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1200&q=80",
       images: [
         "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
         "crois.webp",
       ],
       options: ["Standard", "Fresh Batch"],
       tagline: "A warm favourite for breakfast, snacks, or sharing.",
-      description:
-        "Flaky croissants with a chocolate filling and a soft, buttery bite. A good pick when you want something warm, satisfying, and easy to enjoy with a drink.",
-      highlights: {
-        love: "It is soft, flaky, and filling without feeling too heavy.",
-        time: "Great for breakfast, a quick snack, or something to go with a chilled drink.",
-        serving: "Served as a pair, which makes it easy to share or keep both for yourself.",
-      },
-      overview:
-        "Chocolate Croissant is a simple favourite for anyone who enjoys soft pastry with a rich filling. It works well as a breakfast option, an afternoon snack, or a quick treat when you want something warm and satisfying.",
-      overviewExtra:
-        "It is easy to enjoy on its own, but it also goes well with a drink if you want something more filling.",
-      notes: [
-        "Soft, flaky layers with a buttery texture.",
-        "A chocolate filling that adds sweetness without being too much.",
-        "Best enjoyed fresh when the pastry is still soft and light.",
-        "A good choice if you want something easy to share.",
-      ],
-      pairing:
-        "This pairs nicely with pineapple juice, orange juice, or sobolo. If you want something refreshing beside a warm pastry, any of those work well.",
+      description: "Flaky croissants with a chocolate filling and a soft, buttery bite.",
+      pairing: "Pairs nicely with pineapple juice, orange juice, or sobolo.",
       metaBestWith: "Juice, sobolo, or a light snack break",
-      sidebarPoints: [
-        { title: "Freshly prepared", text: "Best enjoyed while fresh for the best texture." },
-        { title: "Easy to pair", text: "Works well with juice or as part of a snack order." },
-        { title: "Simple serving", text: "Served in a clear, easy-to-order portion." },
-      ],
     }),
 
     createProduct({
@@ -325,39 +229,12 @@
       price: 140,
       unit: "two",
       image: "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1200&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1555507036-ab794f57598e?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?auto=format&fit=crop&w=1400&q=80",
-        "crois.webp",
-      ],
+      images: ["https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=1400&q=80"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A buttery pastry with almond flavour and a fuller bite.",
-      description:
-        "Almond croissants served as a pair. They have a soft buttery texture and an almond flavour that makes them a little richer and more filling.",
-      highlights: {
-        love: "Customers enjoy the richer almond taste and the soft pastry layers.",
-        time: "A good option for breakfast, brunch, or when you want something more filling.",
-        serving: "Served as two pieces, so it is easy to share.",
-      },
-      overview:
-        "Almond Croissant is a good option if you want something that feels a little richer than a plain pastry. It is still soft and flaky, but the almond flavour gives it more depth.",
-      overviewExtra:
-        "If you like pastries that feel a bit more filling, this is a great one to try.",
-      notes: [
-        "Buttery pastry layers with almond flavour.",
-        "A richer taste than a plain croissant.",
-        "Soft texture that is easy to enjoy.",
-        "Pairs nicely with cold drinks.",
-      ],
-      pairing:
-        "This goes well with orange juice, pineapple juice, or any chilled drink that balances the richer flavour.",
+      description: "Almond croissants served as a pair.",
+      pairing: "Goes well with orange juice or pineapple juice.",
       metaBestWith: "Orange juice or pineapple juice",
-      sidebarPoints: [
-        { title: "Richer flavour", text: "A good option if you want more than a plain pastry." },
-        { title: "Served in pairs", text: "Simple portion for one person or sharing." },
-        { title: "Nice with drinks", text: "Pairs well with chilled juice." },
-      ],
     }),
 
     createProduct({
@@ -367,39 +244,12 @@
       price: 150,
       unit: "two",
       image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
-      ],
+      images: ["https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=80"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A rich brownie option with walnut pieces and a soft bite.",
-      description:
-        "Walnut brownies served as a pair. They are chocolatey, soft, and have walnut pieces that add a little crunch and make them more filling.",
-      highlights: {
-        love: "People like the mix of soft brownie texture and the extra crunch from the walnuts.",
-        time: "A good choice when you want something sweet and filling.",
-        serving: "Served as a pair, which makes it easy to share or save one for later.",
-      },
-      overview:
-        "Walnut Brownie is a simple option for someone who wants a richer dessert. The chocolate flavour is familiar, while the walnut pieces add a little more texture.",
-      overviewExtra:
-        "It works well as a dessert, snack, or something to enjoy alongside a cold drink.",
-      notes: [
-        "Soft brownie texture with chocolate flavour.",
-        "Walnut pieces add a little crunch.",
-        "Feels more filling than a lighter pastry.",
-        "Best if you want something rich and sweet.",
-      ],
-      pairing:
-        "This goes well with sobolo, orange juice, or pineapple juice if you want something chilled beside it.",
+      description: "Walnut brownies served as a pair.",
+      pairing: "Goes well with sobolo, orange juice, or pineapple juice.",
       metaBestWith: "Sobolo, orange juice, or pineapple juice",
-      sidebarPoints: [
-        { title: "Rich dessert", text: "A good option when you want something more chocolatey." },
-        { title: "Nutty texture", text: "Walnuts add crunch to the soft brownie." },
-        { title: "Easy to split", text: "Served in a pair for simple sharing." },
-      ],
     }),
 
     createProduct({
@@ -409,39 +259,12 @@
       price: 150,
       unit: "two",
       image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
-      ],
+      images: ["https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=80"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A simple chocolate dessert option that is soft and filling.",
-      description:
-        "Chocolate brownies served as a pair. They are soft, rich, and a good choice when you want a straightforward chocolate dessert.",
-      highlights: {
-        love: "Customers enjoy the soft texture and familiar chocolate taste.",
-        time: "Works as a dessert, snack, or sweet treat during the day.",
-        serving: "Comes in a pair, so it is easy to share.",
-      },
-      overview:
-        "Chocolate Brownie is a simple go-to option if you want something sweet, soft, and easy to enjoy. It is rich enough to feel satisfying without needing much else beside it.",
-      overviewExtra:
-        "It also works well if you want to add a dessert item to a larger order.",
-      notes: [
-        "Soft brownie texture.",
-        "Rich chocolate flavour.",
-        "A straightforward dessert option.",
-        "Good when you want something filling and sweet.",
-      ],
-      pairing:
-        "Pairs well with sobolo, orange juice, or pineapple juice.",
+      description: "Chocolate brownies served as a pair.",
+      pairing: "Pairs well with sobolo, orange juice, or pineapple juice.",
       metaBestWith: "Sobolo or juice",
-      sidebarPoints: [
-        { title: "Simple favourite", text: "A classic dessert choice for chocolate lovers." },
-        { title: "Soft texture", text: "Easy to enjoy and filling." },
-        { title: "Served in pairs", text: "A clear and simple serving size." },
-      ],
     }),
 
     createProduct({
@@ -451,39 +274,12 @@
       price: 150,
       unit: "two",
       image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
-        "red.jpg",
-      ],
+      images: ["https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A rich chocolate cake option served in slices.",
-      description:
-        "Mud cake slices served as a pair. It is rich, chocolatey, and a good choice when you want something more filling than a pastry.",
-      highlights: {
-        love: "Customers enjoy the rich chocolate taste and soft cake texture.",
-        time: "A nice choice for dessert, celebrations, or just when you want cake.",
-        serving: "Served as two slices, so it is easy to share.",
-      },
-      overview:
-        "Mud Cake Slice is a good option if you want cake that feels rich and satisfying. It works well for dessert and also for moments when you want something a little more special.",
-      overviewExtra:
-        "Because it is served in slices, it is easy to share or enjoy over time.",
-      notes: [
-        "Rich chocolate flavour.",
-        "Soft cake texture.",
-        "Feels fuller and heavier than lighter pastries.",
-        "A good dessert-style option.",
-      ],
-      pairing:
-        "This goes well with sobolo, orange juice, or pineapple juice.",
+      description: "Mud cake slices served as a pair.",
+      pairing: "Goes well with sobolo, orange juice, or pineapple juice.",
       metaBestWith: "Sobolo, orange juice, or pineapple juice",
-      sidebarPoints: [
-        { title: "Rich cake option", text: "A strong pick if you want dessert instead of pastry." },
-        { title: "Served in slices", text: "Easy to share between two people." },
-        { title: "Works for occasions", text: "Also nice for birthdays or special orders." },
-      ],
     }),
 
     createProduct({
@@ -493,39 +289,12 @@
       price: 135,
       unit: "two",
       image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1200&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
-        "red.jpg",
-      ],
+      images: ["https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A soft cake slice option that is easy to enjoy.",
-      description:
-        "Swirl cake served as a pair of slices. It has a soft texture and is a good pick if you want cake that feels simple, familiar, and easy to enjoy.",
-      highlights: {
-        love: "Customers like that it feels soft, light, and easy to eat.",
-        time: "Works well as a dessert or something to have with a drink.",
-        serving: "Served as two slices for simple sharing.",
-      },
-      overview:
-        "Swirl Cake is a nice option if you want cake without going for something too heavy. It is soft, straightforward, and works well for everyday orders.",
-      overviewExtra:
-        "It is also a good choice if you want to add a cake item to a mixed order.",
-      notes: [
-        "Soft cake texture.",
-        "Easy-to-enjoy flavour.",
-        "Lighter feel than a rich chocolate cake.",
-        "Works well as an everyday dessert option.",
-      ],
-      pairing:
-        "Pairs well with orange juice, pineapple juice, or sobolo.",
+      description: "Swirl cake served as a pair of slices.",
+      pairing: "Pairs well with orange juice, pineapple juice, or sobolo.",
       metaBestWith: "Orange juice, pineapple juice, or sobolo",
-      sidebarPoints: [
-        { title: "Soft cake", text: "Easy to enjoy and not too heavy." },
-        { title: "Served as slices", text: "A simple portion for sharing." },
-        { title: "Everyday option", text: "A good choice for regular orders." },
-      ],
     }),
 
     createProduct({
@@ -535,39 +304,12 @@
       price: 90,
       unit: "each",
       image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1200&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
-        "red.jpg",
-      ],
+      images: ["https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80"],
       options: ["Single Slice", "Fresh Slice"],
       tagline: "A lighter cake choice with a fruity flavour.",
-      description:
-        "A single slice with lemon and raspberry flavour. It is a nice choice if you want something a little lighter and fruitier than a chocolate dessert.",
-      highlights: {
-        love: "Customers like the lighter feel and the fruity flavour.",
-        time: "A nice choice for a light dessert or sweet snack.",
-        serving: "Sold as a single slice, so it is easy to add to any order.",
-      },
-      overview:
-        "Lemon Raspberry Slice is a good option if you want something different from chocolate-based desserts. It feels lighter and works well when you want a smaller sweet option.",
-      overviewExtra:
-        "Because it comes as a single slice, it is also easy to include alongside other items.",
-      notes: [
-        "Fruity and lighter than most chocolate-based desserts.",
-        "Easy single-slice serving.",
-        "A nice option for smaller orders.",
-        "Good if you want something sweet without it feeling too heavy.",
-      ],
-      pairing:
-        "Pairs nicely with orange juice or pineapple juice.",
+      description: "A single slice with lemon and raspberry flavour.",
+      pairing: "Pairs nicely with orange juice or pineapple juice.",
       metaBestWith: "Orange juice or pineapple juice",
-      sidebarPoints: [
-        { title: "Single serving", text: "Easy to add to any order." },
-        { title: "Lighter option", text: "Good if you want cake without something too rich." },
-        { title: "Fruit flavour", text: "A refreshing change from chocolate desserts." },
-      ],
     }),
 
     createProduct({
@@ -577,39 +319,12 @@
       price: 145,
       unit: "two",
       image: "red.jpg",
-      images: [
-        "red.jpg",
-        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=1400&q=80",
-        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
-      ],
+      images: ["red.jpg"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A soft cake option with a smooth finish.",
-      description:
-        "Red velvet cake slices served as a pair. They are soft, smooth, and a good pick when you want cake that feels balanced and easy to enjoy.",
-      highlights: {
-        love: "Customers enjoy the soft cake texture and smooth finish.",
-        time: "Works well for dessert, celebrations, or casual orders.",
-        serving: "Served as a pair of slices for easy sharing.",
-      },
-      overview:
-        "Red Velvet Slice is a good option if you want cake that feels soft and familiar. It is a nice middle ground between something very rich and something very light.",
-      overviewExtra:
-        "It also works well when you want cake for sharing without ordering a full cake.",
-      notes: [
-        "Soft cake texture.",
-        "Smooth finish and balanced flavour.",
-        "Easy to enjoy for different occasions.",
-        "A good sharing option.",
-      ],
-      pairing:
-        "Pairs well with pineapple juice, orange juice, or sobolo.",
+      description: "Red velvet cake slices served as a pair.",
+      pairing: "Pairs well with pineapple juice, orange juice, or sobolo.",
       metaBestWith: "Pineapple juice, orange juice, or sobolo",
-      sidebarPoints: [
-        { title: "Soft cake", text: "Easy to enjoy and share." },
-        { title: "Balanced option", text: "Not as heavy as some richer cakes." },
-        { title: "Good for occasions", text: "Works for everyday orders and small celebrations." },
-      ],
     }),
 
     createProduct({
@@ -619,39 +334,12 @@
       price: 110,
       unit: "two",
       image: "raison.jpg",
-      images: [
-        "raison.jpg",
-        "cin.jpg",
-        "caramel.jpg",
-        "bagels.jpg",
-      ],
+      images: ["raison.jpg"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A soft roll with raisin flavour and a buttery finish.",
-      description:
-        "Raisin rolls served as a pair. They are soft, slightly sweet, and a good option if you want something baked that feels familiar and filling.",
-      highlights: {
-        love: "Customers like the soft texture and the raisin flavour.",
-        time: "Good for breakfast, a snack, or something light to go with a drink.",
-        serving: "Served as a pair for easy sharing.",
-      },
-      overview:
-        "Raisin Roll is a simple baked option that works well for everyday orders. It is soft, filling, and easy to enjoy at almost any time of day.",
-      overviewExtra:
-        "It is especially good if you want something not too sweet but still satisfying.",
-      notes: [
-        "Soft roll texture.",
-        "Slightly sweet with raisin flavour.",
-        "Easy to enjoy for breakfast or snack time.",
-        "Best when fresh.",
-      ],
-      pairing:
-        "Pairs well with pineapple juice or orange juice.",
+      description: "Raisin rolls served as a pair.",
+      pairing: "Pairs well with pineapple juice or orange juice.",
       metaBestWith: "Pineapple juice or orange juice",
-      sidebarPoints: [
-        { title: "Simple favourite", text: "A familiar baked option that is easy to enjoy." },
-        { title: "Served in pairs", text: "Good for one person or sharing." },
-        { title: "Nice for mornings", text: "Works well for breakfast." },
-      ],
     }),
 
     createProduct({
@@ -661,39 +349,12 @@
       price: 125,
       unit: "two",
       image: "cin.jpg",
-      images: [
-        "cin.jpg",
-        "raison.jpg",
-        "caramel.jpg",
-        "bagels.jpg",
-      ],
+      images: ["cin.jpg"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A soft pastry with cinnamon flavour and a comforting bite.",
-      description:
-        "Cinnamon rolls served as a pair. They are soft, sweet, and a good option if you want something baked that feels warm and comforting.",
-      highlights: {
-        love: "Customers enjoy the soft texture and cinnamon flavour.",
-        time: "Great for breakfast, snack time, or something sweet during the day.",
-        serving: "Comes as a pair, so it is easy to share.",
-      },
-      overview:
-        "Cinnamon Roll is a good choice if you want a pastry that feels soft, sweet, and familiar. It works well for mornings and also as a casual dessert option.",
-      overviewExtra:
-        "It is especially nice when you want something baked that feels comforting and filling.",
-      notes: [
-        "Soft pastry texture.",
-        "Cinnamon flavour throughout.",
-        "Sweet and easy to enjoy.",
-        "A nice baked snack choice.",
-      ],
-      pairing:
-        "Pairs well with pineapple juice, orange juice, or sobolo.",
+      description: "Cinnamon rolls served as a pair.",
+      pairing: "Pairs well with pineapple juice, orange juice, or sobolo.",
       metaBestWith: "Pineapple juice, orange juice, or sobolo",
-      sidebarPoints: [
-        { title: "Comforting flavour", text: "A soft pastry with cinnamon taste." },
-        { title: "Good any time", text: "Works for breakfast or a sweet snack." },
-        { title: "Easy serving", text: "Served in a pair." },
-      ],
     }),
 
     createProduct({
@@ -703,39 +364,12 @@
       price: 130,
       unit: "two",
       image: "caramel.jpg",
-      images: [
-        "caramel.jpg",
-        "cin.jpg",
-        "raison.jpg",
-        "bagels.jpg",
-      ],
+      images: ["caramel.jpg"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A soft roll with caramel flavour and a slightly richer finish.",
-      description:
-        "Caramel rolls served as a pair. They are soft and sweet, with a caramel flavour that makes them feel a little richer than a plain pastry.",
-      highlights: {
-        love: "Customers like the sweeter caramel taste and soft texture.",
-        time: "A nice option when you want something baked and a little richer.",
-        serving: "Served as a pair for easy sharing.",
-      },
-      overview:
-        "Caramel Roll is a good choice if you want something soft and sweet with a slightly richer taste. It works well as a snack or dessert-style pastry.",
-      overviewExtra:
-        "It is a nice alternative if you want something a little sweeter than a plain roll.",
-      notes: [
-        "Soft roll texture.",
-        "Sweeter caramel flavour.",
-        "Feels a little richer than a plain pastry.",
-        "Easy to enjoy with chilled drinks.",
-      ],
-      pairing:
-        "Pairs well with pineapple juice, orange juice, or sobolo.",
+      description: "Caramel rolls served as a pair.",
+      pairing: "Pairs well with pineapple juice, orange juice, or sobolo.",
       metaBestWith: "Pineapple juice, orange juice, or sobolo",
-      sidebarPoints: [
-        { title: "Sweeter option", text: "A good pick if you want more sweetness." },
-        { title: "Soft pastry", text: "Easy to enjoy and filling." },
-        { title: "Served in pairs", text: "Simple and shareable serving." },
-      ],
     }),
 
     createProduct({
@@ -745,39 +379,12 @@
       price: 100,
       unit: "two",
       image: "bagels.jpg",
-      images: [
-        "bagels.jpg",
-        "raison.jpg",
-        "cin.jpg",
-        "caramel.jpg",
-      ],
+      images: ["bagels.jpg"],
       options: ["Standard", "Fresh Batch"],
       tagline: "A simple baked option that works well for breakfast or a quick bite.",
-      description:
-        "Bagels served as a pair. They are a good option if you want something baked, easy to enjoy, and not too sweet.",
-      highlights: {
-        love: "Customers like that it feels simple, filling, and easy to eat.",
-        time: "Works well for breakfast or a light snack.",
-        serving: "Comes as a pair for easy sharing.",
-      },
-      overview:
-        "Bagel is a simple menu option for people who want something baked that feels light and straightforward. It is easy to enjoy and fits well into breakfast or snack orders.",
-      overviewExtra:
-        "It also works if you want to add something mild to a bigger order.",
-      notes: [
-        "Simple baked texture.",
-        "Not too sweet.",
-        "Good for breakfast or quick bites.",
-        "Easy to pair with drinks.",
-      ],
-      pairing:
-        "Pairs well with pineapple juice or orange juice.",
+      description: "Bagels served as a pair.",
+      pairing: "Pairs well with pineapple juice or orange juice.",
       metaBestWith: "Pineapple juice or orange juice",
-      sidebarPoints: [
-        { title: "Simple option", text: "Good if you want something plain and easy." },
-        { title: "Light choice", text: "Feels lighter than richer desserts." },
-        { title: "Good with drinks", text: "Nice with chilled juice." },
-      ],
     }),
 
     createProduct({
@@ -787,39 +394,12 @@
       price: 40,
       unit: "each",
       image: "pine.webp",
-      images: [
-        "pine.webp",
-        "pm.jpg",
-        "wm.webp",
-        "sobolo.webp",
-      ],
+      images: ["pine.webp"],
       options: ["Chilled", "Bottle"],
       tagline: "Fresh and easy to pair with pastries, brownies, and cake.",
-      description:
-        "Fresh pineapple juice served chilled. It is a refreshing drink option that pairs well with pastries, brownies, cake slices, and more.",
-      highlights: {
-        love: "Customers like how fresh and easy it is to pair with different food items.",
-        time: "Good at any time of day, especially with baked items.",
-        serving: "Sold individually, so it is easy to add to any order.",
-      },
-      overview:
-        "Pineapple Juice is a simple drink option that works with almost everything on the menu. If you want something cold and refreshing beside a baked item, this is a good pick.",
-      overviewExtra:
-        "It is especially useful if you want a drink that balances sweeter pastries and desserts.",
-      notes: [
-        "Served chilled.",
-        "Fresh and refreshing.",
-        "Easy to pair with most menu items.",
-        "Good as part of a larger order or on its own.",
-      ],
-      pairing:
-        "Pairs well with croissants, brownies, cake slices, donuts, and rolls.",
+      description: "Fresh pineapple juice served chilled.",
+      pairing: "Pairs well with croissants, brownies, cake slices, donuts, and rolls.",
       metaBestWith: "Croissants, brownies, cake, and donuts",
-      sidebarPoints: [
-        { title: "Refreshing", text: "A simple chilled drink option." },
-        { title: "Easy to pair", text: "Works with many items on the menu." },
-        { title: "Single serving", text: "Easy to add to any order." },
-      ],
     }),
 
     createProduct({
@@ -829,39 +409,12 @@
       price: 40,
       unit: "each",
       image: "pm.jpg",
-      images: [
-        "pm.jpg",
-        "pine.webp",
-        "wm.webp",
-        "sobolo.webp",
-      ],
+      images: ["pm.jpg"],
       options: ["Chilled", "Bottle"],
       tagline: "A refreshing juice blend with a cool finish.",
-      description:
-        "Mint and pineapple juice served chilled. It is refreshing, easy to drink, and a good choice if you want something cooler and lighter beside pastries or cake.",
-      highlights: {
-        love: "Customers like the refreshing feel and the cool mint finish.",
-        time: "Great for hot days or whenever you want something refreshing.",
-        serving: "Sold individually, so it is easy to add to your order.",
-      },
-      overview:
-        "Mint & Pineapple Juice is a nice option if you want something a little more refreshing than a regular fruit juice. It feels lighter and works well with pastries and cakes.",
-      overviewExtra:
-        "It is especially good when you want a drink that helps balance sweeter items.",
-      notes: [
-        "Served chilled.",
-        "Refreshing pineapple flavour with mint.",
-        "Feels lighter and cooling.",
-        "Works well with baked items.",
-      ],
-      pairing:
-        "Pairs well with croissants, cake slices, and rolls.",
+      description: "Mint and pineapple juice served chilled.",
+      pairing: "Pairs well with croissants, cake slices, and rolls.",
       metaBestWith: "Croissants, cake slices, and rolls",
-      sidebarPoints: [
-        { title: "Cooling drink", text: "A refreshing option for warm days." },
-        { title: "Easy to match", text: "Works well with pastries and cakes." },
-        { title: "Single serving", text: "Simple to add to any order." },
-      ],
     }),
 
     createProduct({
@@ -871,39 +424,12 @@
       price: 40,
       unit: "each",
       image: "wm.webp",
-      images: [
-        "wm.webp",
-        "pine.webp",
-        "pm.jpg",
-        "sobolo.webp",
-      ],
+      images: ["wm.webp"],
       options: ["Chilled", "Bottle"],
       tagline: "A light and refreshing drink that is easy to enjoy.",
-      description:
-        "Watermelon juice served chilled. It is light, refreshing, and a good option if you want something simple beside pastries or cake.",
-      highlights: {
-        love: "Customers like how light and refreshing it feels.",
-        time: "Good for hot days, quick refreshment, or a light drink with snacks.",
-        serving: "Sold individually for easy ordering.",
-      },
-      overview:
-        "Watermelon Juice is a simple drink choice if you want something cold and refreshing without it feeling too heavy or too sweet.",
-      overviewExtra:
-        "It works especially well if you want a lighter drink next to a pastry or dessert.",
-      notes: [
-        "Served chilled.",
-        "Light and refreshing.",
-        "Easy to pair with sweet items.",
-        "A simple drink option for any time of day.",
-      ],
-      pairing:
-        "Pairs well with croissants, cake slices, and donuts.",
+      description: "Watermelon juice served chilled.",
+      pairing: "Pairs well with croissants, cake slices, and donuts.",
       metaBestWith: "Croissants, cake slices, and donuts",
-      sidebarPoints: [
-        { title: "Light drink", text: "A good option if you want something not too heavy." },
-        { title: "Refreshing", text: "Works especially well chilled." },
-        { title: "Easy add-on", text: "Simple drink to include with food." },
-      ],
     }),
 
     createProduct({
@@ -913,39 +439,12 @@
       price: 40,
       unit: "each",
       image: "sobolo.webp",
-      images: [
-        "sobolo.webp",
-        "pine.webp",
-        "pm.jpg",
-        "wm.webp",
-      ],
+      images: ["sobolo.webp"],
       options: ["Chilled", "Bottle"],
       tagline: "A chilled local drink that goes well with many items on the menu.",
-      description:
-        "Sobolo served chilled. It is a refreshing local drink and a great option to enjoy with pastries, brownies, cake slices, and donuts.",
-      highlights: {
-        love: "Customers like that it feels familiar, refreshing, and easy to enjoy with different foods.",
-        time: "Good at any time of day, especially with baked snacks or dessert.",
-        serving: "Sold individually, so it is easy to add to any order.",
-      },
-      overview:
-        "Sobolo is one of the easiest drinks to pair with items on the menu. It is refreshing and works especially well beside baked goods and sweeter desserts.",
-      overviewExtra:
-        "If you want a chilled local drink that fits naturally into your order, this is a good option.",
-      notes: [
-        "Served chilled.",
-        "A familiar local drink option.",
-        "Easy to pair with pastries and desserts.",
-        "Refreshing without feeling too heavy.",
-      ],
-      pairing:
-        "Pairs well with brownies, croissants, mud cake slice, and donuts.",
+      description: "Sobolo served chilled.",
+      pairing: "Pairs well with brownies, croissants, mud cake slice, and donuts.",
       metaBestWith: "Brownies, croissants, cake, and donuts",
-      sidebarPoints: [
-        { title: "Local favourite", text: "A familiar chilled drink option." },
-        { title: "Easy pairing", text: "Works well with many sweet and baked items." },
-        { title: "Simple serving", text: "Easy to add to any order." },
-      ],
     }),
 
     createProduct({
@@ -955,39 +454,12 @@
       price: 40,
       unit: "each",
       image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1200&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1400&q=80",
-        "pine.webp",
-        "pm.jpg",
-        "wm.webp",
-      ],
+      images: ["https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=1400&q=80"],
       options: ["Chilled", "Bottle"],
       tagline: "A chilled drink that works well with pastries and desserts.",
-      description:
-        "Orange juice served chilled. It is fresh, simple, and a good choice when you want a drink that pairs easily with pastries, cake slices, or brownies.",
-      highlights: {
-        love: "Customers enjoy how easy it is to pair with different items.",
-        time: "Works well with breakfast items, snacks, and desserts.",
-        serving: "Sold individually, so it is easy to include in any order.",
-      },
-      overview:
-        "Orange Juice is a simple drink option that works with many items on the menu. It is easy to enjoy and especially useful if you want something fresh beside baked food.",
-      overviewExtra:
-        "It is one of the easiest drinks to add if you are not sure what to pair with your order.",
-      notes: [
-        "Served chilled.",
-        "Fresh and simple.",
-        "Easy to pair with pastries and desserts.",
-        "A good all-round drink option.",
-      ],
-      pairing:
-        "Pairs well with croissants, brownies, cake slices, rolls, and donuts.",
+      description: "Orange juice served chilled.",
+      pairing: "Pairs well with croissants, brownies, cake slices, rolls, and donuts.",
       metaBestWith: "Croissants, brownies, cake, rolls, and donuts",
-      sidebarPoints: [
-        { title: "Simple choice", text: "A good all-round juice option." },
-        { title: "Very easy to pair", text: "Works with most menu items." },
-        { title: "Single serving", text: "Easy to add to your order." },
-      ],
     }),
   ];
 
@@ -1057,63 +529,63 @@
     document.body.classList.remove("cart-open");
   }
 
-function renderCart() {
-  const itemsHost = $("#cartItems");
-  const emptyState = $("#cartEmptyState");
+  function renderCart() {
+    const itemsHost = $("#cartItems");
+    const emptyState = $("#cartEmptyState");
 
-  updateCartIndicators();
+    updateCartIndicators();
 
-  if (!itemsHost) return;
+    if (!itemsHost) return;
 
-  if (!cart.length) {
-    itemsHost.innerHTML = "";
+    if (!cart.length) {
+      itemsHost.innerHTML = "";
 
-    if (emptyState) {
-      emptyState.hidden = false;
-      emptyState.classList.remove("is-hidden");
+      if (emptyState) {
+        emptyState.hidden = false;
+        emptyState.classList.remove("is-hidden");
+      }
+
+      return;
     }
 
-    return;
+    if (emptyState) {
+      emptyState.hidden = true;
+      emptyState.classList.add("is-hidden");
+    }
+
+    itemsHost.innerHTML = cart
+      .map(
+        (item) => `
+          <article class="cart-item" data-cart-product-id="${escapeHtml(item.id)}" tabindex="0" role="button" aria-label="Open ${escapeHtml(item.name)} details">
+            <div class="cart-item__image">
+              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
+            </div>
+
+            <div class="cart-item__content">
+              <h3>${escapeHtml(item.name)}</h3>
+              <div class="cart-item__meta">
+                ${escapeHtml(item.category)}${item.variant ? ` • ${escapeHtml(item.variant)}` : ""}
+              </div>
+              <div class="cart-item__price">
+                ${formatPrice(item.price)} <span>/ ${escapeHtml(item.unit)}</span>
+              </div>
+
+              <div class="cart-item__actions">
+                <button class="cart-item__qty-btn" type="button" data-cart-action="decrease" data-key="${escapeHtml(item.key)}" aria-label="Decrease quantity">−</button>
+                <span class="cart-item__qty">${item.qty}</span>
+                <button class="cart-item__qty-btn" type="button" data-cart-action="increase" data-key="${escapeHtml(item.key)}" aria-label="Increase quantity">+</button>
+                <button class="cart-item__remove" type="button" data-cart-action="remove" data-key="${escapeHtml(item.key)}" aria-label="Remove item">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="cart-item__total">${formatPrice(item.qty * item.price)}</div>
+          </article>
+        `
+      )
+      .join("");
   }
-
-  if (emptyState) {
-    emptyState.hidden = true;
-    emptyState.classList.add("is-hidden");
-  }
-
-  itemsHost.innerHTML = cart
-    .map(
-      (item) => `
-        <article class="cart-item" data-cart-product-id="${escapeHtml(item.id)}" tabindex="0" role="button" aria-label="Open ${escapeHtml(item.name)} details">
-          <div class="cart-item__image">
-            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
-          </div>
-
-          <div class="cart-item__content">
-            <h3>${escapeHtml(item.name)}</h3>
-            <div class="cart-item__meta">
-              ${escapeHtml(item.category)}${item.variant ? ` • ${escapeHtml(item.variant)}` : ""}
-            </div>
-            <div class="cart-item__price">
-              ${formatPrice(item.price)} <span>/ ${escapeHtml(item.unit)}</span>
-            </div>
-
-            <div class="cart-item__actions">
-              <button class="cart-item__qty-btn" type="button" data-cart-action="decrease" data-key="${escapeHtml(item.key)}" aria-label="Decrease quantity">−</button>
-              <span class="cart-item__qty">${item.qty}</span>
-              <button class="cart-item__qty-btn" type="button" data-cart-action="increase" data-key="${escapeHtml(item.key)}" aria-label="Increase quantity">+</button>
-              <button class="cart-item__remove" type="button" data-cart-action="remove" data-key="${escapeHtml(item.key)}" aria-label="Remove item">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="cart-item__total">${formatPrice(item.qty * item.price)}</div>
-        </article>
-      `
-    )
-    .join("");
-}
 
   function addToCart(product, qty = 1, variant = "") {
     if (!product) return;
@@ -1141,6 +613,7 @@ function renderCart() {
 
     saveCart();
     renderCart();
+    renderCheckoutSummary();
     showToast(`${product.name} added to cart`, "success");
   }
 
@@ -1156,19 +629,22 @@ function renderCart() {
 
     saveCart();
     renderCart();
+    renderCheckoutSummary();
   }
 
   function removeCartItem(key) {
     cart = cart.filter((item) => item.key !== key);
     saveCart();
     renderCart();
+    renderCheckoutSummary();
   }
 
-  function clearCart() {
+  function clearCart(showMessage = false) {
     cart = [];
     saveCart();
     renderCart();
-    showToast("Cart cleared");
+    renderCheckoutSummary();
+    if (showMessage) showToast("Cart cleared");
   }
 
   function goToProductPage(productId) {
@@ -1202,21 +678,6 @@ function renderCart() {
       image: image || "",
       images: image ? [image] : [],
       options: ["Standard"],
-      tagline: "Available to order.",
-      description: `${name} is available to order from Meals by Bella.`,
-      highlights: {
-        love: "A simple menu choice.",
-        time: "Works for different times of day.",
-        serving: `Served / sold per ${unit || "item"}.`,
-      },
-      overview: `${name} is available on the Meals by Bella menu.`,
-      overviewExtra: "Tap add to cart to include it in your order.",
-      notes: ["Available to order."],
-      pairing: "Can be paired with other menu items.",
-      metaBestWith: "Other menu items",
-      sidebarPoints: [
-        { title: "Available", text: "This item is available to order." },
-      ],
     });
   }
 
@@ -1267,9 +728,9 @@ function renderCart() {
       if (event.target === menu) closeMenu();
     });
 
-    $$(".mobile-menu a", menu).forEach((link) =>
-      link.addEventListener("click", () => closeMenu())
-    );
+    $$(".mobile-menu a", menu).forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && menu.classList.contains("is-open")) {
@@ -1288,7 +749,7 @@ function renderCart() {
     });
 
     $$(".js-clear-cart").forEach((button) => {
-      button.addEventListener("click", clearCart);
+      button.addEventListener("click", () => clearCart(true));
     });
 
     const drawer = $("#cartDrawer");
@@ -1299,11 +760,9 @@ function renderCart() {
           event.stopPropagation();
 
           const { cartAction, key } = actionButton.dataset;
-
           if (cartAction === "increase") updateCartItemQuantity(key, 1);
           if (cartAction === "decrease") updateCartItemQuantity(key, -1);
           if (cartAction === "remove") removeCartItem(key);
-
           return;
         }
 
@@ -1313,9 +772,7 @@ function renderCart() {
           if (clickedControl) return;
 
           const productId = cartItem.dataset.cartProductId;
-          if (productId) {
-            goToProductPage(productId);
-          }
+          if (productId) goToProductPage(productId);
         }
       });
 
@@ -1334,9 +791,7 @@ function renderCart() {
     }
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeCart();
-      }
+      if (event.key === "Escape") closeCart();
     });
   }
 
@@ -1396,17 +851,11 @@ function renderCart() {
         const category = normalise(card.dataset.category || "");
         const id = normalise(card.dataset.id || "");
 
-        const matchesFilter =
-          activeFilter === "all" || category === normalise(activeFilter);
-
+        const matchesFilter = activeFilter === "all" || category === normalise(activeFilter);
         const matchesSearch =
-          !searchTerm ||
-          name.includes(searchTerm) ||
-          category.includes(searchTerm) ||
-          id.includes(searchTerm);
+          !searchTerm || name.includes(searchTerm) || category.includes(searchTerm) || id.includes(searchTerm);
 
         const shouldShow = matchesFilter && matchesSearch;
-
         card.classList.toggle("is-hidden", !shouldShow);
         if (shouldShow) visibleCount += 1;
       });
@@ -1452,11 +901,7 @@ function renderCart() {
     host.innerHTML = options
       .map(
         (option, index) => `
-          <button
-            class="option-chip ${index === 0 ? "is-active" : ""}"
-            type="button"
-            data-option="${escapeHtml(option)}"
-          >
+          <button class="option-chip ${index === 0 ? "is-active" : ""}" type="button" data-option="${escapeHtml(option)}">
             ${escapeHtml(option)}
           </button>
         `
@@ -1476,12 +921,7 @@ function renderCart() {
     thumbsHost.innerHTML = product.images
       .map(
         (image, index) => `
-          <button
-            class="product-thumb ${index === 0 ? "is-active" : ""}"
-            type="button"
-            data-image="${escapeHtml(image)}"
-            aria-label="View ${escapeHtml(product.name)} image ${index + 1}"
-          >
+          <button class="product-thumb ${index === 0 ? "is-active" : ""}" type="button" data-image="${escapeHtml(image)}" aria-label="View ${escapeHtml(product.name)} image ${index + 1}">
             <img src="${escapeHtml(image)}" alt="${escapeHtml(product.name)} thumbnail ${index + 1}" />
           </button>
         `
@@ -1491,15 +931,11 @@ function renderCart() {
 
   function renderProductMeta(product) {
     currentProduct = product;
-
     document.title = `${product.name} | Meals by Bella`;
 
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute(
-        "content",
-        `${product.name} from Meals by Bella. ${product.description}`
-      );
+      metaDescription.setAttribute("content", `${product.name} from Meals by Bella. ${product.description}`);
     }
 
     setText("breadcrumbProductName", product.name);
@@ -1511,21 +947,20 @@ function renderCart() {
     setText("productAvailability", product.availability);
     setText("productDescription", product.description);
 
-    setText("highlightLove", product.highlights.love);
-    setText("highlightTime", product.highlights.time);
-    setText("highlightServing", product.highlights.serving);
+    if (product.highlights) {
+      setText("highlightLove", product.highlights.love || "");
+      setText("highlightTime", product.highlights.time || "");
+      setText("highlightServing", product.highlights.serving || "");
+    }
 
-    setText("productOverviewText", product.overview);
-    setText("productOverviewExtra", product.overviewExtra);
-    setHTML(
-      "productNotesList",
-      product.notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")
-    );
-    setText("productPairingText", product.pairing);
+    setText("productOverviewText", product.overview || "");
+    setText("productOverviewExtra", product.overviewExtra || "");
+    setHTML("productNotesList", (product.notes || []).map((note) => `<li>${escapeHtml(note)}</li>`).join(""));
+    setText("productPairingText", product.pairing || "");
 
     setText("productMetaCategory", product.category);
     setText("productMetaServing", productServingText(product));
-    setText("productMetaBestWith", product.metaBestWith);
+    setText("productMetaBestWith", product.metaBestWith || "");
 
     setText("sidebarPrice", formatPrice(product.price));
     setText("sidebarUnit", product.unit);
@@ -1533,7 +968,7 @@ function renderCart() {
 
     const sidebarPoints = $("#productSidebarPoints");
     if (sidebarPoints) {
-      sidebarPoints.innerHTML = product.sidebarPoints
+      sidebarPoints.innerHTML = (product.sidebarPoints || [])
         .map(
           (point) => `
             <article>
@@ -1561,15 +996,7 @@ function renderCart() {
     host.innerHTML = related
       .map(
         (item) => `
-          <article
-            class="product-card"
-            data-id="${escapeHtml(item.id)}"
-            data-name="${escapeHtml(item.name)}"
-            data-price="${item.price}"
-            data-unit="${escapeHtml(item.unit)}"
-            data-image="${escapeHtml(item.image)}"
-            data-category="${escapeHtml(item.category)}"
-          >
+          <article class="product-card" data-id="${escapeHtml(item.id)}" data-name="${escapeHtml(item.name)}" data-price="${item.price}" data-unit="${escapeHtml(item.unit)}" data-image="${escapeHtml(item.image)}" data-category="${escapeHtml(item.category)}">
             <a href="product.html?product=${encodeURIComponent(item.id)}" class="product-card__media">
               <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
             </a>
@@ -1640,32 +1067,20 @@ function renderCart() {
       input.value = String(clamp(Number(nextValue) || 1, 1, 20));
     }
 
-    decrease?.addEventListener("click", () => {
-      syncValue((Number(input.value) || 1) - 1);
-    });
-
-    increase?.addEventListener("click", () => {
-      syncValue((Number(input.value) || 1) + 1);
-    });
-
-    input.addEventListener("input", () => {
-      syncValue(input.value);
-    });
-
-    input.addEventListener("blur", () => {
-      syncValue(input.value);
-    });
+    decrease?.addEventListener("click", () => syncValue((Number(input.value) || 1) - 1));
+    increase?.addEventListener("click", () => syncValue((Number(input.value) || 1) + 1));
+    input.addEventListener("input", () => syncValue(input.value));
+    input.addEventListener("blur", () => syncValue(input.value));
   }
 
   function initProductOptionClicks() {
     document.addEventListener("click", (event) => {
       const option = event.target.closest(".option-chip");
-      if (!option || !$("#productOptions")) return;
+      const host = $("#productOptions");
+      if (!option || !host) return;
 
       currentOption = option.dataset.option || "Standard";
-      $$(".option-chip", $("#productOptions")).forEach((node) =>
-        node.classList.remove("is-active")
-      );
+      $$(".option-chip", host).forEach((node) => node.classList.remove("is-active"));
       option.classList.add("is-active");
     });
   }
@@ -1688,10 +1103,10 @@ function renderCart() {
   function initMobileStickyCartVisibility() {
     const stickyBar = $("#mobileStickyCart");
     const relatedSection = $("#relatedProductsSection");
+
+    if (!stickyBar || !relatedSection || !("IntersectionObserver" in window)) return;
+
     const mediaQuery = window.matchMedia("(max-width: 820px)");
-
-    if (!stickyBar || !relatedSection) return;
-
     let observer = null;
 
     function applyVisibility(isRelatedVisible) {
@@ -1699,7 +1114,6 @@ function renderCart() {
         stickyBar.classList.remove("is-visible");
         return;
       }
-
       stickyBar.classList.toggle("is-visible", !isRelatedVisible);
     }
 
@@ -1709,12 +1123,9 @@ function renderCart() {
       observer = new IntersectionObserver(
         (entries) => {
           const entry = entries[0];
-          applyVisibility(entry.isIntersecting);
+          applyVisibility(Boolean(entry?.isIntersecting));
         },
-        {
-          root: null,
-          threshold: 0.08,
-        }
+        { threshold: 0.08 }
       );
 
       observer.observe(relatedSection);
@@ -1722,7 +1133,12 @@ function renderCart() {
     }
 
     setupObserver();
-    mediaQuery.addEventListener("change", setupObserver);
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", setupObserver);
+    } else if (mediaQuery.addListener) {
+      mediaQuery.addListener(setupObserver);
+    }
   }
 
   function initProductPage() {
@@ -1731,6 +1147,8 @@ function renderCart() {
     const params = new URLSearchParams(window.location.search);
     const productId = params.get("product") || "chocolate-croissant";
     const product = getProductById(productId) || getProductById("chocolate-croissant");
+
+    if (!product) return;
 
     renderProductMeta(product);
     renderProductGallery(product);
@@ -1793,6 +1211,7 @@ function renderCart() {
         const type = item.dataset.type;
         const src = item.dataset.src;
         const label = item.getAttribute("aria-label") || "Gallery item";
+        if (!src) return;
         openLightbox(type, src, label);
       });
     });
@@ -1808,706 +1227,696 @@ function renderCart() {
   }
 
   /* -------------------------------------------------------------------------- */
-/* Checkout                                                                   */
-/* -------------------------------------------------------------------------- */
+  /* Checkout                                                                   */
+  /* -------------------------------------------------------------------------- */
 
-const PAYSTACK_PUBLIC_KEY = "pk_test_297586e51710e83d3c159bfe71ff45c7e23411fa";
+  function calculateProcessingFee(subtotal) {
+    return Number((subtotal * 0.0295).toFixed(2));
+  }
 
-function calculateProcessingFee(subtotal) {
-  return Number((subtotal * 0.0295).toFixed(2));
-}
+  function calculateCheckoutTotal(subtotal) {
+    return Number((subtotal + calculateProcessingFee(subtotal)).toFixed(2));
+  }
 
-function calculateCheckoutTotal(subtotal) {
-  return Number((subtotal + calculateProcessingFee(subtotal)).toFixed(2));
-}
+  function formatCartItemsForSubmission(items) {
+    return items
+      .map(
+        (item) =>
+          `${item.name}${item.variant ? ` (${item.variant})` : ""} - ${item.qty} x ${formatPrice(item.price)} = ${formatPrice(item.qty * item.price)}`
+      )
+      .join("\n");
+  }
 
-function formatCartItemsForSubmission(items) {
-  return items
-    .map(
-      (item) =>
-        `${item.name}${item.variant ? ` (${item.variant})` : ""} - ${item.qty} x ${formatPrice(item.price)} = ${formatPrice(item.qty * item.price)}`
-    )
-    .join("\n");
-}
+  function getCheckoutElements() {
+    return {
+      form: $("#checkoutForm"),
+      itemsHost: $("#checkoutItems"),
+      emptyState: $("#checkoutEmptyState"),
+      subtotalNode: $("#checkoutSubtotal"),
+      feeNode: $("#checkoutProcessingFee"),
+      totalNode: $("#checkoutGrandTotal"),
+      termsDrawer: $("#termsDrawer"),
+      openTermsBtn: $("#openTermsDrawer"),
+      closeTermsBtn: $("#closeTermsDrawer"),
+      termsOverlay: $("#termsDrawerOverlay"),
+      invoiceModal: $("#invoiceModal"),
+      invoiceOverlay: $("#invoiceModalOverlay"),
+      closeInvoiceModalBtn: $("#closeInvoiceModal"),
+      invoicePreview: $("#invoicePreview"),
+      viewInvoiceButton: $("#viewInvoiceButton"),
+      downloadInvoiceButton: $("#downloadInvoiceButton"),
+      confirmationSection: $("#checkoutConfirmationSection"),
+      confirmationReference: $("#confirmationReference"),
+      confirmationTotalPaid: $("#confirmationTotalPaid"),
+      confirmationViewInvoiceButton: $("#confirmationViewInvoiceButton"),
+      confirmationDownloadInvoiceButton: $("#confirmationDownloadInvoiceButton"),
+      confirmationMessage: $("#checkoutConfirmationMessage"),
+      payNowButton: $("#payNowButton"),
+    };
+  }
 
-function getCheckoutElements() {
-  return {
-    form: $("#checkoutForm"),
-    itemsHost: $("#checkoutItems"),
-    emptyState: $("#checkoutEmptyState"),
-    subtotalNode: $("#checkoutSubtotal"),
-    feeNode: $("#checkoutProcessingFee"),
-    totalNode: $("#checkoutGrandTotal"),
-    termsDrawer: $("#termsDrawer"),
-    openTermsBtn: $("#openTermsDrawer"),
-    closeTermsBtn: $("#closeTermsDrawer"),
-    termsOverlay: $("#termsDrawerOverlay"),
-    invoiceModal: $("#invoiceModal"),
-    invoiceOverlay: $("#invoiceModalOverlay"),
-    closeInvoiceModalBtn: $("#closeInvoiceModal"),
-    invoicePreview: $("#invoicePreview"),
-    viewInvoiceButton: $("#viewInvoiceButton"),
-    downloadInvoiceButton: $("#downloadInvoiceButton"),
-    confirmationSection: $("#checkoutConfirmationSection"),
-    confirmationReference: $("#confirmationReference"),
-    confirmationTotalPaid: $("#confirmationTotalPaid"),
-    confirmationViewInvoiceButton: $("#confirmationViewInvoiceButton"),
-    confirmationDownloadInvoiceButton: $("#confirmationDownloadInvoiceButton"),
-    confirmationMessage: $("#checkoutConfirmationMessage"),
-    payNowButton: $("#payNowButton"),
-  };
-}
+  function renderCheckoutSummary() {
+    const { itemsHost, emptyState, subtotalNode, feeNode, totalNode, payNowButton } = getCheckoutElements();
 
-function renderCheckoutSummary() {
-  const {
-    itemsHost,
-    emptyState,
-    subtotalNode,
-    feeNode,
-    totalNode,
-    payNowButton,
-  } = getCheckoutElements();
+    if (!itemsHost || !subtotalNode || !feeNode || !totalNode) return;
 
-  if (!itemsHost || !subtotalNode || !feeNode || !totalNode) return;
+    const subtotal = getCartSubtotal();
+    const processingFee = calculateProcessingFee(subtotal);
+    const grandTotal = calculateCheckoutTotal(subtotal);
 
-  const subtotal = getCartSubtotal();
-  const processingFee = calculateProcessingFee(subtotal);
-  const grandTotal = calculateCheckoutTotal(subtotal);
+    subtotalNode.textContent = formatPrice(subtotal);
+    feeNode.textContent = formatPrice(processingFee);
+    totalNode.textContent = formatPrice(grandTotal);
 
-  subtotalNode.textContent = formatPrice(subtotal);
-  feeNode.textContent = formatPrice(processingFee);
-  totalNode.textContent = formatPrice(grandTotal);
+    const cartItemsJsonField = $("#formCartItemsJson");
+    const cartItemsTextField = $("#formCartItemsText");
+    const subtotalField = $("#formSubtotal");
+    const feeField = $("#formProcessingFee");
+    const totalField = $("#formTotalAmount");
 
-  const cartItemsJsonField = $("#formCartItemsJson");
-  const cartItemsTextField = $("#formCartItemsText");
-  const subtotalField = $("#formSubtotal");
-  const feeField = $("#formProcessingFee");
-  const totalField = $("#formTotalAmount");
+    if (cartItemsJsonField) cartItemsJsonField.value = JSON.stringify(cart);
+    if (cartItemsTextField) cartItemsTextField.value = formatCartItemsForSubmission(cart);
+    if (subtotalField) subtotalField.value = subtotal.toFixed(2);
+    if (feeField) feeField.value = processingFee.toFixed(2);
+    if (totalField) totalField.value = grandTotal.toFixed(2);
 
-  if (cartItemsJsonField) cartItemsJsonField.value = JSON.stringify(cart);
-  if (cartItemsTextField) cartItemsTextField.value = formatCartItemsForSubmission(cart);
-  if (subtotalField) subtotalField.value = subtotal.toFixed(2);
-  if (feeField) feeField.value = processingFee.toFixed(2);
-  if (totalField) totalField.value = grandTotal.toFixed(2);
+    if (!cart.length) {
+      itemsHost.innerHTML = "";
 
-  if (!cart.length) {
-    itemsHost.innerHTML = "";
+      if (emptyState) {
+        emptyState.hidden = false;
+        emptyState.classList.remove("is-hidden");
+      }
+
+      if (payNowButton) payNowButton.disabled = true;
+      return;
+    }
 
     if (emptyState) {
-      emptyState.hidden = false;
-      emptyState.classList.remove("is-hidden");
+      emptyState.hidden = true;
+      emptyState.classList.add("is-hidden");
     }
 
-    if (payNowButton) payNowButton.disabled = true;
-    return;
+    if (payNowButton) payNowButton.disabled = false;
+
+    itemsHost.innerHTML = cart
+      .map(
+        (item) => `
+          <article class="checkout-item">
+            <div class="checkout-item__image">
+              <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
+            </div>
+
+            <div class="checkout-item__content">
+              <h3>${escapeHtml(item.name)}</h3>
+              <p>${escapeHtml(item.category)}${item.variant ? ` • ${escapeHtml(item.variant)}` : ""}</p>
+              <span>${item.qty} × ${formatPrice(item.price)}</span>
+            </div>
+
+            <strong class="checkout-item__total">${formatPrice(item.qty * item.price)}</strong>
+          </article>
+        `
+      )
+      .join("");
   }
 
-  if (emptyState) {
-    emptyState.hidden = true;
-    emptyState.classList.add("is-hidden");
+  function openTermsDrawer() {
+    const { termsDrawer } = getCheckoutElements();
+    if (!termsDrawer) return;
+
+    termsDrawer.classList.add("is-open");
+    termsDrawer.setAttribute("aria-hidden", "false");
+    document.body.classList.add("lightbox-open");
   }
 
-  if (payNowButton) payNowButton.disabled = false;
+  function closeTermsDrawer() {
+    const { termsDrawer } = getCheckoutElements();
+    if (!termsDrawer) return;
 
-  itemsHost.innerHTML = cart
-    .map(
-      (item) => `
-        <article class="checkout-item">
-          <div class="checkout-item__image">
-            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
+    termsDrawer.classList.remove("is-open");
+    termsDrawer.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("lightbox-open");
+  }
+
+  function openInvoiceModal() {
+    const { invoiceModal } = getCheckoutElements();
+    if (!invoiceModal) return;
+
+    invoiceModal.classList.add("is-open");
+    invoiceModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("lightbox-open");
+  }
+
+  function closeInvoiceModal() {
+    const { invoiceModal } = getCheckoutElements();
+    if (!invoiceModal) return;
+
+    invoiceModal.classList.remove("is-open");
+    invoiceModal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("lightbox-open");
+  }
+
+  function buildInvoiceData() {
+    const subtotal = getCartSubtotal();
+    const processingFee = calculateProcessingFee(subtotal);
+    const total = calculateCheckoutTotal(subtotal);
+
+    return {
+      reference: $("#formPaymentReference")?.value || "Pending",
+      paymentStatus: $("#formPaymentStatus")?.value || "paid",
+      fullName: $("#customerFullName")?.value?.trim() || "",
+      phone: $("#customerPhone")?.value?.trim() || "",
+      email: $("#customerEmail")?.value?.trim() || "",
+      location: $("#customerLocation")?.value?.trim() || "",
+      orderType: $("#orderType")?.value || "",
+      instructions: $("#customerInstructions")?.value?.trim() || "",
+      subtotal,
+      processingFee,
+      total,
+      items: [...cart],
+      date: new Date().toLocaleString(),
+    };
+  }
+
+  function renderInvoicePreview(invoiceData) {
+    const { invoicePreview } = getCheckoutElements();
+    if (!invoicePreview) return;
+
+    invoicePreview.innerHTML = `
+      <div class="invoice-sheet">
+        <div class="invoice-sheet__top">
+          <div>
+            <p class="section-tag">Invoice</p>
+            <h2>Meals by Bella</h2>
+            <p>Fresh bakes & treats</p>
           </div>
-
-          <div class="checkout-item__content">
-            <h3>${escapeHtml(item.name)}</h3>
-            <p>${escapeHtml(item.category)}${item.variant ? ` • ${escapeHtml(item.variant)}` : ""}</p>
-            <span>${item.qty} × ${formatPrice(item.price)}</span>
+          <div class="invoice-sheet__meta">
+            <p><strong>Reference:</strong> ${escapeHtml(invoiceData.reference)}</p>
+            <p><strong>Date:</strong> ${escapeHtml(invoiceData.date)}</p>
+            <p><strong>Status:</strong> ${escapeHtml(invoiceData.paymentStatus)}</p>
           </div>
-
-          <strong class="checkout-item__total">${formatPrice(item.qty * item.price)}</strong>
-        </article>
-      `
-    )
-    .join("");
-}
-
-function openTermsDrawer() {
-  const { termsDrawer } = getCheckoutElements();
-  if (!termsDrawer) return;
-
-  termsDrawer.classList.add("is-open");
-  termsDrawer.setAttribute("aria-hidden", "false");
-  document.body.classList.add("lightbox-open");
-}
-
-function closeTermsDrawer() {
-  const { termsDrawer } = getCheckoutElements();
-  if (!termsDrawer) return;
-
-  termsDrawer.classList.remove("is-open");
-  termsDrawer.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("lightbox-open");
-}
-
-function openInvoiceModal() {
-  const { invoiceModal } = getCheckoutElements();
-  if (!invoiceModal) return;
-
-  invoiceModal.classList.add("is-open");
-  invoiceModal.setAttribute("aria-hidden", "false");
-  document.body.classList.add("lightbox-open");
-}
-
-function closeInvoiceModal() {
-  const { invoiceModal } = getCheckoutElements();
-  if (!invoiceModal) return;
-
-  invoiceModal.classList.remove("is-open");
-  invoiceModal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("lightbox-open");
-}
-
-function buildInvoiceData() {
-  const subtotal = getCartSubtotal();
-  const processingFee = calculateProcessingFee(subtotal);
-  const total = calculateCheckoutTotal(subtotal);
-
-  return {
-    reference: $("#formPaymentReference")?.value || "Pending",
-    paymentStatus: $("#formPaymentStatus")?.value || "paid",
-    fullName: $("#customerFullName")?.value?.trim() || "",
-    phone: $("#customerPhone")?.value?.trim() || "",
-    email: $("#customerEmail")?.value?.trim() || "",
-    location: $("#customerLocation")?.value?.trim() || "",
-    orderType: $("#orderType")?.value || "",
-    instructions: $("#customerInstructions")?.value?.trim() || "",
-    subtotal,
-    processingFee,
-    total,
-    items: [...cart],
-    date: new Date().toLocaleString(),
-  };
-}
-
-function renderInvoicePreview(invoiceData) {
-  const { invoicePreview } = getCheckoutElements();
-  if (!invoicePreview) return;
-
-  invoicePreview.innerHTML = `
-    <div class="invoice-sheet">
-      <div class="invoice-sheet__top">
-        <div>
-          <p class="section-tag">Invoice</p>
-          <h2>Meals by Bella</h2>
-          <p>Fresh bakes & treats</p>
         </div>
-        <div class="invoice-sheet__meta">
-          <p><strong>Reference:</strong> ${escapeHtml(invoiceData.reference)}</p>
-          <p><strong>Date:</strong> ${escapeHtml(invoiceData.date)}</p>
-          <p><strong>Status:</strong> ${escapeHtml(invoiceData.paymentStatus)}</p>
+
+        <div class="invoice-sheet__block">
+          <h3>Customer Details</h3>
+          <p><strong>Name:</strong> ${escapeHtml(invoiceData.fullName)}</p>
+          <p><strong>Phone:</strong> ${escapeHtml(invoiceData.phone)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(invoiceData.email)}</p>
+          <p><strong>Location:</strong> ${escapeHtml(invoiceData.location)}</p>
+          <p><strong>Order Type:</strong> ${escapeHtml(invoiceData.orderType)}</p>
+          ${invoiceData.instructions ? `<p><strong>Instructions:</strong> ${escapeHtml(invoiceData.instructions)}</p>` : ""}
+        </div>
+
+        <div class="invoice-sheet__block">
+          <h3>Items Ordered</h3>
+          <div class="invoice-sheet__items">
+            ${invoiceData.items
+              .map(
+                (item) => `
+                  <div class="invoice-sheet__item">
+                    <span>${escapeHtml(item.name)}${item.variant ? ` (${escapeHtml(item.variant)})` : ""} × ${item.qty}</span>
+                    <strong>${formatPrice(item.qty * item.price)}</strong>
+                  </div>
+                `
+              )
+              .join("")}
+          </div>
+        </div>
+
+        <div class="invoice-sheet__block invoice-sheet__totals">
+          <div class="invoice-sheet__item">
+            <span>Subtotal</span>
+            <strong>${formatPrice(invoiceData.subtotal)}</strong>
+          </div>
+          <div class="invoice-sheet__item">
+            <span>Processing fee (2.95%)</span>
+            <strong>${formatPrice(invoiceData.processingFee)}</strong>
+          </div>
+          <div class="invoice-sheet__item invoice-sheet__item--total">
+            <span>Total</span>
+            <strong>${formatPrice(invoiceData.total)}</strong>
+          </div>
+          <p class="invoice-sheet__note">
+            Processing fee includes 1.95% Paystack charge and 1% Mobile Money charge.
+          </p>
         </div>
       </div>
-
-      <div class="invoice-sheet__block">
-        <h3>Customer Details</h3>
-        <p><strong>Name:</strong> ${escapeHtml(invoiceData.fullName)}</p>
-        <p><strong>Phone:</strong> ${escapeHtml(invoiceData.phone)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(invoiceData.email)}</p>
-        <p><strong>Location:</strong> ${escapeHtml(invoiceData.location)}</p>
-        <p><strong>Order Type:</strong> ${escapeHtml(invoiceData.orderType)}</p>
-        ${
-          invoiceData.instructions
-            ? `<p><strong>Instructions:</strong> ${escapeHtml(invoiceData.instructions)}</p>`
-            : ""
-        }
-      </div>
-
-      <div class="invoice-sheet__block">
-        <h3>Items Ordered</h3>
-        <div class="invoice-sheet__items">
-          ${invoiceData.items
-            .map(
-              (item) => `
-                <div class="invoice-sheet__item">
-                  <span>${escapeHtml(item.name)}${item.variant ? ` (${escapeHtml(item.variant)})` : ""} × ${item.qty}</span>
-                  <strong>${formatPrice(item.qty * item.price)}</strong>
-                </div>
-              `
-            )
-            .join("")}
-        </div>
-      </div>
-
-      <div class="invoice-sheet__block invoice-sheet__totals">
-        <div class="invoice-sheet__item">
-          <span>Subtotal</span>
-          <strong>${formatPrice(invoiceData.subtotal)}</strong>
-        </div>
-        <div class="invoice-sheet__item">
-          <span>Processing fee (2.95%)</span>
-          <strong>${formatPrice(invoiceData.processingFee)}</strong>
-        </div>
-        <div class="invoice-sheet__item invoice-sheet__item--total">
-          <span>Total</span>
-          <strong>${formatPrice(invoiceData.total)}</strong>
-        </div>
-        <p class="invoice-sheet__note">
-          Processing fee includes 1.95% Paystack charge and 1% Mobile Money charge.
-        </p>
-      </div>
-    </div>
-  `;
-}
-
-function generateInvoicePdf(invoiceData) {
-  if (!window.jspdf || !window.jspdf.jsPDF) {
-    showToast("PDF library not found. Add the jsPDF script to checkout.html.", "danger");
-    return;
+    `;
   }
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({
-    orientation: "p",
-    unit: "mm",
-    format: "a4",
-  });
-
-  const left = 18;
-  let y = 20;
-
-  doc.setFillColor(246, 232, 214);
-  doc.rect(0, 0, 210, 297, "F");
-
-  doc.setFillColor(255, 255, 255);
-  doc.roundedRect(12, 12, 186, 273, 6, 6, "F");
-
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(63, 43, 32);
-  doc.setFontSize(22);
-  doc.text("Meals by Bella", left, y);
-
-  y += 7;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.setTextColor(109, 84, 68);
-  doc.text("Invoice", left, y);
-
-  y += 10;
-  doc.setDrawColor(220, 200, 180);
-  doc.line(left, y, 190, y);
-
-  y += 8;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(63, 43, 32);
-  doc.text(`Reference: ${invoiceData.reference}`, left, y);
-  doc.text(`Date: ${invoiceData.date}`, 120, y);
-
-  y += 10;
-  doc.setFont("helvetica", "bold");
-  doc.text("Customer Details", left, y);
-
-  y += 6;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-
-  const customerLines = [
-    `Name: ${invoiceData.fullName}`,
-    `Phone: ${invoiceData.phone}`,
-    `Email: ${invoiceData.email}`,
-    `Location: ${invoiceData.location}`,
-    `Order Type: ${invoiceData.orderType}`,
-    invoiceData.instructions ? `Instructions: ${invoiceData.instructions}` : "",
-  ].filter(Boolean);
-
-  customerLines.forEach((line) => {
-    const wrapped = doc.splitTextToSize(line, 170);
-    doc.text(wrapped, left, y);
-    y += wrapped.length * 5;
-  });
-
-  y += 4;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.text("Items Ordered", left, y);
-
-  y += 7;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-
-  invoiceData.items.forEach((item) => {
-    const line = `${item.name}${item.variant ? ` (${item.variant})` : ""} x ${item.qty}`;
-    const amount = formatPrice(item.qty * item.price);
-    const wrapped = doc.splitTextToSize(line, 120);
-    doc.text(wrapped, left, y);
-    doc.text(amount, 170, y);
-    y += wrapped.length * 5 + 2;
-  });
-
-  y += 4;
-  doc.line(left, y, 190, y);
-
-  y += 8;
-  doc.setFont("helvetica", "normal");
-  doc.text(`Subtotal: ${formatPrice(invoiceData.subtotal)}`, left, y);
-
-  y += 6;
-  doc.text(`Processing fee (2.95%): ${formatPrice(invoiceData.processingFee)}`, left, y);
-
-  y += 6;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(12);
-  doc.text(`Total: ${formatPrice(invoiceData.total)}`, left, y);
-
-  y += 10;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(109, 84, 68);
-  doc.text(
-    doc.splitTextToSize(
-      "Processing fee includes 1.95% Paystack charge and 1% Mobile Money charge.",
-      170
-    ),
-    left,
-    y
-  );
-
-  doc.save(`Meals-by-Bella-Invoice-${invoiceData.reference}.pdf`);
-}
-
-async function submitCheckoutToFormspree(invoiceData) {
-  const form = $("#checkoutForm");
-  const endpoint = form?.dataset.formspreeEndpoint?.trim();
-
-  if (!endpoint || endpoint === "YOUR_FORMSPREE_ENDPOINT_HERE") {
-    throw new Error("Formspree endpoint is not set yet.");
-  }
-
-  const payload = {
-    full_name: invoiceData.fullName,
-    phone: invoiceData.phone,
-    email: invoiceData.email,
-    location: invoiceData.location,
-    order_type: invoiceData.orderType,
-    instructions: invoiceData.instructions,
-    subtotal: invoiceData.subtotal.toFixed(2),
-    processing_fee: invoiceData.processingFee.toFixed(2),
-    total_amount: invoiceData.total.toFixed(2),
-    payment_reference: invoiceData.reference,
-    payment_status: invoiceData.paymentStatus,
-    cart_items_json: JSON.stringify(invoiceData.items),
-    cart_items_text: formatCartItemsForSubmission(invoiceData.items),
-  };
-
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    throw new Error("Formspree submission failed.");
-  }
-}
-
-function enableInvoiceButtons(invoiceData) {
-  const {
-    viewInvoiceButton,
-    downloadInvoiceButton,
-    confirmationViewInvoiceButton,
-    confirmationDownloadInvoiceButton,
-  } = getCheckoutElements();
-
-  const openPreview = () => {
-    renderInvoicePreview(invoiceData);
-    openInvoiceModal();
-  };
-
-  const downloadPdf = () => {
-    generateInvoicePdf(invoiceData);
-  };
-
-  if (viewInvoiceButton) {
-    viewInvoiceButton.disabled = false;
-    viewInvoiceButton.onclick = openPreview;
-  }
-
-  if (downloadInvoiceButton) {
-    downloadInvoiceButton.disabled = false;
-    downloadInvoiceButton.onclick = downloadPdf;
-  }
-
-  if (confirmationViewInvoiceButton) {
-    confirmationViewInvoiceButton.onclick = openPreview;
-  }
-
-  if (confirmationDownloadInvoiceButton) {
-    confirmationDownloadInvoiceButton.onclick = downloadPdf;
-  }
-}
-
-function showCheckoutConfirmation(invoiceData) {
-  const {
-    form,
-    confirmationSection,
-    confirmationReference,
-    confirmationTotalPaid,
-    confirmationMessage,
-    payNowButton,
-  } = getCheckoutElements();
-
-  if (payNowButton) {
-    payNowButton.disabled = false;
-    payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-  }
-
-  if (form) {
-    const main = form.closest(".checkout-main");
-    if (main) main.classList.add("is-hidden");
-  }
-
-  const sidebar = $(".checkout-sidebar");
-  if (sidebar) sidebar.classList.add("is-hidden");
-
-  if (confirmationSection) {
-    confirmationSection.classList.remove("is-hidden");
-    confirmationSection.hidden = false;
-  }
-
-  if (confirmationReference) {
-    confirmationReference.textContent = invoiceData.reference;
-  }
-
-  if (confirmationTotalPaid) {
-    confirmationTotalPaid.textContent = formatPrice(invoiceData.total);
-  }
-
-  if (confirmationMessage) {
-    confirmationMessage.textContent =
-      "Your payment was successful, your invoice has been generated, and your order has been recorded.";
-  }
-
-  renderInvoicePreview(invoiceData);
-  enableInvoiceButtons(invoiceData);
-
-  setTimeout(() => {
-    generateInvoicePdf(invoiceData);
-  }, 300);
-
-  scrollToTopSmooth();
-
-  setTimeout(() => {
-    clearCart();
-    location.replace("index.html");
-  }, 9000);
-}
-
-
-function validateCheckoutForm() {
-  const fullName = $("#customerFullName");
-  const phone = $("#customerPhone");
-  const email = $("#customerEmail");
-  const location = $("#customerLocation");
-  const orderType = $("#orderType");
-  const agreeTerms = $("#agreeTerms");
-
-  const requiredFields = [fullName, phone, email, location, orderType, agreeTerms].filter(Boolean);
-
-  for (const field of requiredFields) {
-    if (field.type === "checkbox") {
-      if (!field.checked) {
-        showToast("Please agree to the Terms & Conditions.", "danger");
-        field.focus();
-        return false;
-      }
-    } else if (!field.value.trim()) {
-      showToast("Please complete all required fields.", "danger");
-      field.focus();
-      return false;
-    }
-  }
-
-  const emailValue = email?.value.trim() || "";
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!emailPattern.test(emailValue)) {
-    showToast("Please enter a valid email address.", "danger");
-    email.focus();
-    return false;
-  }
-
-  if (!cart.length) {
-    showToast("Your cart is empty.", "danger");
-    return false;
-  }
-
-  if (!PAYSTACK_PUBLIC_KEY) {
-    showToast("Add your Paystack public key in script.js first.", "danger");
-    return false;
-  }
-
-  return true;
-}
-
-function payWithPaystackCheckout() {
-  const { payNowButton } = getCheckoutElements();
-
-  const subtotal = getCartSubtotal();
-  const total = calculateCheckoutTotal(subtotal);
-
-  const email = $("#customerEmail")?.value.trim();
-  const fullName = $("#customerFullName")?.value.trim();
-  const phone = $("#customerPhone")?.value.trim();
-  const location = $("#customerLocation")?.value.trim();
-  const orderType = $("#orderType")?.value;
-
-  try {
-    if (!window.PaystackPop || typeof window.PaystackPop.setup !== "function") {
-      throw new Error("PaystackPop is not available.");
+  function generateInvoicePdf(invoiceData) {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      showToast("PDF library not found. Add the jsPDF script to checkout.html.", "danger");
+      return;
     }
 
-    const handler = PaystackPop.setup({
-      key: PAYSTACK_PUBLIC_KEY,
-      email: email,
-      amount: Math.round(total * 100),
-      currency: "GHS",
-      ref: `MBB-${Date.now()}`,
-      metadata: {
-        custom_fields: [
-          {
-            display_name: "Full Name",
-            variable_name: "full_name",
-            value: fullName || "",
-          },
-          {
-            display_name: "Phone",
-            variable_name: "phone",
-            value: phone || "",
-          },
-          {
-            display_name: "Location",
-            variable_name: "location",
-            value: location || "",
-          },
-          {
-            display_name: "Order Type",
-            variable_name: "order_type",
-            value: orderType || "",
-          },
-        ],
-      },
-callback: async function (response) {
-  const paymentRefInput = $("#formPaymentReference");
-  const paymentStatusInput = $("#formPaymentStatus");
-
-  if (paymentRefInput) paymentRefInput.value = response.reference;
-  if (paymentStatusInput) paymentStatusInput.value = "paid";
-
-  const invoiceData = buildInvoiceData();
-  invoiceData.reference = response.reference;
-  invoiceData.paymentStatus = "paid";
-
-  try {
-    await submitCheckoutToFormspree(invoiceData);
-  } catch (error) {
-    console.error("Formspree save error:", error);
-  }
-
-  showCheckoutConfirmation(invoiceData);
-},
-      onClose: function () {
-        if (payNowButton) {
-          payNowButton.disabled = false;
-          payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-        }
-        showToast("Payment window closed.");
-      },
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+      orientation: "p",
+      unit: "mm",
+      format: "a4",
     });
 
-    handler.openIframe();
-  } catch (error) {
-    console.error("Paystack setup error:", error);
-    showToast(`Paystack could not open: ${error.message}`, "danger");
+    const left = 18;
+    let y = 20;
+
+    doc.setFillColor(246, 232, 214);
+    doc.rect(0, 0, 210, 297, "F");
+
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(12, 12, 186, 273, 6, 6, "F");
+
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(63, 43, 32);
+    doc.setFontSize(22);
+    doc.text("Meals by Bella", left, y);
+
+    y += 7;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(109, 84, 68);
+    doc.text("Invoice", left, y);
+
+    y += 10;
+    doc.setDrawColor(220, 200, 180);
+    doc.line(left, y, 190, y);
+
+    y += 8;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(63, 43, 32);
+    doc.text(`Reference: ${invoiceData.reference}`, left, y);
+    doc.text(`Date: ${invoiceData.date}`, 120, y);
+
+    y += 10;
+    doc.setFont("helvetica", "bold");
+    doc.text("Customer Details", left, y);
+
+    y += 6;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+
+    const customerLines = [
+      `Name: ${invoiceData.fullName}`,
+      `Phone: ${invoiceData.phone}`,
+      `Email: ${invoiceData.email}`,
+      `Location: ${invoiceData.location}`,
+      `Order Type: ${invoiceData.orderType}`,
+      invoiceData.instructions ? `Instructions: ${invoiceData.instructions}` : "",
+    ].filter(Boolean);
+
+    customerLines.forEach((line) => {
+      const wrapped = doc.splitTextToSize(line, 170);
+      doc.text(wrapped, left, y);
+      y += wrapped.length * 5;
+    });
+
+    y += 4;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("Items Ordered", left, y);
+
+    y += 7;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+
+    invoiceData.items.forEach((item) => {
+      const line = `${item.name}${item.variant ? ` (${item.variant})` : ""} x ${item.qty}`;
+      const amount = formatPrice(item.qty * item.price);
+      const wrapped = doc.splitTextToSize(line, 120);
+      doc.text(wrapped, left, y);
+      doc.text(amount, 170, y);
+      y += wrapped.length * 5 + 2;
+    });
+
+    y += 4;
+    doc.line(left, y, 190, y);
+
+    y += 8;
+    doc.setFont("helvetica", "normal");
+    doc.text(`Subtotal: ${formatPrice(invoiceData.subtotal)}`, left, y);
+
+    y += 6;
+    doc.text(`Processing fee (2.95%): ${formatPrice(invoiceData.processingFee)}`, left, y);
+
+    y += 6;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text(`Total: ${formatPrice(invoiceData.total)}`, left, y);
+
+    y += 10;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(109, 84, 68);
+    doc.text(
+      doc.splitTextToSize(
+        "Processing fee includes 1.95% Paystack charge and 1% Mobile Money charge.",
+        170
+      ),
+      left,
+      y
+    );
+
+    doc.save(`Meals-by-Bella-Invoice-${invoiceData.reference}.pdf`);
+  }
+
+  async function submitCheckoutToFormspree(invoiceData) {
+    const form = $("#checkoutForm");
+    const endpoint = form?.dataset.formspreeEndpoint?.trim();
+
+    if (!endpoint || endpoint === "YOUR_FORMSPREE_ENDPOINT_HERE") {
+      throw new Error("Formspree endpoint is not set yet.");
+    }
+
+    const payload = {
+      full_name: invoiceData.fullName,
+      phone: invoiceData.phone,
+      email: invoiceData.email,
+      location: invoiceData.location,
+      order_type: invoiceData.orderType,
+      instructions: invoiceData.instructions,
+      subtotal: invoiceData.subtotal.toFixed(2),
+      processing_fee: invoiceData.processingFee.toFixed(2),
+      total_amount: invoiceData.total.toFixed(2),
+      payment_reference: invoiceData.reference,
+      payment_status: invoiceData.paymentStatus,
+      cart_items_json: JSON.stringify(invoiceData.items),
+      cart_items_text: formatCartItemsForSubmission(invoiceData.items),
+    };
+
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Formspree submission failed.");
+    }
+  }
+
+  function enableInvoiceButtons(invoiceData) {
+    const {
+      viewInvoiceButton,
+      downloadInvoiceButton,
+      confirmationViewInvoiceButton,
+      confirmationDownloadInvoiceButton,
+    } = getCheckoutElements();
+
+    const openPreview = () => {
+      renderInvoicePreview(invoiceData);
+      openInvoiceModal();
+    };
+
+    const downloadPdf = () => {
+      generateInvoicePdf(invoiceData);
+    };
+
+    if (viewInvoiceButton) {
+      viewInvoiceButton.disabled = false;
+      viewInvoiceButton.onclick = openPreview;
+    }
+
+    if (downloadInvoiceButton) {
+      downloadInvoiceButton.disabled = false;
+      downloadInvoiceButton.onclick = downloadPdf;
+    }
+
+    if (confirmationViewInvoiceButton) {
+      confirmationViewInvoiceButton.onclick = openPreview;
+    }
+
+    if (confirmationDownloadInvoiceButton) {
+      confirmationDownloadInvoiceButton.onclick = downloadPdf;
+    }
+  }
+
+  function showCheckoutConfirmation(invoiceData) {
+    const {
+      form,
+      confirmationSection,
+      confirmationReference,
+      confirmationTotalPaid,
+      confirmationMessage,
+      payNowButton,
+    } = getCheckoutElements();
 
     if (payNowButton) {
       payNowButton.disabled = false;
       payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
     }
+
+    if (form) {
+      const main = form.closest(".checkout-main");
+      if (main) main.classList.add("is-hidden");
+    }
+
+    const sidebar = $(".checkout-sidebar");
+    if (sidebar) sidebar.classList.add("is-hidden");
+
+    if (confirmationSection) {
+      confirmationSection.classList.remove("is-hidden");
+      confirmationSection.hidden = false;
+    }
+
+    if (confirmationReference) {
+      confirmationReference.textContent = invoiceData.reference;
+    }
+
+    if (confirmationTotalPaid) {
+      confirmationTotalPaid.textContent = formatPrice(invoiceData.total);
+    }
+
+    if (confirmationMessage) {
+      confirmationMessage.textContent =
+        "Your payment was successful, your invoice has been generated, and your order has been recorded.";
+    }
+
+    renderInvoicePreview(invoiceData);
+    enableInvoiceButtons(invoiceData);
+
+    setTimeout(() => {
+      generateInvoicePdf(invoiceData);
+    }, 300);
+
+    scrollToTopSmooth();
+
+    setTimeout(() => {
+      clearCart(false);
+      location.replace("index.html");
+    }, 9000);
   }
-}
 
-function initCheckoutPage() {
-  if (document.body.dataset.page !== "checkout") return;
+  function validateCheckoutForm() {
+    const fullName = $("#customerFullName");
+    const phone = $("#customerPhone");
+    const email = $("#customerEmail");
+    const location = $("#customerLocation");
+    const orderType = $("#orderType");
+    const agreeTerms = $("#agreeTerms");
 
-  const {
-    form,
-    openTermsBtn,
-    closeTermsBtn,
-    termsOverlay,
-    invoiceOverlay,
-    closeInvoiceModalBtn,
-    payNowButton,
-  } = getCheckoutElements();
+    const requiredFields = [fullName, phone, email, location, orderType, agreeTerms].filter(Boolean);
 
-  renderCheckoutSummary();
-
-  openTermsBtn?.addEventListener("click", openTermsDrawer);
-  closeTermsBtn?.addEventListener("click", closeTermsDrawer);
-  termsOverlay?.addEventListener("click", closeTermsDrawer);
-
-  invoiceOverlay?.addEventListener("click", closeInvoiceModal);
-  closeInvoiceModalBtn?.addEventListener("click", closeInvoiceModal);
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeTermsDrawer();
-      closeInvoiceModal();
-    }
-  });
-
-  if (!form) return;
-
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    if (!validateCheckoutForm()) return;
-
-    if (payNowButton) {
-      payNowButton.disabled = true;
-      payNowButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Processing...</span>`;
+    for (const field of requiredFields) {
+      if (field.type === "checkbox") {
+        if (!field.checked) {
+          showToast("Please agree to the Terms & Conditions.", "danger");
+          field.focus();
+          return false;
+        }
+      } else if (!field.value.trim()) {
+        showToast("Please complete all required fields.", "danger");
+        field.focus();
+        return false;
+      }
     }
 
-    payWithPaystackCheckout();
-  });
-}
+    const emailValue = email?.value.trim() || "";
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function initCheckoutNavigation() {
-  $$(".js-go-to-checkout").forEach((button) => {
-    button.addEventListener("click", () => {
-      if (!cart.length) {
-        showToast("Your cart is empty.", "danger");
-        return;
+    if (!emailPattern.test(emailValue)) {
+      showToast("Please enter a valid email address.", "danger");
+      email.focus();
+      return false;
+    }
+
+    if (!cart.length) {
+      showToast("Your cart is empty.", "danger");
+      return false;
+    }
+
+    if (!PAYSTACK_PUBLIC_KEY) {
+      showToast("Add your Paystack public key in script.js first.", "danger");
+      return false;
+    }
+
+    return true;
+  }
+
+  function payWithPaystackCheckout() {
+    const { payNowButton } = getCheckoutElements();
+
+    const subtotal = getCartSubtotal();
+    const total = calculateCheckoutTotal(subtotal);
+
+    const email = $("#customerEmail")?.value.trim();
+    const fullName = $("#customerFullName")?.value.trim();
+    const phone = $("#customerPhone")?.value.trim();
+    const location = $("#customerLocation")?.value.trim();
+    const orderType = $("#orderType")?.value;
+
+    try {
+      if (!window.PaystackPop || typeof window.PaystackPop.setup !== "function") {
+        throw new Error("PaystackPop is not available.");
       }
 
-      window.location.href = "checkout.html";
+      const handler = window.PaystackPop.setup({
+        key: PAYSTACK_PUBLIC_KEY,
+        email,
+        amount: Math.round(total * 100),
+        currency: "GHS",
+        ref: `MBB-${Date.now()}`,
+        metadata: {
+          custom_fields: [
+            {
+              display_name: "Full Name",
+              variable_name: "full_name",
+              value: fullName || "",
+            },
+            {
+              display_name: "Phone",
+              variable_name: "phone",
+              value: phone || "",
+            },
+            {
+              display_name: "Location",
+              variable_name: "location",
+              value: location || "",
+            },
+            {
+              display_name: "Order Type",
+              variable_name: "order_type",
+              value: orderType || "",
+            },
+          ],
+        },
+        callback: function (response) {
+          const paymentRefInput = $("#formPaymentReference");
+          const paymentStatusInput = $("#formPaymentStatus");
+
+          if (paymentRefInput) paymentRefInput.value = response.reference;
+          if (paymentStatusInput) paymentStatusInput.value = "paid";
+
+          const invoiceData = buildInvoiceData();
+          invoiceData.reference = response.reference;
+          invoiceData.paymentStatus = "paid";
+
+          submitCheckoutToFormspree(invoiceData)
+            .catch((error) => {
+              console.error("Formspree save error:", error);
+            })
+            .finally(() => {
+              showCheckoutConfirmation(invoiceData);
+            });
+        },
+        onClose: function () {
+          if (payNowButton) {
+            payNowButton.disabled = false;
+            payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+          }
+          showToast("Payment window closed.");
+        },
+      });
+
+      handler.openIframe();
+    } catch (error) {
+      console.error("Paystack setup error:", error);
+      showToast(`Paystack could not open: ${error.message}`, "danger");
+
+      if (payNowButton) {
+        payNowButton.disabled = false;
+        payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+      }
+    }
+  }
+
+  function initCheckoutPage() {
+    if (document.body.dataset.page !== "checkout") return;
+
+    const {
+      form,
+      openTermsBtn,
+      closeTermsBtn,
+      termsOverlay,
+      invoiceOverlay,
+      closeInvoiceModalBtn,
+      payNowButton,
+    } = getCheckoutElements();
+
+    renderCheckoutSummary();
+
+    openTermsBtn?.addEventListener("click", openTermsDrawer);
+    closeTermsBtn?.addEventListener("click", closeTermsDrawer);
+    termsOverlay?.addEventListener("click", closeTermsDrawer);
+
+    invoiceOverlay?.addEventListener("click", closeInvoiceModal);
+    closeInvoiceModalBtn?.addEventListener("click", closeInvoiceModal);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeTermsDrawer();
+        closeInvoiceModal();
+      }
     });
-  });
-}
+
+    if (!form) return;
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      if (!validateCheckoutForm()) return;
+
+      if (payNowButton) {
+        payNowButton.disabled = true;
+        payNowButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Processing...</span>`;
+      }
+
+      payWithPaystackCheckout();
+    });
+  }
+
+  function initCheckoutNavigation() {
+    $$(".js-go-to-checkout").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (!cart.length) {
+          showToast("Your cart is empty.", "danger");
+          return;
+        }
+
+        window.location.href = "checkout.html";
+      });
+    });
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* Init                                                                       */
+  /* -------------------------------------------------------------------------- */
 
   function init() {
-  renderCart();
-  initMobileMenu();
-  initCartEvents();
-  initCheckoutNavigation();
-  initCardAddToCart();
-  initMenuFiltering();
-  initProductGalleryClicks();
-  initProductPage();
-  initGalleryLightbox();
-  initCheckoutPage();
-}
-  
+    renderCart();
+    initMobileMenu();
+    initCartEvents();
+    initCheckoutNavigation();
+    initCardAddToCart();
+    initMenuFiltering();
+    initProductGalleryClicks();
+    initProductPage();
+    initGalleryLightbox();
+    initCheckoutPage();
+  }
+
   document.addEventListener("DOMContentLoaded", init);
 })();
