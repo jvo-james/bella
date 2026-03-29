@@ -2398,35 +2398,31 @@ function payWithPaystackCheckout() {
           },
         ],
       },
-      callback: function (response) {
-        const paymentRefInput = $("#formPaymentReference");
-        const paymentStatusInput = $("#formPaymentStatus");
+callback: function (response) {
+  const paymentRefInput = $("#formPaymentReference");
+  const paymentStatusInput = $("#formPaymentStatus");
 
-        if (paymentRefInput) paymentRefInput.value = response.reference;
-        if (paymentStatusInput) paymentStatusInput.value = "paid";
+  if (paymentRefInput) paymentRefInput.value = response.reference;
+  if (paymentStatusInput) paymentStatusInput.value = "paid";
 
-        const invoiceData = buildInvoiceData();
-        invoiceData.reference = response.reference;
-        invoiceData.paymentStatus = "paid";
+  const invoiceData = buildInvoiceData();
+  invoiceData.reference = response.reference;
+  invoiceData.paymentStatus = "paid";
 
-        submitCheckoutToFormspree(invoiceData)
-          .then(() => {
-            sessionStorage.setItem(
-              CHECKOUT_CONFIRMATION_KEY,
-              JSON.stringify(invoiceData)
-            );
-            location.replace("checkout.html?paid=1");
-          })
-          .catch((error) => {
-            console.error("Post-payment error:", error);
-            showToast("Payment succeeded, but saving the order failed.", "danger");
+  // Save first so the confirmation page can restore immediately
+  sessionStorage.setItem(
+    CHECKOUT_CONFIRMATION_KEY,
+    JSON.stringify(invoiceData)
+  );
 
-            if (payNowButton) {
-              payNowButton.disabled = false;
-              payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-            }
-          });
-      },
+  // Redirect immediately after successful payment
+  location.replace("checkout.html?paid=1");
+
+  // Try saving to Formspree in the background
+  submitCheckoutToFormspree(invoiceData).catch((error) => {
+    console.error("Post-payment save error:", error);
+  });
+},
       onClose: function () {
         if (payNowButton) {
           payNowButton.disabled = false;
