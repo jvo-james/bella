@@ -2142,3 +2142,8 @@ section {
     display: none !important;
   }
 }
+
+
+.cart-empty.is-hidden {
+  display: none !important;
+}
