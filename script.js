@@ -1808,6 +1808,636 @@ function renderCart() {
   }
 
   /* -------------------------------------------------------------------------- */
+/* Checkout                                                                   */
+/* -------------------------------------------------------------------------- */
+
+const PAYSTACK_PUBLIC_KEY = "YOUR_PAYSTACK_TEST_KEY_HERE";
+const CHECKOUT_CONFIRMATION_KEY = "mbb-last-order-confirmation";
+
+function calculateProcessingFee(subtotal) {
+  return Number((subtotal * 0.0295).toFixed(2));
+}
+
+function calculateCheckoutTotal(subtotal) {
+  return Number((subtotal + calculateProcessingFee(subtotal)).toFixed(2));
+}
+
+function formatCartItemsForSubmission(items) {
+  return items
+    .map(
+      (item) =>
+        `${item.name}${item.variant ? ` (${item.variant})` : ""} — ${item.qty} x ${formatPrice(item.price)} = ${formatPrice(item.qty * item.price)}`
+    )
+    .join("\n");
+}
+
+function getCheckoutElements() {
+  return {
+    form: $("#checkoutForm"),
+    itemsHost: $("#checkoutItems"),
+    emptyState: $("#checkoutEmptyState"),
+    subtotalNode: $("#checkoutSubtotal"),
+    feeNode: $("#checkoutProcessingFee"),
+    totalNode: $("#checkoutGrandTotal"),
+    termsDrawer: $("#termsDrawer"),
+    openTermsBtn: $("#openTermsDrawer"),
+    closeTermsBtn: $("#closeTermsDrawer"),
+    termsOverlay: $("#termsDrawerOverlay"),
+    invoiceModal: $("#invoiceModal"),
+    invoiceOverlay: $("#invoiceModalOverlay"),
+    closeInvoiceModalBtn: $("#closeInvoiceModal"),
+    invoicePreview: $("#invoicePreview"),
+    viewInvoiceButton: $("#viewInvoiceButton"),
+    downloadInvoiceButton: $("#downloadInvoiceButton"),
+    confirmationSection: $("#checkoutConfirmationSection"),
+    confirmationReference: $("#confirmationReference"),
+    confirmationTotalPaid: $("#confirmationTotalPaid"),
+    confirmationViewInvoiceButton: $("#confirmationViewInvoiceButton"),
+    confirmationDownloadInvoiceButton: $("#confirmationDownloadInvoiceButton"),
+    confirmationMessage: $("#checkoutConfirmationMessage"),
+    payNowButton: $("#payNowButton"),
+  };
+}
+
+function renderCheckoutSummary() {
+  const {
+    itemsHost,
+    emptyState,
+    subtotalNode,
+    feeNode,
+    totalNode,
+    form,
+    payNowButton,
+  } = getCheckoutElements();
+
+  if (!itemsHost || !subtotalNode || !feeNode || !totalNode) return;
+
+  const subtotal = getCartSubtotal();
+  const processingFee = calculateProcessingFee(subtotal);
+  const grandTotal = calculateCheckoutTotal(subtotal);
+
+  subtotalNode.textContent = formatPrice(subtotal);
+  feeNode.textContent = formatPrice(processingFee);
+  totalNode.textContent = formatPrice(grandTotal);
+
+  const cartItemsJsonField = $("#formCartItemsJson");
+  const cartItemsTextField = $("#formCartItemsText");
+  const subtotalField = $("#formSubtotal");
+  const feeField = $("#formProcessingFee");
+  const totalField = $("#formTotalAmount");
+
+  if (cartItemsJsonField) cartItemsJsonField.value = JSON.stringify(cart);
+  if (cartItemsTextField) cartItemsTextField.value = formatCartItemsForSubmission(cart);
+  if (subtotalField) subtotalField.value = subtotal.toFixed(2);
+  if (feeField) feeField.value = processingFee.toFixed(2);
+  if (totalField) totalField.value = grandTotal.toFixed(2);
+
+  if (!cart.length) {
+    itemsHost.innerHTML = "";
+    if (emptyState) {
+      emptyState.hidden = false;
+      emptyState.classList.remove("is-hidden");
+    }
+    if (payNowButton) payNowButton.disabled = true;
+    return;
+  }
+
+  if (emptyState) {
+    emptyState.hidden = true;
+    emptyState.classList.add("is-hidden");
+  }
+  if (payNowButton) payNowButton.disabled = false;
+
+  itemsHost.innerHTML = cart
+    .map(
+      (item) => `
+        <article class="checkout-item">
+          <div class="checkout-item__image">
+            <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" />
+          </div>
+
+          <div class="checkout-item__content">
+            <h3>${escapeHtml(item.name)}</h3>
+            <p>${escapeHtml(item.category)}${item.variant ? ` • ${escapeHtml(item.variant)}` : ""}</p>
+            <span>${item.qty} × ${formatPrice(item.price)}</span>
+          </div>
+
+          <strong class="checkout-item__total">${formatPrice(item.qty * item.price)}</strong>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function openTermsDrawer() {
+  const { termsDrawer } = getCheckoutElements();
+  if (!termsDrawer) return;
+  termsDrawer.classList.add("is-open");
+  termsDrawer.setAttribute("aria-hidden", "false");
+  document.body.classList.add("lightbox-open");
+}
+
+function closeTermsDrawer() {
+  const { termsDrawer } = getCheckoutElements();
+  if (!termsDrawer) return;
+  termsDrawer.classList.remove("is-open");
+  termsDrawer.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("lightbox-open");
+}
+
+function openInvoiceModal() {
+  const { invoiceModal } = getCheckoutElements();
+  if (!invoiceModal) return;
+  invoiceModal.classList.add("is-open");
+  invoiceModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("lightbox-open");
+}
+
+function closeInvoiceModal() {
+  const { invoiceModal } = getCheckoutElements();
+  if (!invoiceModal) return;
+  invoiceModal.classList.remove("is-open");
+  invoiceModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("lightbox-open");
+}
+
+function buildInvoiceData(form) {
+  const subtotal = getCartSubtotal();
+  const processingFee = calculateProcessingFee(subtotal);
+  const total = calculateCheckoutTotal(subtotal);
+
+  return {
+    reference: $("#formPaymentReference")?.value || "Pending",
+    paymentStatus: $("#formPaymentStatus")?.value || "paid",
+    fullName: $("#customerFullName")?.value?.trim() || "",
+    phone: $("#customerPhone")?.value?.trim() || "",
+    email: $("#customerEmail")?.value?.trim() || "",
+    location: $("#customerLocation")?.value?.trim() || "",
+    orderType: $("#orderType")?.value || "",
+    instructions: $("#customerInstructions")?.value?.trim() || "",
+    subtotal,
+    processingFee,
+    total,
+    items: [...cart],
+    date: new Date().toLocaleString(),
+  };
+}
+
+function renderInvoicePreview(invoiceData) {
+  const { invoicePreview } = getCheckoutElements();
+  if (!invoicePreview) return;
+
+  invoicePreview.innerHTML = `
+    <div class="invoice-sheet">
+      <div class="invoice-sheet__top">
+        <div>
+          <p class="section-tag">Invoice</p>
+          <h2>Meals by Bella</h2>
+          <p>Fresh bakes & treats</p>
+        </div>
+        <div class="invoice-sheet__meta">
+          <p><strong>Reference:</strong> ${escapeHtml(invoiceData.reference)}</p>
+          <p><strong>Date:</strong> ${escapeHtml(invoiceData.date)}</p>
+          <p><strong>Status:</strong> ${escapeHtml(invoiceData.paymentStatus)}</p>
+        </div>
+      </div>
+
+      <div class="invoice-sheet__block">
+        <h3>Customer Details</h3>
+        <p><strong>Name:</strong> ${escapeHtml(invoiceData.fullName)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(invoiceData.phone)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(invoiceData.email)}</p>
+        <p><strong>Location:</strong> ${escapeHtml(invoiceData.location)}</p>
+        <p><strong>Order Type:</strong> ${escapeHtml(invoiceData.orderType)}</p>
+        ${
+          invoiceData.instructions
+            ? `<p><strong>Instructions:</strong> ${escapeHtml(invoiceData.instructions)}</p>`
+            : ""
+        }
+      </div>
+
+      <div class="invoice-sheet__block">
+        <h3>Items Ordered</h3>
+        <div class="invoice-sheet__items">
+          ${invoiceData.items
+            .map(
+              (item) => `
+                <div class="invoice-sheet__item">
+                  <span>${escapeHtml(item.name)}${item.variant ? ` (${escapeHtml(item.variant)})` : ""} × ${item.qty}</span>
+                  <strong>${formatPrice(item.qty * item.price)}</strong>
+                </div>
+              `
+            )
+            .join("")}
+        </div>
+      </div>
+
+      <div class="invoice-sheet__block invoice-sheet__totals">
+        <div class="invoice-sheet__item">
+          <span>Subtotal</span>
+          <strong>${formatPrice(invoiceData.subtotal)}</strong>
+        </div>
+        <div class="invoice-sheet__item">
+          <span>Processing fee (2.95%)</span>
+          <strong>${formatPrice(invoiceData.processingFee)}</strong>
+        </div>
+        <div class="invoice-sheet__item invoice-sheet__item--total">
+          <span>Total</span>
+          <strong>${formatPrice(invoiceData.total)}</strong>
+        </div>
+        <p class="invoice-sheet__note">
+          Processing fee includes 1.95% Paystack charge and 1% Mobile Money charge.
+        </p>
+      </div>
+    </div>
+  `;
+}
+
+function generateInvoicePdf(invoiceData) {
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    showToast("PDF library not found. Add the jsPDF script to checkout.html.", "danger");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({
+    orientation: "p",
+    unit: "mm",
+    format: "a4",
+  });
+
+  const left = 18;
+  let y = 20;
+
+  doc.setFillColor(246, 232, 214);
+  doc.rect(0, 0, 210, 297, "F");
+
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(12, 12, 186, 273, 6, 6, "F");
+
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(63, 43, 32);
+  doc.setFontSize(22);
+  doc.text("Meals by Bella", left, y);
+
+  y += 7;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(109, 84, 68);
+  doc.text("Invoice", left, y);
+
+  y += 10;
+  doc.setDrawColor(220, 200, 180);
+  doc.line(left, y, 190, y);
+
+  y += 8;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.setTextColor(63, 43, 32);
+  doc.text(`Reference: ${invoiceData.reference}`, left, y);
+  doc.text(`Date: ${invoiceData.date}`, 120, y);
+
+  y += 10;
+  doc.setFont("helvetica", "bold");
+  doc.text("Customer Details", left, y);
+
+  y += 6;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  const customerLines = [
+    `Name: ${invoiceData.fullName}`,
+    `Phone: ${invoiceData.phone}`,
+    `Email: ${invoiceData.email}`,
+    `Location: ${invoiceData.location}`,
+    `Order Type: ${invoiceData.orderType}`,
+    invoiceData.instructions ? `Instructions: ${invoiceData.instructions}` : "",
+  ].filter(Boolean);
+
+  customerLines.forEach((line) => {
+    const wrapped = doc.splitTextToSize(line, 170);
+    doc.text(wrapped, left, y);
+    y += wrapped.length * 5;
+  });
+
+  y += 4;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.text("Items Ordered", left, y);
+
+  y += 7;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+
+  invoiceData.items.forEach((item) => {
+    const line = `${item.name}${item.variant ? ` (${item.variant})` : ""} x ${item.qty}`;
+    const amount = formatPrice(item.qty * item.price);
+    const wrapped = doc.splitTextToSize(line, 120);
+    doc.text(wrapped, left, y);
+    doc.text(amount, 170, y);
+    y += wrapped.length * 5 + 2;
+  });
+
+  y += 4;
+  doc.line(left, y, 190, y);
+
+  y += 8;
+  doc.setFont("helvetica", "normal");
+  doc.text(`Subtotal: ${formatPrice(invoiceData.subtotal)}`, left, y);
+
+  y += 6;
+  doc.text(`Processing fee (2.95%): ${formatPrice(invoiceData.processingFee)}`, left, y);
+
+  y += 6;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.text(`Total: ${formatPrice(invoiceData.total)}`, left, y);
+
+  y += 10;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(109, 84, 68);
+  const note =
+    "Processing fee includes 1.95% Paystack charge and 1% Mobile Money charge.";
+  doc.text(doc.splitTextToSize(note, 170), left, y);
+
+  doc.save(`Meals-by-Bella-Invoice-${invoiceData.reference}.pdf`);
+}
+
+async function submitCheckoutToFormspree(form, invoiceData) {
+  const endpoint = form.dataset.formspreeEndpoint?.trim();
+  if (!endpoint || endpoint === "YOUR_FORMSPREE_ENDPOINT_HERE") {
+    showToast("Formspree endpoint is not set yet.", "danger");
+    return;
+  }
+
+  const payload = {
+    full_name: invoiceData.fullName,
+    phone: invoiceData.phone,
+    email: invoiceData.email,
+    location: invoiceData.location,
+    order_type: invoiceData.orderType,
+    instructions: invoiceData.instructions,
+    subtotal: invoiceData.subtotal.toFixed(2),
+    processing_fee: invoiceData.processingFee.toFixed(2),
+    total_amount: invoiceData.total.toFixed(2),
+    payment_reference: invoiceData.reference,
+    payment_status: invoiceData.paymentStatus,
+    cart_items_json: JSON.stringify(invoiceData.items),
+    cart_items_text: formatCartItemsForSubmission(invoiceData.items),
+  };
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error("Formspree submission failed.");
+  }
+}
+
+function enableInvoiceButtons(invoiceData) {
+  const {
+    viewInvoiceButton,
+    downloadInvoiceButton,
+    confirmationViewInvoiceButton,
+    confirmationDownloadInvoiceButton,
+  } = getCheckoutElements();
+
+  const openPreview = () => {
+    renderInvoicePreview(invoiceData);
+    openInvoiceModal();
+  };
+
+  const downloadPdf = () => generateInvoicePdf(invoiceData);
+
+  if (viewInvoiceButton) {
+    viewInvoiceButton.disabled = false;
+    viewInvoiceButton.onclick = openPreview;
+  }
+
+  if (downloadInvoiceButton) {
+    downloadInvoiceButton.disabled = false;
+    downloadInvoiceButton.onclick = downloadPdf;
+  }
+
+  if (confirmationViewInvoiceButton) {
+    confirmationViewInvoiceButton.onclick = openPreview;
+  }
+
+  if (confirmationDownloadInvoiceButton) {
+    confirmationDownloadInvoiceButton.onclick = downloadPdf;
+  }
+}
+
+function showCheckoutConfirmation(invoiceData) {
+  const {
+    form,
+    confirmationSection,
+    confirmationReference,
+    confirmationTotalPaid,
+    confirmationMessage,
+  } = getCheckoutElements();
+
+  if (form) {
+    const main = form.closest(".checkout-main");
+    if (main) main.classList.add("is-hidden");
+  }
+
+  const sidebar = $(".checkout-sidebar");
+  if (sidebar) sidebar.classList.add("is-hidden");
+
+  if (confirmationSection) {
+    confirmationSection.classList.remove("is-hidden");
+  }
+
+  if (confirmationReference) confirmationReference.textContent = invoiceData.reference;
+  if (confirmationTotalPaid) confirmationTotalPaid.textContent = formatPrice(invoiceData.total);
+  if (confirmationMessage) {
+    confirmationMessage.textContent =
+      "Your payment was successful, your invoice is ready, and your order details have been recorded.";
+  }
+
+  renderInvoicePreview(invoiceData);
+  enableInvoiceButtons(invoiceData);
+
+  generateInvoicePdf(invoiceData);
+
+  setTimeout(() => {
+    clearCart();
+    sessionStorage.removeItem(CHECKOUT_CONFIRMATION_KEY);
+    location.replace("index.html");
+  }, 9000);
+}
+
+function restoreCheckoutConfirmationIfNeeded() {
+  if (document.body.dataset.page !== "checkout") return;
+
+  const params = new URLSearchParams(window.location.search);
+  const paid = params.get("paid");
+  const saved = sessionStorage.getItem(CHECKOUT_CONFIRMATION_KEY);
+
+  if (!paid || !saved) return;
+
+  try {
+    const invoiceData = JSON.parse(saved);
+    showCheckoutConfirmation(invoiceData);
+  } catch {
+    sessionStorage.removeItem(CHECKOUT_CONFIRMATION_KEY);
+  }
+}
+
+function validateCheckoutForm(form) {
+  const requiredFields = [
+    $("#customerFullName"),
+    $("#customerPhone"),
+    $("#customerEmail"),
+    $("#customerLocation"),
+    $("#orderType"),
+    $("#agreeTerms"),
+  ].filter(Boolean);
+
+  for (const field of requiredFields) {
+    if (field.type === "checkbox") {
+      if (!field.checked) {
+        showToast("Please agree to the Terms & Conditions.", "danger");
+        field.focus();
+        return false;
+      }
+    } else if (!field.value.trim()) {
+      showToast("Please complete all required fields.", "danger");
+      field.focus();
+      return false;
+    }
+  }
+
+  if (!cart.length) {
+    showToast("Your cart is empty.", "danger");
+    return false;
+  }
+
+  if (!PAYSTACK_PUBLIC_KEY || PAYSTACK_PUBLIC_KEY === "YOUR_PAYSTACK_TEST_KEY_HERE") {
+    showToast("Add your Paystack test key in script.js first.", "danger");
+    return false;
+  }
+
+  return true;
+}
+
+function initCheckoutPage() {
+  if (document.body.dataset.page !== "checkout") return;
+
+  const {
+    form,
+    openTermsBtn,
+    closeTermsBtn,
+    termsOverlay,
+    invoiceOverlay,
+    closeInvoiceModalBtn,
+    payNowButton,
+  } = getCheckoutElements();
+
+  renderCheckoutSummary();
+  restoreCheckoutConfirmationIfNeeded();
+
+  openTermsBtn?.addEventListener("click", openTermsDrawer);
+  closeTermsBtn?.addEventListener("click", closeTermsDrawer);
+  termsOverlay?.addEventListener("click", closeTermsDrawer);
+
+  invoiceOverlay?.addEventListener("click", closeInvoiceModal);
+  closeInvoiceModalBtn?.addEventListener("click", closeInvoiceModal);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeTermsDrawer();
+      closeInvoiceModal();
+    }
+  });
+
+  if (!form) return;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!validateCheckoutForm(form)) return;
+
+    if (payNowButton) {
+      payNowButton.disabled = true;
+      payNowButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Processing...</span>`;
+    }
+
+    const subtotal = getCartSubtotal();
+    const total = calculateCheckoutTotal(subtotal);
+
+    const email = $("#customerEmail")?.value.trim();
+    const fullName = $("#customerFullName")?.value.trim();
+    const phone = $("#customerPhone")?.value.trim();
+    const location = $("#customerLocation")?.value.trim();
+    const orderType = $("#orderType")?.value;
+    const instructions = $("#customerInstructions")?.value.trim() || "";
+
+    const paystack = window.PaystackPop?.setup({
+      key: PAYSTACK_PUBLIC_KEY,
+      email,
+      amount: Math.round(total * 100),
+      currency: "GHS",
+      ref: `MBB-${Date.now()}`,
+      metadata: {
+        custom_fields: [
+          { display_name: "Full Name", variable_name: "full_name", value: fullName },
+          { display_name: "Phone", variable_name: "phone", value: phone },
+          { display_name: "Location", variable_name: "location", value: location },
+          { display_name: "Order Type", variable_name: "order_type", value: orderType },
+        ],
+      },
+      callback: async function (response) {
+        try {
+          $("#formPaymentReference").value = response.reference;
+          $("#formPaymentStatus").value = "paid";
+
+          const invoiceData = buildInvoiceData(form);
+          invoiceData.reference = response.reference;
+          invoiceData.paymentStatus = "paid";
+
+          await submitCheckoutToFormspree(form, invoiceData);
+
+          sessionStorage.setItem(CHECKOUT_CONFIRMATION_KEY, JSON.stringify(invoiceData));
+          location.replace("checkout.html?paid=1");
+        } catch (error) {
+          console.error(error);
+          showToast("Payment went through, but saving the order failed.", "danger");
+          if (payNowButton) {
+            payNowButton.disabled = false;
+            payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+          }
+        }
+      },
+      onClose: function () {
+        if (payNowButton) {
+          payNowButton.disabled = false;
+          payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+        }
+        showToast("Payment window closed.");
+      },
+    });
+
+    if (!paystack) {
+      showToast("Paystack failed to load.", "danger");
+      if (payNowButton) {
+        payNowButton.disabled = false;
+        payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+      }
+      return;
+    }
+
+    paystack.openIframe();
+  });
+}
+  /* -------------------------------------------------------------------------- */
   /* Init                                                                       */
   /* -------------------------------------------------------------------------- */
 
