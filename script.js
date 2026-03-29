@@ -2399,29 +2399,33 @@ try {
         { display_name: "Order Type", variable_name: "order_type", value: orderType },
       ],
     },
-    callback: async function (response) {
-      try {
-        $("#formPaymentReference").value = response.reference;
-        $("#formPaymentStatus").value = "paid";
+   callback: function (response) {
+  console.log("Paystack callback response:", response);
 
-        const invoiceData = buildInvoiceData(form);
-        invoiceData.reference = response.reference;
-        invoiceData.paymentStatus = "paid";
+  (async () => {
+    try {
+      $("#formPaymentReference").value = response.reference;
+      $("#formPaymentStatus").value = "paid";
 
-        await submitCheckoutToFormspree(form, invoiceData);
+      const invoiceData = buildInvoiceData(form);
+      invoiceData.reference = response.reference;
+      invoiceData.paymentStatus = "paid";
 
-        sessionStorage.setItem(CHECKOUT_CONFIRMATION_KEY, JSON.stringify(invoiceData));
-        location.replace("checkout.html?paid=1");
-      } catch (error) {
-        console.error("Post-payment error:", error);
-        showToast("Payment went through, but saving the order failed.", "danger");
+      await submitCheckoutToFormspree(form, invoiceData);
 
-        if (payNowButton) {
-          payNowButton.disabled = false;
-          payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-        }
+      sessionStorage.setItem(CHECKOUT_CONFIRMATION_KEY, JSON.stringify(invoiceData));
+      location.replace("checkout.html?paid=1");
+    } catch (error) {
+      console.error("Post-payment error:", error);
+      showToast("Payment went through, but saving the order failed.", "danger");
+
+      if (payNowButton) {
+        payNowButton.disabled = false;
+        payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
       }
-    },
+    }
+  })();
+},
     onClose: function () {
       if (payNowButton) {
         payNowButton.disabled = false;
