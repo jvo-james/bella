@@ -2380,61 +2380,67 @@ function initCheckoutPage() {
     const orderType = $("#orderType")?.value;
     const instructions = $("#customerInstructions")?.value.trim() || "";
 
-    const paystack = window.PaystackPop?.setup({
-      key: PAYSTACK_PUBLIC_KEY,
-      email,
-      amount: Math.round(total * 100),
-      currency: "GHS",
-      ref: `MBB-${Date.now()}`,
-      metadata: {
-        custom_fields: [
-          { display_name: "Full Name", variable_name: "full_name", value: fullName },
-          { display_name: "Phone", variable_name: "phone", value: phone },
-          { display_name: "Location", variable_name: "location", value: location },
-          { display_name: "Order Type", variable_name: "order_type", value: orderType },
-        ],
-      },
-      callback: async function (response) {
-        try {
-          $("#formPaymentReference").value = response.reference;
-          $("#formPaymentStatus").value = "paid";
+try {
+  if (!window.PaystackPop || typeof window.PaystackPop.setup !== "function") {
+    throw new Error("PaystackPop is not available.");
+  }
 
-          const invoiceData = buildInvoiceData(form);
-          invoiceData.reference = response.reference;
-          invoiceData.paymentStatus = "paid";
+  const paystack = window.PaystackPop.setup({
+    key: PAYSTACK_PUBLIC_KEY,
+    email,
+    amount: Math.round(total * 100),
+    currency: "GHS",
+    ref: `MBB-${Date.now()}`,
+    metadata: {
+      custom_fields: [
+        { display_name: "Full Name", variable_name: "full_name", value: fullName },
+        { display_name: "Phone", variable_name: "phone", value: phone },
+        { display_name: "Location", variable_name: "location", value: location },
+        { display_name: "Order Type", variable_name: "order_type", value: orderType },
+      ],
+    },
+    callback: async function (response) {
+      try {
+        $("#formPaymentReference").value = response.reference;
+        $("#formPaymentStatus").value = "paid";
 
-          await submitCheckoutToFormspree(form, invoiceData);
+        const invoiceData = buildInvoiceData(form);
+        invoiceData.reference = response.reference;
+        invoiceData.paymentStatus = "paid";
 
-          sessionStorage.setItem(CHECKOUT_CONFIRMATION_KEY, JSON.stringify(invoiceData));
-          location.replace("checkout.html?paid=1");
-        } catch (error) {
-          console.error(error);
-          showToast("Payment went through, but saving the order failed.", "danger");
-          if (payNowButton) {
-            payNowButton.disabled = false;
-            payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
-          }
-        }
-      },
-      onClose: function () {
+        await submitCheckoutToFormspree(form, invoiceData);
+
+        sessionStorage.setItem(CHECKOUT_CONFIRMATION_KEY, JSON.stringify(invoiceData));
+        location.replace("checkout.html?paid=1");
+      } catch (error) {
+        console.error("Post-payment error:", error);
+        showToast("Payment went through, but saving the order failed.", "danger");
+
         if (payNowButton) {
           payNowButton.disabled = false;
           payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
         }
-        showToast("Payment window closed.");
-      },
-    });
-
-    if (!paystack) {
-      showToast("Paystack failed to load.", "danger");
+      }
+    },
+    onClose: function () {
       if (payNowButton) {
         payNowButton.disabled = false;
         payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
       }
-      return;
-    }
+      showToast("Payment window closed.");
+    },
+  });
 
-    paystack.openIframe();
+  paystack.openIframe();
+} catch (error) {
+  console.error("Paystack setup error:", error);
+  showToast("Paystack could not open. Check your public key and browser console.", "danger");
+
+  if (payNowButton) {
+    payNowButton.disabled = false;
+    payNowButton.innerHTML = `<i class="fa-solid fa-lock"></i><span>Pay Now</span>`;
+  }
+}
   });
 }
 
