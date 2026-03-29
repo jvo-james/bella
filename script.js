@@ -2442,15 +2442,16 @@ function initCheckoutPage() {
   /* -------------------------------------------------------------------------- */
 
   function init() {
-    renderCart();
-    initMobileMenu();
-    initCartEvents();
-    initCardAddToCart();
-    initMenuFiltering();
-    initProductGalleryClicks();
-    initProductPage();
-    initGalleryLightbox();
-  }
+  renderCart();
+  initMobileMenu();
+  initCartEvents();
+  initCardAddToCart();
+  initMenuFiltering();
+  initProductGalleryClicks();
+  initProductPage();
+  initGalleryLightbox();
+  initCheckoutPage();
+}
 
   document.addEventListener("DOMContentLoaded", init);
 })();
