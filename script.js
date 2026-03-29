@@ -2489,6 +2489,17 @@ function initCheckoutNavigation() {
     });
   });
 }
-  
+  function init() {
+  renderCart();
+  initMobileMenu();
+  initCartEvents();
+  initCheckoutNavigation();
+  initCardAddToCart();
+  initMenuFiltering();
+  initProductGalleryClicks();
+  initProductPage();
+  initGalleryLightbox();
+  initCheckoutPage();
+}
   document.addEventListener("DOMContentLoaded", init);
 })();
