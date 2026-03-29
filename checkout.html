@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Complete your Meals by Bella order securely with checkout, payment, and invoice confirmation."
+  />
+  <title>Meals by Bella | Checkout</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8D6LJgyAHIhR35VZc2oM/gI1w1BzQAw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body class="page-checkout" data-page="checkout">
+  <div class="site-shell">
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="mobile-menu__panel">
+        <div class="mobile-menu__top">
+          <a href="index.html" class="brand brand--mobile" aria-label="Meals by Bella home">
+            <span class="brand__eyebrow">Fresh bakes & treats</span>
+            <span class="brand__name">Meals by Bella</span>
+          </a>
+          <button class="icon-btn js-close-mobile-menu" aria-label="Close menu" type="button">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+          <a href="index.html">Home</a>
+          <a href="index.html#contact">Contact</a>
+          <a href="menu.html">Menu</a>
+          <a href="gallery.html">Gallery</a>
+        </nav>
+
+        <div class="mobile-menu__actions">
+          <a href="menu.html" class="btn btn--primary">Explore Menu</a>
+          <a href="gallery.html" class="btn btn--secondary">See Gallery</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header" id="top">
+      <div class="container">
+        <div class="header-main">
+          <a href="index.html" class="brand" aria-label="Meals by Bella home">
+            <span class="brand__eyebrow">Fresh bakes & treats</span>
+            <span class="brand__name">Meals by Bella</span>
+          </a>
+
+          <nav class="desktop-nav" aria-label="Primary navigation">
+            <a href="index.html">Home</a>
+            <a href="index.html#contact">Contact</a>
+            <a href="menu.html" class="is-active">Menu</a>
+            <a href="gallery.html">Gallery</a>
+          </nav>
+
+          <div class="header-actions">
+            <button class="icon-btn mobile-only js-open-mobile-menu" type="button" aria-label="Open menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Breadcrumb -->
+      <section class="breadcrumb-section">
+        <div class="container">
+          <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <a href="menu.html">Menu</a>
+            <span>/</span>
+            <span>Checkout</span>
+          </nav>
+        </div>
+      </section>
+
+      <!-- Checkout Hero -->
+      <section class="checkout-hero">
+        <div class="container">
+          <div class="checkout-hero__wrap">
+            <div>
+              <p class="section-tag">Secure Checkout</p>
+              <h1>Complete your order</h1>
+              <p class="section-subtext">
+                Fill in your details, review your items, and continue to payment.
+              </p>
+            </div>
+
+            <a href="menu.html" class="btn btn--secondary">
+              <i class="fa-solid fa-arrow-left"></i>
+              <span>Back to Menu</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Checkout Layout -->
+      <section class="checkout-section">
+        <div class="container">
+          <div class="checkout-layout">
+            <!-- Left: Form -->
+            <div class="checkout-main">
+              <form
+                id="checkoutForm"
+                class="checkout-form"
+                data-formspree-endpoint="YOUR_FORMSPREE_ENDPOINT_HERE"
+                novalidate
+              >
+                <div class="checkout-card">
+                  <div class="checkout-card__head">
+                    <p class="section-tag">Customer Details</p>
+                    <h2>Your information</h2>
+                  </div>
+
+                  <div class="checkout-form__grid">
+                    <div class="form-field">
+                      <label for="customerFullName">Full Name</label>
+                      <input type="text" id="customerFullName" name="full_name" placeholder="Enter your full name" required />
+                    </div>
+
+                    <div class="form-field">
+                      <label for="customerPhone">Phone Number</label>
+                      <input type="tel" id="customerPhone" name="phone" placeholder="e.g. 0551234567" required />
+                    </div>
+
+                    <div class="form-field">
+                      <label for="customerEmail">Email Address</label>
+                      <input type="email" id="customerEmail" name="email" placeholder="Enter your email" required />
+                    </div>
+
+                    <div class="form-field">
+                      <label for="customerLocation">Delivery / Pickup Location</label>
+                      <input type="text" id="customerLocation" name="location" placeholder="Enter your location" required />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="checkout-card">
+                  <div class="checkout-card__head">
+                    <p class="section-tag">Order Details</p>
+                    <h2>Delivery preferences</h2>
+                  </div>
+
+                  <div class="checkout-form__grid">
+                    <div class="form-field">
+                      <label for="orderType">Order Type</label>
+                      <select id="orderType" name="order_type" required>
+                        <option value="">Select one</option>
+                        <option value="Delivery">Delivery</option>
+                        <option value="Pickup">Pickup</option>
+                      </select>
+                    </div>
+
+                    <div class="form-field">
+                      <label for="paymentMethodLabel">Payment Method</label>
+                      <input
+                        type="text"
+                        id="paymentMethodLabel"
+                        name="payment_method_label"
+                        value="Paystack"
+                        readonly
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="customerInstructions">Extra Instructions</label>
+                    <textarea
+                      id="customerInstructions"
+                      name="instructions"
+                      rows="5"
+                      placeholder="Add any extra instructions for your order..."
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="checkout-card">
+                  <div class="checkout-card__head">
+                    <p class="section-tag">Agreement</p>
+                    <h2>Terms & confirmation</h2>
+                  </div>
+
+                  <div class="checkout-terms-box">
+                    <label class="terms-check">
+                      <input type="checkbox" id="agreeTerms" name="agree_terms" required />
+                      <span>
+                        I agree to the
+                        <button type="button" class="terms-link" id="openTermsDrawer">
+                          Terms &amp; Conditions
+                        </button>
+                      </span>
+                    </label>
+
+                    <p class="checkout-fee-note">
+                      Processing fee includes <strong>1.95%</strong> Paystack charge and
+                      <strong>1%</strong> Mobile Money charge.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Hidden fields for formspree -->
+                <input type="hidden" name="cart_items_json" id="formCartItemsJson" />
+                <input type="hidden" name="cart_items_text" id="formCartItemsText" />
+                <input type="hidden" name="subtotal" id="formSubtotal" />
+                <input type="hidden" name="processing_fee" id="formProcessingFee" />
+                <input type="hidden" name="total_amount" id="formTotalAmount" />
+                <input type="hidden" name="payment_reference" id="formPaymentReference" />
+                <input type="hidden" name="payment_status" id="formPaymentStatus" value="pending" />
+
+                <div class="checkout-actions">
+                  <button type="submit" class="btn btn--primary btn--wide" id="payNowButton">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Pay Now</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Right: Summary -->
+            <aside class="checkout-sidebar">
+              <div class="checkout-card">
+                <div class="checkout-card__head">
+                  <p class="section-tag">Order Summary</p>
+                  <h2>Your items</h2>
+                </div>
+
+                <div class="checkout-items" id="checkoutItems">
+                  <!-- Populated by script.js -->
+                </div>
+
+                <div class="checkout-empty is-hidden" id="checkoutEmptyState">
+                  <div class="checkout-empty__icon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                  </div>
+                  <h3>Your cart is empty</h3>
+                  <p>Add some items before continuing to checkout.</p>
+                  <a href="menu.html" class="btn btn--primary">Browse Menu</a>
+                </div>
+              </div>
+
+              <div class="checkout-card">
+                <div class="checkout-card__head">
+                  <p class="section-tag">Payment Summary</p>
+                  <h2>Total</h2>
+                </div>
+
+                <div class="checkout-summary">
+                  <div class="checkout-summary__row">
+                    <span>Subtotal</span>
+                    <strong id="checkoutSubtotal">GH₵0</strong>
+                  </div>
+
+                  <div class="checkout-summary__row">
+                    <span>Processing fee (2.95%)</span>
+                    <strong id="checkoutProcessingFee">GH₵0</strong>
+                  </div>
+
+                  <div class="checkout-summary__row checkout-summary__row--total">
+                    <span>Total</span>
+                    <strong id="checkoutGrandTotal">GH₵0</strong>
+                  </div>
+                </div>
+
+                <p class="checkout-summary__note">
+                  <strong>Breakdown:</strong> 1.95% Paystack charge + 1% Mobile Money charge.
+                </p>
+              </div>
+
+              <div class="checkout-card">
+                <div class="checkout-card__head">
+                  <p class="section-tag">Invoice</p>
+                  <h2>After payment</h2>
+                </div>
+
+                <div class="invoice-actions">
+                  <button type="button" class="btn btn--secondary btn--wide" id="viewInvoiceButton" disabled>
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>View Invoice</span>
+                  </button>
+
+                  <button type="button" class="btn btn--secondary btn--wide" id="downloadInvoiceButton" disabled>
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download Invoice</span>
+                  </button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- Confirmation State -->
+      <section class="checkout-confirmation is-hidden" id="checkoutConfirmationSection">
+        <div class="container">
+          <div class="checkout-confirmation__card">
+            <div class="checkout-confirmation__icon">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <p class="section-tag">Payment Successful</p>
+            <h2>Thank you for your order</h2>
+            <p id="checkoutConfirmationMessage">
+              Your payment was successful and your invoice has been prepared.
+            </p>
+
+            <div class="checkout-confirmation__meta">
+              <article>
+                <span>Reference</span>
+                <strong id="confirmationReference">—</strong>
+              </article>
+              <article>
+                <span>Total Paid</span>
+                <strong id="confirmationTotalPaid">GH₵0</strong>
+              </article>
+            </div>
+
+            <div class="checkout-confirmation__actions">
+              <button type="button" class="btn btn--primary" id="confirmationViewInvoiceButton">
+                <i class="fa-solid fa-file-lines"></i>
+                <span>View Invoice</span>
+              </button>
+
+              <button type="button" class="btn btn--secondary" id="confirmationDownloadInvoiceButton">
+                <i class="fa-solid fa-download"></i>
+                <span>Download Invoice</span>
+              </button>
+            </div>
+
+            <p class="checkout-confirmation__redirect-note">
+              You’ll be returned to the homepage after this confirmation is completed.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Terms Drawer -->
+    <div class="terms-drawer" id="termsDrawer" aria-hidden="true">
+      <div class="terms-drawer__overlay" id="termsDrawerOverlay"></div>
+
+      <aside class="terms-drawer__panel" role="dialog" aria-modal="true" aria-label="Terms and Conditions">
+        <div class="terms-drawer__head">
+          <div>
+            <p class="section-tag">Meals by Bella</p>
+            <h2>Terms &amp; Conditions</h2>
+          </div>
+
+          <button type="button" class="icon-btn" id="closeTermsDrawer" aria-label="Close terms">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="terms-drawer__body">
+          <div class="terms-content">
+            <article>
+              <h3>1. Order confirmation</h3>
+              <p>
+                Orders are only confirmed after successful payment.
+              </p>
+            </article>
+
+            <article>
+              <h3>2. Availability</h3>
+              <p>
+                Some items may be unavailable depending on stock or preparation time. If anything changes, the customer will be contacted.
+              </p>
+            </article>
+
+            <article>
+              <h3>3. Delivery and pickup</h3>
+              <p>
+                Customers must provide correct delivery or pickup details. Delays caused by incorrect details are not the responsibility of Meals by Bella.
+              </p>
+            </article>
+
+            <article>
+              <h3>4. Payments</h3>
+              <p>
+                Payments are processed securely through Paystack. Processing charges are included in the checkout summary.
+              </p>
+            </article>
+
+            <article>
+              <h3>5. Refunds</h3>
+              <p>
+                Refund requests will be reviewed based on the issue reported. Approved refunds may take some time depending on the payment channel used.
+              </p>
+            </article>
+
+            <article>
+              <h3>6. Customer responsibility</h3>
+              <p>
+                Customers should review their cart, contact details, and instructions carefully before making payment.
+              </p>
+            </article>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Invoice Modal -->
+    <div class="invoice-modal" id="invoiceModal" aria-hidden="true">
+      <div class="invoice-modal__overlay" id="invoiceModalOverlay"></div>
+
+      <div class="invoice-modal__dialog" role="dialog" aria-modal="true" aria-label="Invoice preview">
+        <button type="button" class="invoice-modal__close icon-btn" id="closeInvoiceModal" aria-label="Close invoice preview">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="invoice-preview" id="invoicePreview">
+          <!-- Populated by script.js -->
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer site-footer--full">
+      <div class="footer-main">
+        <div class="footer-branding">
+          <a href="index.html" class="brand brand--footer">
+            <span class="brand__eyebrow">Fresh bakes & treats</span>
+            <span class="brand__name">Meals by Bella</span>
+          </a>
+          <p>
+            A student-run food brand serving pastries, brownies, cake slices, drinks, and more with care.
+          </p>
+
+          <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links-wrap">
+          <div class="footer-links">
+            <h3>Navigation</h3>
+            <a href="index.html">Home</a>
+            <a href="index.html#contact">Contact</a>
+            <a href="menu.html">Menu</a>
+            <a href="gallery.html">Gallery</a>
+          </div>
+
+          <div class="footer-links">
+            <h3>Popular Items</h3>
+            <a href="product.html?product=chocolate-croissant">Chocolate Croissant</a>
+            <a href="product.html?product=walnut-brownie">Walnut Brownie</a>
+            <a href="product.html?product=mud-cake-slice">Mud Cake Slice</a>
+            <a href="product.html?product=pineapple-juice">Pineapple Juice</a>
+          </div>
+
+          <div class="footer-links">
+            <h3>Contact</h3>
+            <a href="https://wa.me/233000000000" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="#">Snapchat</a>
+            <a href="index.html#contact">UPSA, Accra</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <p>© 2026 Meals by Bella. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
