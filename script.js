@@ -2320,10 +2320,10 @@ function validateCheckoutForm(form) {
     return false;
   }
 
-  if (!PAYSTACK_PUBLIC_KEY || PAYSTACK_PUBLIC_KEY === "pk_test_297586e51710e83d3c159bfe71ff45c7e23411fa") {
-    showToast("Add your Paystack test key in script.js first.", "danger");
-    return false;
-  }
+ if (!PAYSTACK_PUBLIC_KEY) {
+  showToast("Add your Paystack public key in script.js first.", "danger");
+  return false;
+}
 
   return true;
 }
