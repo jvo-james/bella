@@ -235,6 +235,171 @@
     }),
 
     createProduct({
+  id: "strawberries-chocolate-cup",
+  name: "Strawberries in Chocolate Cup",
+  category: "Pastries",
+  price: 100,
+  unit: "each",
+  image: "strawc.jpg",
+  images: [
+    "strawc.jpg",
+    "strawberry-choco-cup.jpg",
+    "strawberry-choco-cup.jpg",
+    "strawberry-choco-cup.jpg",
+  ],
+  options: ["Standard"],
+  tagline: "Fresh strawberries and rich chocolate in a simple dessert cup.",
+  description:
+    "Fresh strawberries coated in rich chocolate and served in a cup. A sweet and refreshing dessert choice.",
+  highlights: {
+    love: "Customers will enjoy the fresh strawberry taste with smooth chocolate.",
+    time: "Perfect as a dessert, snack, or sweet treat during the day.",
+    serving: "Sold as one cup for easy ordering.",
+  },
+  overview:
+    "This is a simple dessert option for anyone who wants fruit and chocolate together in one easy serving.",
+  overviewExtra:
+    "It feels light, sweet, and easy to enjoy.",
+  notes: [
+    "Fresh strawberry dessert cup.",
+    "Chocolate-coated fruit.",
+    "Single serving.",
+    "Sweet and simple choice.",
+  ],
+  pairing:
+    "Pairs well with smoothies or other chilled drinks.",
+  metaBestWith: "Smoothies or chilled drinks",
+  sidebarPoints: [
+    { title: "Sweet dessert", text: "A fruit-and-chocolate dessert option." },
+    { title: "Single serving", text: "Easy to add to any order." },
+    { title: "Fresh feel", text: "A lighter dessert choice." },
+  ],
+}),
+
+    createProduct({
+  id: "strawberries-chocolate-cup-pistachios",
+  name: "Strawberries in Chocolate Cup with Pistachios",
+  category: "Pastries",
+  price: 120,
+  unit: "each",
+  image: "pistache.jpg",
+  images: [
+    "pistache.jpg",
+    "strawberry-pistachio-cup.jpg",
+    "strawberry-pistachio-cup.jpg",
+    "strawberry-pistachio-cup.jpg",
+  ],
+  options: ["Standard"],
+  tagline: "Fresh strawberries, rich chocolate, and pistachios in one premium cup.",
+  description:
+    "Fresh strawberries coated in rich chocolate and topped with pistachios for extra crunch and flavour.",
+  highlights: {
+    love: "Customers will enjoy the mix of fruit, chocolate, and pistachio crunch.",
+    time: "A great dessert option for sweet cravings or special orders.",
+    serving: "Sold as one cup for easy ordering.",
+  },
+  overview:
+    "This is a more premium strawberry dessert option with added pistachio topping for more texture and flavour.",
+  overviewExtra:
+    "It feels richer and more special than a regular dessert cup.",
+  notes: [
+    "Fresh strawberry dessert cup.",
+    "Chocolate coating.",
+    "Pistachio topping.",
+    "Single serving.",
+  ],
+  pairing:
+    "Pairs well with smoothies and cold drinks.",
+  metaBestWith: "Smoothies and chilled drinks",
+  sidebarPoints: [
+    { title: "Premium choice", text: "A richer dessert option with pistachios." },
+    { title: "Single serving", text: "Simple to order and enjoy." },
+    { title: "Crunch + sweetness", text: "Smooth chocolate with nutty texture." },
+  ],
+}),
+    createProduct({
+  id: "strawberry-smoothie",
+  name: "Strawberry Smoothie",
+  category: "Juices",
+  price: 70,
+  unit: "each",
+  image: "smoothie.webp",
+  images: [
+    "smoothie.webp",
+    "strawberry-smoothie.jpg",
+    "strawberry-smoothie.jpg",
+    "strawberry-smoothie.jpg",
+  ],
+  options: ["Chilled"],
+  tagline: "A fruity smoothie that is cold, sweet, and refreshing.",
+  description:
+    "A cold strawberry smoothie that is smooth, fruity, and refreshing.",
+  highlights: {
+    love: "Customers will enjoy the sweet strawberry taste and chilled finish.",
+    time: "Great for hot days or as a refreshing drink with desserts.",
+    serving: "Sold individually for easy ordering.",
+  },
+  overview:
+    "A simple strawberry smoothie that works well as a refreshing drink on its own or with other menu items.",
+  overviewExtra:
+    "It is easy to enjoy and good for fruit lovers.",
+  notes: [
+    "Cold smoothie drink.",
+    "Sweet strawberry flavour.",
+    "Refreshing and fruity.",
+    "Single serving.",
+  ],
+  pairing:
+    "Pairs well with pastries, dessert cups, and cake slices.",
+  metaBestWith: "Pastries and desserts",
+  sidebarPoints: [
+    { title: "Refreshing drink", text: "A cold fruity smoothie option." },
+    { title: "Single serving", text: "Easy to add to any order." },
+    { title: "Strawberry flavour", text: "Sweet and easy to enjoy." },
+  ],
+}),
+    createProduct({
+  id: "oreo-smoothie",
+  name: "Oreo Smoothie",
+  category: "Juices",
+  price: 70,
+  unit: "each",
+  image: "oreosmoothie.webp",
+  images: [
+    "oreosmoothie.webp",
+    "oreo-smoothie.jpg",
+    "oreo-smoothie.jpg",
+    "oreo-smoothie.jpg",
+  ],
+  options: ["Chilled"],
+  tagline: "A creamy Oreo drink with a rich cookie flavour.",
+  description:
+    "A creamy Oreo smoothie with a smooth texture and rich chocolate-cookie taste.",
+  highlights: {
+    love: "Customers will enjoy the creamy texture and Oreo flavour.",
+    time: "Great as a sweet drink, dessert drink, or chilled treat.",
+    serving: "Sold individually for easy ordering.",
+  },
+  overview:
+    "This is a sweet and creamy Oreo smoothie for anyone who wants a richer drink option.",
+  overviewExtra:
+    "It feels more like a dessert-style drink than a regular juice.",
+  notes: [
+    "Creamy smoothie texture.",
+    "Oreo flavour.",
+    "Sweet chilled drink.",
+    "Single serving.",
+  ],
+  pairing:
+    "Pairs well with brownies, pastries, and dessert cups.",
+  metaBestWith: "Brownies, pastries, and desserts",
+  sidebarPoints: [
+    { title: "Dessert-style drink", text: "A richer smoothie option." },
+    { title: "Single serving", text: "Easy to add to an order." },
+    { title: "Oreo flavour", text: "Sweet, creamy, and smooth." },
+  ],
+}),
+    createProduct({
       id: "cheese-croissant",
       name: "Cheese Croissant",
       category: "Croissants",
@@ -1000,6 +1165,7 @@
     "pineapple-juice",
     "oreo-donut",
     "sobolo",
+    "strawberries-chocolate-cup-pistachios",
   ];
 
   /* -------------------------------------------------------------------------- */
