@@ -241,12 +241,7 @@
   price: 100,
   unit: "each",
   image: "strawc.jpg",
-  images: [
-    "strawc.jpg",
-    "strawberry-choco-cup.jpg",
-    "strawberry-choco-cup.jpg",
-    "strawberry-choco-cup.jpg",
-  ],
+images: ["strawc.jpg", "strawc.jpg", "strawc.jpg", "strawc.jpg"],
   options: ["Standard"],
   tagline: "Fresh strawberries and rich chocolate in a simple dessert cup.",
   description:
@@ -283,12 +278,7 @@
   price: 120,
   unit: "each",
   image: "pistache.jpg",
-  images: [
-    "pistache.jpg",
-    "strawberry-pistachio-cup.jpg",
-    "strawberry-pistachio-cup.jpg",
-    "strawberry-pistachio-cup.jpg",
-  ],
+images: ["pistache.jpg", "pistache.jpg", "pistache.jpg", "pistache.jpg"],
   options: ["Standard"],
   tagline: "Fresh strawberries, rich chocolate, and pistachios in one premium cup.",
   description:
@@ -324,12 +314,7 @@
   price: 70,
   unit: "each",
   image: "smoothie.webp",
-  images: [
-    "smoothie.webp",
-    "strawberry-smoothie.jpg",
-    "strawberry-smoothie.jpg",
-    "strawberry-smoothie.jpg",
-  ],
+images: ["smoothie.webp", "smoothie.webp", "smoothie.webp", "smoothie.webp"],
   options: ["Chilled"],
   tagline: "A fruity smoothie that is cold, sweet, and refreshing.",
   description:
@@ -365,12 +350,7 @@
   price: 70,
   unit: "each",
   image: "oreosmoothie.webp",
-  images: [
-    "oreosmoothie.webp",
-    "oreo-smoothie.jpg",
-    "oreo-smoothie.jpg",
-    "oreo-smoothie.jpg",
-  ],
+images: ["oreosmoothie.webp", "oreosmoothie.webp", "oreosmoothie.webp", "oreosmoothie.webp"],
   options: ["Chilled"],
   tagline: "A creamy Oreo drink with a rich cookie flavour.",
   description:
