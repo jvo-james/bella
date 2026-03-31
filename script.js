@@ -277,8 +277,8 @@ images: ["strawc.jpg", "menu/strawc2.jpg", "menu/strawc3.jpg", "menu/strawc4.jpg
   category: "Pastries",
   price: 120,
   unit: "each",
-  image: "pistache.jpg",
-images: ["pistache.jpg", "menu/pistache1.jpg", "menu/pistache2.jpg", "menu/pistache3.jpg"],
+  image: "menu/pistache3.jpg",
+images: ["menu/pistache3.jpg", "menu/pistache1.jpg", "menu/pistache2.jpg", "menu/pistache3.jpg"],
   options: ["Standard"],
   tagline: "Fresh strawberries, rich chocolate, and pistachios in one premium cup.",
   description:
