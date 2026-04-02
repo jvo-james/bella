@@ -1947,7 +1947,7 @@ function renderCart() {
 /* Checkout                                                                   */
 /* -------------------------------------------------------------------------- */
 
-const PAYSTACK_PUBLIC_KEY = "pk_test_297586e51710e83d3c159bfe71ff45c7e23411fa";
+const PAYSTACK_PUBLIC_KEY = "pk_live_a2128a5ce9b17b510541dfa62415ed3d5a649c18";
 
 function calculateProcessingFee(subtotal) {
   return Number((subtotal * 0.0295).toFixed(2));
